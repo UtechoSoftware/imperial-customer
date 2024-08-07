@@ -1,15 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+import { Tooltip } from "antd";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import hand from "../assets/png/select.png";
-import avatar from "../assets//png/avatar1.png";
-import plane from "../assets/png/paper-plane.png";
 import { useNavigate } from "react-router-dom";
+import avatar from "../assets//png/avatar1.png";
 
 const Dashboard = () => {
-  const navigate=useNavigate()
+  const navigate = useNavigate();
   const [employeeType, setEmployeeType] = useState("New Hire");
   const [formData, setFormData] = useState({
     identifier: "",
@@ -39,7 +38,7 @@ const Dashboard = () => {
 
   const handleSubmit = () => {
     console.log(formData);
-    navigate('/list-hr')
+    navigate("/list-hr");
   };
 
   return (
@@ -70,6 +69,8 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   Type of Employee
                 </label>
+                <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                 <select
                   className="form-select custom_radius text-center"
                   value={employeeType}
@@ -78,6 +79,8 @@ const Dashboard = () => {
                   <option value="New Hire">New Hire</option>
                   <option value="Company's Staff">Company's Staff</option>
                 </select>
+                        </div>
+                      </Tooltip>
               </div>
 
               <div className="my-4">
@@ -85,6 +88,8 @@ const Dashboard = () => {
                   Personal Data
                 </label>
                 <div className="flex flex-wrap">
+                <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <input
                     type="text"
                     className="form-control input_1 custom_radius text-center mr-2 mb-2"
@@ -93,36 +98,54 @@ const Dashboard = () => {
                     value={formData.identifier}
                     onChange={handleInputChange}
                   />
+                        </div>
+                      </Tooltip>
+                  <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <DatePicker
                     selected={formData.dob}
                     onChange={(date) => handleDateChange(date, "dob")}
                     className="form-control input_1 custom_radius text-center"
                     placeholderText="Date of Birth"
                   />
+                        </div>
+                      </Tooltip>
                 </div>
               </div>
-              <div className="my-4">
+              <div className="my-4 cursor-pointer">
                 <label className="form-label manrope_semibold">
                   Registration as unemployed
                 </label>
-                <div className="d-flex  flex-wrap">
-                  <select
-                    className="form-select custom_radius text-center input_3 mr-2 mb-2"
-                    name="iefp"
-                    value={formData.iefp}
-                    onChange={handleInputChange}
-                  >
-                    <option>
-                      Registered on the Portuguese Employment Institut (IEFP)
-                    </option>
-                    <option>123456</option>
-                  </select>
-                  <DatePicker
-                    selected={formData.iefpDate}
-                    onChange={(date) => handleDateChange(date, "iefpDate")}
-                    className="form-control input_1 custom_radius text-center"
-                    placeholderText="IEFP registration date"
-                  />
+                <div className="d-flex  flex-wrap cursor-pointer">
+                  <Tooltip title="prompt text">
+                    <select
+                      className="form-select custom_radius cursor-pointer text-center input_3 mr-2 mb-2"
+                      name="iefp"
+                      value={formData.iefp}
+                      onChange={handleInputChange}
+                    >
+                      <option>
+                        Registered on the Portuguese Employment Institut (IEFP)
+                      </option>
+                      <option>123456</option>
+                    </select>
+                  </Tooltip>
+                  <Tooltip title="prompt text">
+                    <div className="cursor-pointer">
+                      <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
+                          <DatePicker
+                            selected={formData.iefpDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "iefpDate")
+                            }
+                            className="form-control input_1 cursor-pointer custom_radius text-center"
+                            placeholderText="IEFP registration date"
+                          />
+                        </div>
+                      </Tooltip>
+                    </div>
+                  </Tooltip>
                 </div>
               </div>
               <div className="my-4">
@@ -130,21 +153,31 @@ const Dashboard = () => {
                   Registration as unemployed
                 </label>
                 <div className="d-flex gap-2 flex-wrap">
-                  <DatePicker
-                    selected={formData.startDate}
-                    onChange={(date) => handleDateChange(date, "startDate")}
-                    className="form-control input_1 custom_radius text-center mr-2 mb-2"
-                    placeholderText="Predicted start date"
-                  />
-                  <select
-                    className="form-select custom_radius text-center input_3 mr-2 mb-2"
-                    name="employmentContractType"
-                    value={formData.employmentContractType}
-                    onChange={handleInputChange}
-                  >
-                    <option>Type of employment contract</option>
-                    <option>Regular</option>
-                  </select>
+                  <Tooltip title="prompt text">
+                    <div className="cursor-pointer">
+                      <DatePicker
+                        selected={formData.startDate}
+                        onChange={(date) => handleDateChange(date, "startDate")}
+                        className="form-control input_1 custom_radius text-center mr-2 mb-2"
+                        placeholderText="Predicted start date"
+                      />
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="prompt text">
+                    <div className="cursor-pointer">
+                      <select
+                        className="form-select custom_radius text-center input_3 mr-2 mb-2"
+                        name="employmentContractType"
+                        value={formData.employmentContractType}
+                        onChange={handleInputChange}
+                      >
+                        <option>Type of employment contract</option>
+                        <option>Regular</option>
+                      </select>
+                    </div>
+                  </Tooltip>
+                  <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <input
                     type="text"
                     className="form-control input_1 custom_radius text-center mr-2"
@@ -153,11 +186,15 @@ const Dashboard = () => {
                     value={formData.salary}
                     onChange={handleInputChange}
                   />
+                        </div>
+                      </Tooltip>
                 </div>
                 <div className="my-4 input_1">
                   <label className="form-label manrope_semibold">
                     Employees’s work history
                   </label>
+                  <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <input
                     type="text"
                     className="form-control input_1 custom_radius text-center mr-2"
@@ -166,6 +203,8 @@ const Dashboard = () => {
                     value={formData.workHistory}
                     onChange={handleInputChange}
                   />
+                        </div>
+                      </Tooltip>
                 </div>
               </div>
             </div>
@@ -175,6 +214,8 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   Type of Employee
                 </label>
+                <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                 <select
                   className="form-select custom_radius text-center"
                   value={employeeType}
@@ -183,6 +224,8 @@ const Dashboard = () => {
                   <option value="New Hire">New Hire</option>
                   <option value="Company's Staff">Company's Staff</option>
                 </select>
+                        </div>
+                      </Tooltip>
               </div>
 
               <div className="my-4">
@@ -190,6 +233,8 @@ const Dashboard = () => {
                   Personal Data
                 </label>
                 <div className="flex flex-wrap">
+                <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <input
                     type="text"
                     className="form-control input_1 custom_radius text-center mr-2 mb-2"
@@ -198,12 +243,18 @@ const Dashboard = () => {
                     value={formData.identifier}
                     onChange={handleInputChange}
                   />
+                        </div>
+                      </Tooltip>
+                      <Tooltip title="prompt text">
+                        <div className="cursor-pointer">
                   <DatePicker
                     selected={formData.dob}
                     onChange={(date) => handleDateChange(date, "dob")}
                     className="form-control input_1 custom_radius text-center"
                     placeholderText="Date of Birth"
                   />
+                        </div>
+                      </Tooltip>
                 </div>
               </div>
               <div className="my-4">
@@ -217,8 +268,7 @@ const Dashboard = () => {
                     value={formData.iefp}
                     onChange={handleInputChange}
                   >
-                   
-                    <option >
+                    <option>
                       Registered on the Portuguese Employment Institut (IEFP)
                     </option>
                     <option>234556</option>
@@ -313,11 +363,11 @@ const Dashboard = () => {
             </div>
           )}
 
-          <div className="cal_lower">
-            <div className="q_card_2 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
+          <div className="cal_lower d-flex justify-content-end">
+            {/* <div className="q_card_2 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
               <h6>Send mandatory questionnaire to employees</h6>
               <img className="h-10" src={plane} alt="email" />
-            </div>
+            </div> */}
             <div className="my-4">
               <button className="btn_" onClick={handleSubmit}>
                 Done

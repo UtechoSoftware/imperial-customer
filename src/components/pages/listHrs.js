@@ -10,6 +10,7 @@ import plane from "../assets/png/paper-plane.png";
 import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
 import { message } from "antd";
+import { Tooltip } from 'antd';
 const ListHrs = () => {
   const location = useLocation();
   const { login } = location.state || {};
@@ -21,7 +22,7 @@ const ListHrs = () => {
   const handleShow = () => setShow(true);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
-  const nodata =false;
+  const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
   const [formData, setFormData] = useState({
     identifier: "",
@@ -34,7 +35,7 @@ const ListHrs = () => {
     currentSalary: "",
     currentSSCRate: "",
   });
-
+ 
   const handleChange = (event) => {
     setEmployeeType(event.target.value);
     console.log(event.target.value);
@@ -156,7 +157,9 @@ const ListHrs = () => {
           {login && (
             <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
               <button
-                onClick={()=> message.success('delete operation will available soon')}
+                onClick={() =>
+                  message.success("delete operation will available soon")
+                }
                 type="button"
                 className="btn2 px-3 py-3  border-black bg-danger "
                 style={{ width: "14rem" }}
@@ -206,13 +209,20 @@ const ListHrs = () => {
                   </div>
                 </>
               )}
+              <Tooltip title="We only charge in the scenario of
+application approval and only a small
+fraction of the savings" className="cursor-pointer ">
+
               <div
-                className="q_card_2 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                style={{ borderRadius: "60px" }}
-              >
-                <h6>I want support with the application</h6>
-                <img className="h-10" src={hand} alt="email" />
-              </div>
+                  className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                  style={{ borderRadius: "60px" }}
+                >
+                  <h6>I want support with the application</h6>
+                  <img className="h-10" src={hand} alt="email" />
+                </div>
+  </Tooltip>
+                
+              
             </div>
             <div className="">
               <span className="text_head fw-bold"> Disclaimer:</span> The
@@ -269,7 +279,7 @@ const ListHrs = () => {
                 </Form.Group>
                 <div className="d-flex justify-content-end pt-3">
                   <button
-                  type="button"
+                    type="button"
                     className="btn2 px-3 py-2  border-black"
                     onClick={handleClose}
                     style={{ width: "9rem" }}
@@ -291,30 +301,33 @@ const ListHrs = () => {
               <div {...getRootProps({ className: "dropzone" })}>
                 <input {...getInputProps()} />
                 {/* <UploadIcon className="upload-icon" /> */}
-                <div className="d-flex flex-column gap-2 cursor-pointer align-items-center p-5 bg-white " style={{border:"1px solid black" , borderRadius:"20px"}}>
-
-                <img src={fileavatar} alt="upload here"/>
-                <p>
-                  Drag and drop the file into this pane (or click to import)
-                </p>
+                <div
+                  className="d-flex flex-column gap-2 cursor-pointer align-items-center p-5 bg-white "
+                  style={{ border: "1px solid black", borderRadius: "20px" }}
+                >
+                  <img src={fileavatar} alt="upload here" />
+                  <p>
+                    Drag and drop the file into this pane (or click to import)
+                  </p>
                 </div>
-                
               </div>
-              <div className="mt-3" onClick={()=> message.success('user can download file soon')}> 
-
-              <a href="#" className="download-link ">
-                Download excel template
-              </a>
+              <div
+                className="mt-3"
+                onClick={() => message.success("user can download file soon")}
+              >
+                <a href="#" className="download-link ">
+                  Download excel template
+                </a>
               </div>
               <div className="d-flex justify-content-end pt-3">
-                  <button
-                    className="btn2 px-3 py-2  border-black"
-                    onClick={handleClose2}
-                    style={{ width: "9rem" }}
-                  >
-                    Done
-                  </button>
-                </div>
+                <button
+                  className="btn2 px-3 py-2  border-black"
+                  onClick={handleClose2}
+                  style={{ width: "9rem" }}
+                >
+                  Done
+                </button>
+              </div>
             </Modal.Body>
           </Modal>
         </main>
