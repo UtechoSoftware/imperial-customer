@@ -927,3 +927,22 @@ td:last-child,
 th:last-child {
   border-radius: 0 10px 10px 0;
 }
+.accordion-item{
+  background-color: transparent !important;
+  border: none !important;
+}
+.accordion-button {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid grey ;
+  padding-left: 0%;
+  box-shadow: none !important;
+  padding-right: 0%;
+
+}
+.text_head .form-label{
+  border:  none !important;
+}
+.accordion-button:focus{
+border-bottom: none !important;
+}

@@ -608,6 +608,10 @@ import {
   Folder,
   Award,
   Clipboard,
+  Grid,
+  Info,
+  User,
+  LogIn,
 } from "react-feather";
 import { finabeelight } from "../icons/icon";
 
@@ -722,21 +726,21 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   } else {
     allowedItems = [
             {
-              icon: <Layers />,
-              iconActive: <Layers />,
+              icon: <Grid />,
+              iconActive: <Grid />,
               items: "Calculator",
               path: "/list-hr",
             },
             {
-              icon: <Users />,
-              iconActive: <Users />,
+              icon: <Info/>,
+              iconActive: <Info />,
               items: "Information",
               path: "/info",
             },
          
             {
-              icon: <BookOpen />,
-              iconActive: <BookOpen />,
+              icon: <User />,
+              iconActive: <User />,
               items: "Profile",
               path: "/profile",
             },
@@ -749,52 +753,20 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
             getLoggedIn || login ? (
       
               {
-                icon: <Award />,
-                iconActive: <Award />,
+                icon: <LogOut />,
+                iconActive: <LogOut />,
                 items: "Logout",
                 path: "/list-hr",
               }) : 
              ( {
-                icon: <Award />,
-                iconActive: <Award />,
+                icon: <LogIn />,
+                iconActive: <LogIn />,
                 items: "Login",
                 path: "/login",
               }
             ),
           ];
-    // allowedItems = [
-    //   {
-    //     icon: <Layers />,
-    //     iconActive: <Layers />,
-    //     items: "DashBoard",
-    //     path: "/blogs",
-    //   },
-    //   // {
-    //   //   icon: <Users />,
-    //   //   iconActive: <Users />,
-    //   //   items: "Information",
-    //   //   path: "/info",
-    //   // },
-     
-    //   {
-    //     icon: <Users />,
-    //     iconActive: <Users />,
-    //     items: "Profile",
-    //     path: "/profile",
-    //   },
-    //   // {
-    //   //   icon: <HelpCircle />,
-    //   //   iconActive: <HelpCircle />,
-    //   //   items: "Help",
-    //   //   path: "/help",
-    //   // },
-    //   {
-    //     icon: <LogOut/>,
-    //     iconActive: <LogOut/>,
-    //     items: "Logout",
-    //     path: "/login",
-    //   }
-    // ];
+
   }
 
   // Separate Profile and Help items
