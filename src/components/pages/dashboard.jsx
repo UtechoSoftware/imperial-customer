@@ -6,8 +6,10 @@ import "react-datepicker/dist/react-datepicker.css";
 import hand from "../assets/png/select.png";
 import avatar from "../assets//png/avatar1.png";
 import plane from "../assets/png/paper-plane.png";
+import { useNavigate } from "react-router-dom";
 
 const Dashboard = () => {
+  const navigate=useNavigate()
   const [employeeType, setEmployeeType] = useState("New Hire");
   const [formData, setFormData] = useState({
     identifier: "",
@@ -37,6 +39,7 @@ const Dashboard = () => {
 
   const handleSubmit = () => {
     console.log(formData);
+    navigate('/list-hr')
   };
 
   return (
@@ -54,10 +57,10 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
-          <h4 className="manrope_bold max-md:text-xl text_black">
+          <p className="manrope_bold  fs-5 text_black">
             Social Security contributions partial or total exemption
-          </h4>
-          <h4 className="manrope_bold max-md:text-xl text_secondary mt-5">
+          </p>
+          <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             New Entry
           </h4>
 
@@ -102,7 +105,7 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   Registration as unemployed
                 </label>
-                <div className="flex flex-wrap">
+                <div className="d-flex  flex-wrap">
                   <select
                     className="form-select custom_radius text-center input_3 mr-2 mb-2"
                     name="iefp"
@@ -112,9 +115,7 @@ const Dashboard = () => {
                     <option>
                       Registered on the Portuguese Employment Institut (IEFP)
                     </option>
-                    <option>
-                      123456
-                    </option>
+                    <option>123456</option>
                   </select>
                   <DatePicker
                     selected={formData.iefpDate}
@@ -128,7 +129,7 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   Registration as unemployed
                 </label>
-                <div className="flex flex-wrap">
+                <div className="d-flex gap-2 flex-wrap">
                   <DatePicker
                     selected={formData.startDate}
                     onChange={(date) => handleDateChange(date, "startDate")}
@@ -165,7 +166,6 @@ const Dashboard = () => {
                     value={formData.workHistory}
                     onChange={handleInputChange}
                   />
-                 
                 </div>
               </div>
             </div>
@@ -217,12 +217,11 @@ const Dashboard = () => {
                     value={formData.iefp}
                     onChange={handleInputChange}
                   >
+                   
                     <option >
                       Registered on the Portuguese Employment Institut (IEFP)
                     </option>
-                    <option >
-                     234556
-                    </option>
+                    <option>234556</option>
                   </select>
                   <DatePicker
                     selected={formData.iefpDate}
@@ -236,46 +235,49 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   Employment contract details
                 </label>
-                <div className="flex flex-wrap">
-                  <DatePicker
-                    selected={formData.startDate}
-                    onChange={(date) => handleDateChange(date, "startDate")}
-                    className="form-control input_1 custom_radius text-center mr-2 mb-2"
-                    placeholderText="Predicted start date"
-                  />
-                  <select
-                    className="form-select custom_radius text-center input_3 mr-2 mb-2"
-                    name="employmentContractType"
-                    value={formData.employmentContractType}
-                    onChange={handleInputChange}
-                  >
-                    <option>
-                      Type of employment contract
-                    </option>
-                    <option>
-                      intern
-                    </option>
-                  </select>
-
-                  <select
-                    className="form-select custom_radius text-center input_3 mr-2 mb-2"
-                    name="employmentContractConversion"
-                    value={formData.employmentContractConversion}
-                    onChange={handleInputChange}
-                  >
-                    <option>
-                      Conversion of previous fixed-term employment contract
-                    </option>
-                    <option>
-                     HHHHHHHHHH
-                    </option>
-                  </select>
-                  <DatePicker
-                    selected={formData.openContractStartDate}
-                    onChange={(date) => handleDateChange(date, "openContractStartDate")}
-                    className="form-select custom_radius text-center date_picker mr-2 mb-2"
-                    placeholderText=" Open-ended employment contract start date"
-                  />
+                <div className="d-flex gap-2 flex-wrap">
+                  <div>
+                    <DatePicker
+                      selected={formData.startDate}
+                      onChange={(date) => handleDateChange(date, "startDate")}
+                      className="form-control input_1 custom_radius text-center mr-2 mb-2"
+                      placeholderText="Predicted start date"
+                    />
+                  </div>
+                  <div>
+                    <select
+                      className="form-select custom_radius text-center input_3 mr-2 mb-2"
+                      name="employmentContractType"
+                      value={formData.employmentContractType}
+                      onChange={handleInputChange}
+                    >
+                      <option>Type of employment contract</option>
+                      <option>intern</option>
+                    </select>
+                  </div>
+                  <div>
+                    <select
+                      className="form-select custom_radius text-center input_3 mr-2 mb-2"
+                      name="employmentContractConversion"
+                      value={formData.employmentContractConversion}
+                      onChange={handleInputChange}
+                    >
+                      <option>
+                        Conversion of previous fixed-term employment contract
+                      </option>
+                      <option>HHHHHHHHHH</option>
+                    </select>
+                  </div>
+                  <div>
+                    <DatePicker
+                      selected={formData.openContractStartDate}
+                      onChange={(date) =>
+                        handleDateChange(date, "openContractStartDate")
+                      }
+                      className="form-select custom_radius text-center date_picker mr-2 mb-2"
+                      placeholderText=" Open-ended employment contract start date"
+                    />
+                  </div>
                   <input
                     type="text"
                     className="form-control input_1 custom_radius text-center mr-2 mb-2"
@@ -290,12 +292,8 @@ const Dashboard = () => {
                     value={formData.currentSSCRate}
                     onChange={handleInputChange}
                   >
-                    <option>
-                      Current Social Security contributions rate
-                    </option>
-                    <option>
-                    45
-                    </option>
+                    <option>Current Social Security contributions rate</option>
+                    <option>45</option>
                   </select>
                 </div>
                 <div className="my-4 input_1">
@@ -321,7 +319,7 @@ const Dashboard = () => {
               <img className="h-10" src={plane} alt="email" />
             </div>
             <div className="my-4">
-              <button className="btn" onClick={handleSubmit}>
+              <button className="btn_" onClick={handleSubmit}>
                 Done
               </button>
             </div>

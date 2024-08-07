@@ -38,7 +38,7 @@ const DynomoLogin1 = () => {
   };
   const handleSubmit = async (data) => {
     setIsProcessing(true);
-    // navigate("/dashboard");
+    navigate('/list-hr', { state: { login: true } });
         localStorage.setItem("isLogin_imperial", true);
 
     // try {
@@ -55,7 +55,7 @@ const DynomoLogin1 = () => {
     //     }
     //   );
     //   if (res?.data) {
-    //     navigate("/dashboard");
+    //     navigate("/add-hr");
     //     console.log(res?.data,)
     //     localStorage.setItem("login_admin_token", res?.data?.token);
     //     localStorage.setItem(

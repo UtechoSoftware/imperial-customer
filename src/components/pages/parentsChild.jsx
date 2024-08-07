@@ -107,7 +107,7 @@ const ParentsChild = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/users/childs/${ParentsData?._id}`, { headers });
+            const res = await axios.get(`${global.BASEURL}api/info/childs/${ParentsData?._id}`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.childs);
             }

@@ -164,6 +164,10 @@ import left from '../assets/png/left.png'
 
 
 import course2 from '../assets/png/course2.png'
+import open from '../assets/png/open.png'
+import hide from '../assets/png/hide.png'
+
+
 import course3 from '../assets/png/course3.png'
 import exam from '../assets/png/exam.png'
 import examLight from '../assets/png/examLight.png'
@@ -187,6 +191,8 @@ import questionMark from '../assets/png/question-mark.png'
 export {
      pdflogo,qmedUser, honeypot,exam,examLight,
      rightarrow,
+     open,
+     hide,
      left,
      filterIcon,pdf, testpdf,questionMark, news1,linkedin_, plusWhite,fileavatar, course2, course3, course4, course5, course1, finabeesingle, arrowdownlight, finabeelight, settingdark, dashboarddark, dashboardlight, coursedark, courselight, quizdark, quizlight, parentdark, parentlight, childdark, childlight,
     finabeewithline, finabeeoutline,banner_main, location, mapPin, subscriptionIcon, adsIcon, storeIcon, folder, edit2, information2, adsdark, adslight, storedark, storelight, bag, ready, minuss, earning, applelogo, google, platinum, silver, gold, bronze, imagecloud, happyemoji, eyeoff, arrowup, closeaccount, arrowleft2, arrowright2, information, locationaccount, subscription, logout, bellnotify, language, promotion, gift, changePassword, help, openingtime, arrowrightgray, penciledit, fileclip, food1, phone, accountdark, accountlight, searchnormal, locationdark, camera, filter, trash, preview, arrowRight, eye, messagedark, servicedark, orderdark, feedDark, servicesIcon, messageicon, ordericon, feedicon, product5, searchLogin, pluscircle, heart, credit_card, question, cardline, chip, wifi, mastercard, master_cart, visa, ideal, edit, add, location2, payment, shipping, close, user, plus, star, minus, clock, newsLetter2, arrowleft, arrowright, item2, item1, newsLetter1, item3, item4, item5, product1, product2, product3, product4, qrcode, shoppingwomen, facebook, linkedin, instagram, twitter, appstore, playstore, logolight, searchbar, favourite, notification, avatarman, cart, arrowdown, menuicon, techLogin, logoDynomo, cat1, cat2, cat3, cat4, cat5, cat6, cat7, cat8, cat9, cat10, cat11, cat12, cat13, cat14, cat15

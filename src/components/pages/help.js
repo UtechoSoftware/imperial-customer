@@ -138,7 +138,7 @@ const Help = () => {
     <div>
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
-          <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
+          <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
             <div className="flex">
               <img className="avatar_img" src={avatar} alt="avatar" />
               <div className="flex flex-col">
@@ -149,8 +149,8 @@ const Help = () => {
               </div>
             </div>
           </div>
-          <h4 className="manrope_bold max-md:text-xl text_black">Help</h4>
-          <h4 className="manrope_bold max-md:text-xl text_secondary mt-16">
+          {/* <h4 className="manrope_bold max-md:text-xl text_black">Help</h4> */}
+          <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             FAQs
           </h4>
           <div className="felx flex-col py-2">

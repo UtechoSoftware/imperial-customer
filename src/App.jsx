@@ -63,10 +63,11 @@ import Role from "./components/pages/role/role.js";
 import AddRole from "./components/pages/role/addRole.js";
 import { useSelector } from "react-redux";
 import Register from "./components/auth/register.js";
+import ListHrs from "./components/pages/listHrs.js";
 const NavHeader = lazy(() => import("./components/header/navHeader"));
 const SidebarMenu = lazy(() => import("./components/pages/sidebar"));
 const LoginPage1 = lazy(() => import("./components/auth/dynomoLogin1"));
-const Dashboard = lazy(() => import("./components/pages/dashboard"));
+const Dashboard = lazy(() => import("./components/pages/dashboard.jsx"));
 const Parents = lazy(() => import("./components/pages/parents"));
 
 function App() {
@@ -93,14 +94,14 @@ function App() {
         bro
         setToggled={setToggled}
       >
-        {isLogin && (
+        {/* {isLogin && (
           <NavHeader
             toggled={toggled}
             setBroken={setBroken}
             broken={broken}
             setToggled={setToggled}
           />
-        )}
+        )} */}
         <Suspense
           fallback={
             <main className="h-screen flex flex-col justify-center items-center">
@@ -114,32 +115,27 @@ function App() {
           }
         >
           <Routes>
-            <Route path="/" element={<Navigate to="/login" />}></Route>
-            <Route element={<PublicRoutes />}>
-              <Route index element={<LoginPage1 />}></Route>
+            <Route path="/" element={<Navigate to="/list-hr" />}></Route>
+            {/* <Route element={<PublicRoutes />}> */}
+              {/* <Route index element={<LoginPage1 />}></Route> */}
               <Route path="/login" element={<LoginPage1 />}></Route>
               <Route path="/register" element={<Register />}></Route>
-
-            </Route>
-            <Route element={<PrivateRoutes />}>
+            {/* </Route> */}
+            {/* <Route element={<PrivateRoutes />}> */}
               <Route path="/help" element={<Help/>} />
-              
-              <Route path="/dashboard" element={<Dashboard />}></Route>
+              <Route path="/add-hr" element={<Dashboard />}></Route>
+              <Route path="/list-hr" element={<ListHrs />}></Route>
+
               <Route path="/exam" element={<Exam />} />
               <Route path="/preview-questions/:id" element={<PreviewQuestions/>} />
               <Route path="/question" element={<Question />} />
-              <Route path="/users" element={<Users/>} />
+              <Route path="/info" element={<Users/>} />
               <Route path="/role" element={<Role/>} />
               <Route path="/add-role" element={<AddRole/>} />
-
-
-
               <Route path="/general-exams" element={<GeneralExam />} />
               <Route path="/create-exam" element={<CreateExam />} />
               <Route path="/create-Question" element={<CreateQuestion />} />
-
               <Route path="/help" element={<Help />} />
-
               <Route path="/parents" element={<Parents />} />
               <Route path="/parents/:id" element={<ParentsChild />} />
               <Route path="/course-category" element={<Courses />} />
@@ -157,7 +153,7 @@ function App() {
                 path="/course-content/update-course/:id"
                 element={<UpdateCourse />}
               />
-              <Route path="/blogs" element={<Blog />} />
+              <Route path="/profile" element={<Blog />} />
               <Route path="/blog-categories" element={<BlogCategories />} />
               <Route path="/digital-categories" element={<DigitalCategory />} />
               <Route path="/faq-categories" element={<VoucherCategories />} />
@@ -217,7 +213,7 @@ function App() {
                 path="/quiz/create-quiz/add-question"
                 element={<AddQuestion />}
               />
-            </Route>
+            {/* </Route> */}
           </Routes>
         </Suspense>
       </SidebarMenu>

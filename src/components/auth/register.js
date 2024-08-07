@@ -38,7 +38,7 @@ const Register = () => {
   };
   const handleSubmit = async (data) => {
     setIsProcessing(true);
-    navigate("/help");
+    navigate('/list-hr', { state: { login: true } });
     // try {
     //   const res = await axios.post(
     //     `${global.BASEURL}api/auth/admin`,
@@ -53,7 +53,7 @@ const Register = () => {
     //     }
     //   );
     //   if (res?.data) {
-    //     navigate("/dashboard");
+    //     navigate("/add-hr");
     //     console.log(res?.data,)
     //     localStorage.setItem("login_admin_token", res?.data?.token);
     //     localStorage.setItem(

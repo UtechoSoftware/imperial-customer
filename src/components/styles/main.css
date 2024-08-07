@@ -795,17 +795,46 @@
 .q_card_2{
   display: flex;
   justify-content: space-around;
+  gap: 3rem;
   align-items: center;
   border: 1px solid black;
-  width: 500px ;
+  width: auto ;
+  border-radius: 20px !important;
 }
-.btn{
+.q_card_3{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+  width: auto ;
+  
+  border-radius: 20px !important;
+}
+.q_card_4{
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+  width: auto ;
+  border-radius: 20px !important;
+}
+.btn_{
   width: 200px;
   background-color: var(--secondary);
   border: 1px solid black;
   color:white ;
   border-radius: 50px;
   height: 60px;
+
+}
+.btn2{
+  background-color: var(--secondary);
+  border: 1px solid black;
+  color:white ;
+  border-radius: 50px;
 
 }
 .cal_lower{
@@ -823,9 +852,78 @@
 .form-control{
   font-size: small;
   height: 60px;
+  padding: 8px 0px
 }
 .date_picker{
   width: 350px;
 }
 
 /* Calculator End */
+.custom-modal .modal-content {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: rgb(240, 240, 240);
+}
+
+.modal-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.modal_form .form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: transparent;
+  height: fit-content;
+  box-shadow: none;
+}
+.form-control{
+  font-size: small;
+  height: 60px;
+}
+.form_modal .form-control:focus {
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+.done-button {
+  width: 100%;
+  background-color: #d5af74;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+table {
+  border-collapse:separate;
+  border-spacing: 0 1em;
+}
+td{
+  padding: 9px !important;
+  text-align: center;
+  border: none;
+}
+tr{
+  border-collapse: collapse;
+  text-align: center;
+}
+td:first-child,
+th:first-child {
+  border-radius: 10px 0 0 10px;
+}
+td:last-child,
+th:last-child {
+  border-radius: 0 10px 10px 0;
+}
