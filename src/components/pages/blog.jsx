@@ -332,7 +332,7 @@ const Blog = () => {
             <div className="mb-4 mt-3 ms-auto">
               <Button
                 style={{ borderRadius: "15px", width: "12rem" }}
-                type="submit"
+                type="button"
                 className="bg_primary text-white px-5 py-2 text-lg inter_regular d-flex justify-content-center align-items-center"
               >
                 Edit Profile

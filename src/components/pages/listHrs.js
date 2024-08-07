@@ -269,6 +269,7 @@ const ListHrs = () => {
                 </Form.Group>
                 <div className="d-flex justify-content-end pt-3">
                   <button
+                  type="button"
                     className="btn2 px-3 py-2  border-black"
                     onClick={handleClose}
                     style={{ width: "9rem" }}

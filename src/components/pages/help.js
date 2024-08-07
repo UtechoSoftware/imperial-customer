@@ -7,6 +7,7 @@ import Helptable from "../DataTable/helptable";
 import avatar from "../assets/png/avatar1.png";
 import email from "../assets/png/email.png"
 import { question } from "../icons/icon";
+import { message } from "antd";
 const Help = () => {
   const [lastId, setLastId] = useState(1);
   const [Id, setId] = useState("");
@@ -169,7 +170,7 @@ const Help = () => {
             ))}
           </div>
           <div className="flex justify-end ">
-            <div className="  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 bg-white  ">
+            <div onClick={()=>message.success('your message will be conveyed to admin soon')} className="cursor-pointer  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 bg-white  ">
               <h6>Still have questions?
               </h6>
               <img className="h-10" src={email} alt="email" />
