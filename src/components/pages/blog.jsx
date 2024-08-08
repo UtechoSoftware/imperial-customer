@@ -60,17 +60,22 @@ const Blog = () => {
               </h6>
             </div>
           </div>
-          <div className="mt-4 d-flex gap-2 align-items-center" >
+          <div className="mt-4 d-flex gap-2 flex-md-row flex-column  justify-content-between align-items-baseline" >
             <h5 className="text_primary" style={{ fontWeight: "bolder" }}>
               Edit Profile
             </h5>
             <div className="change-password">
-          <Tooltip title="Change password">
-  <button id="change-password-button" onClick={()=>handleShow()} style={{fontSize:"12px"}}>
-  <Lock className="icon-small-yellow" color="grey" size={16} />
-
-  </button>
-</Tooltip>
+          <Button
+          onClick={()=>handleShow()}
+              variant="outline-dark"
+              style={{borderRadius:"20px"}}
+              className="fw-bold text-dark bg-white btn-sm btn-md  px-2 px-md-4 py-2"
+            >
+            <div className="d-flex gap-1 align-items-center ">
+  <Lock className="icon-small-yellow d-md-block d-none" color="grey" size={16} />
+  <p className="m-0">Change Password</p>
+  </div>
+            </Button>
 </div>
           </div>
    

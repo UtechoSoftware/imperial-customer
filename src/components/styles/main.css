@@ -967,3 +967,18 @@ th:last-child {
 .accordion-button:focus{
 border-bottom: none !important;
 }
+.ant-tooltip-inner {
+ 
+  background-color: #B39D70 !important;
+  padding: 1rem   !important;
+}
+
+.ant-tooltip-placement-bottom .ant-tooltip-arrow, .ant-tooltip-placement-bottomLeft .ant-tooltip-arrow .ant-tooltip-arrow {
+  border-bottom-color: #B39D70 !important;
+  background-color: #B39D70 !important;
+  display: none !important;
+}
+
+.ant-tooltip-arrow{
+display: none !important;
+  }

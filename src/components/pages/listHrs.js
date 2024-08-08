@@ -162,7 +162,6 @@ const ListHrs = () => {
                 }
                 type="button"
                 className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
-                
               >
                 Delete all rows
               </button>
@@ -170,7 +169,6 @@ const ListHrs = () => {
                 onClick={handleShow}
                 type="button"
                 className="btn2 px-3 py-3 text-nowrap   border-black "
-                
               >
                 Calculate Savings
               </button>
@@ -183,7 +181,6 @@ const ListHrs = () => {
                   onClick={handleShow}
                   type="button"
                   className="btn2 px-3 py-3  border-black "
-                  
                 >
                   Calculate Savings
                 </button>
@@ -209,7 +206,8 @@ const ListHrs = () => {
                   </div>
                 </>
               )}
-              <Tooltip
+              <Tooltip 
+              style={{backgroundColor:"yellow"}}
                 title="We only charge in the scenario of
 application approval and only a small
 fraction of the savings"
@@ -220,7 +218,11 @@ fraction of the savings"
                   style={{ borderRadius: "60px" }}
                 >
                   <h6>I want support with the application</h6>
-                  <img className="h-10 d-md-block d-none" src={hand} alt="email" />
+                  <img
+                    className="h-10 d-md-block d-none"
+                    src={hand}
+                    alt="email"
+                  />
                 </div>
               </Tooltip>
             </div>

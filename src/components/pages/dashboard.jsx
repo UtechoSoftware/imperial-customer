@@ -149,20 +149,20 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="my-4">
-                <label className="form-label manrope_semibold">
-                  Registration as unemployed
-                </label>
+                <Tooltip title="prompt text">
+                  <div className="cursor-pointer">
+                    <label className="form-label manrope_semibold">
+                    Employment Contract Detail
+                    </label>
+                  </div>
+                </Tooltip>
                 <div className="d-flex gap-2 flex-wrap">
-                  <Tooltip title="prompt text">
-                    <div className="cursor-pointer">
-                      <DatePicker
-                        selected={formData.startDate}
-                        onChange={(date) => handleDateChange(date, "startDate")}
-                        className="form-control input_1 custom_radius text-center mr-2 mb-2"
-                        placeholderText="Predicted start date"
-                      />
-                    </div>
-                  </Tooltip>
+                  <DatePicker
+                    selected={formData.startDate}
+                    onChange={(date) => handleDateChange(date, "startDate")}
+                    className="form-control input_1 custom_radius text-center mr-2 mb-2"
+                    placeholderText="Predicted start date"
+                  />
                   <Tooltip title="prompt text">
                     <div className="cursor-pointer">
                       <select
@@ -216,7 +216,7 @@ const Dashboard = () => {
                   Type of Employee
                 </label>
                 <Tooltip title="prompt text">
-                  <div className="cursor-pointer col-lg-4 col-md-6  col-12 " >
+                  <div className="cursor-pointer col-lg-4 col-md-6  col-12 ">
                     <select
                       className="form-select py-3 custom_radius  text-center"
                       value={employeeType}
@@ -227,7 +227,7 @@ const Dashboard = () => {
                     </select>
                   </div>
                 </Tooltip>
-                </div>
+              </div>
 
               <div className="my-4">
                 <label className="form-label manrope_semibold">
@@ -259,6 +259,7 @@ const Dashboard = () => {
                 </div>
               </div>
               <div className="my-4">
+
                 <label className="form-label manrope_semibold">
                   Registration as unemployed
                 </label>
