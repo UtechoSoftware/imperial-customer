@@ -933,20 +933,24 @@ table {
 }
 td{
   padding: 9px !important;
-  text-align: center;
+  text-align: start;
   border: none;
 }
 tr{
   border-collapse: collapse;
-  text-align: center;
+  text-align: start;
 }
 td:first-child,
 th:first-child {
-  border-radius: 10px 0 0 10px;
+  /* border-radius: 10px 0 0 10px; */
+  border: none !important;
+  
 }
 td:last-child,
 th:last-child {
-  border-radius: 0 10px 10px 0;
+  /* border-radius: 0 10px 10px 0; */
+  border: none !important;
+
 }
 .accordion-item{
   background-color: transparent !important;

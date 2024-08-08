@@ -102,7 +102,7 @@ const ListHrs = () => {
             </div>
           </div>
           <div className="my-4">
-            <Table bordered hover responsive>
+            {/* <Table bordered hover responsive>
               {nodata ? (
                 <div
                   className="text-center d-flex justify-center align-items-center "
@@ -144,7 +144,47 @@ const ListHrs = () => {
                   </tbody>
                 </>
               )}
-            </Table>
+            </Table> */}
+            <Table bordered hover responsive style={{ overflowX: "auto", width:"1800px" }}>
+            {nodata ? (
+              <div className="text-center" style={{ minHeight: "170px" }}>
+                no data right now related to HRs....
+              </div>
+            ) : (
+              <>
+                <thead>
+                  <tr>
+                    <th style={{ width: "350px" }}>Name</th>
+                    <th style={{ width: "350px" }}>Company Name</th>
+                    <th style={{ width: "250px" }}>Position</th>
+                    <th style={{ width: "400px" }}>E-mail</th>
+                    <th style={{ width: "250px" }}>Calculation Date</th>
+                    <th style={{ width: "250px" }}>Savings Amount</th>
+                    <th style={{ width: "250px" }}>Contacted Lead</th>
+                    <th style={{ width: "250px" }}>Contact Date</th>
+                    <th style={{ width: "200px" }}>Conversion</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {[...Array(5)].map((_, index) => (
+                    <tr key={index}>
+                      <td>Text 1</td>
+                      <td>Text 2</td>
+                      <td>Text 3</td>
+                      <td>E-mail</td>
+                      <td>Date</td>
+                      <td>Value</td>
+                      <td>Yes/No</td>
+                      <td>Date</td>
+                      <td>
+                        <button variant="link">+</button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </>
+            )}
+          </Table>
             <div className="d-flex justify-content-end pb-5">
               {/* <button className="border-black"   > 
               <div className="d-flex align-items-center gap-3 bg_secondary px-4  py-2 "  style={{borderRadius:"50px", border:"1px solid black "}}>
