@@ -10,7 +10,7 @@ import plane from "../assets/png/paper-plane.png";
 import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
 import { message } from "antd";
-import { Tooltip } from 'antd';
+import { Tooltip } from "antd";
 const ListHrs = () => {
   const location = useLocation();
   const { login } = location.state || {};
@@ -35,7 +35,7 @@ const ListHrs = () => {
     currentSalary: "",
     currentSSCRate: "",
   });
- 
+
   const handleChange = (event) => {
     setEmployeeType(event.target.value);
     console.log(event.target.value);
@@ -161,16 +161,16 @@ const ListHrs = () => {
                   message.success("delete operation will available soon")
                 }
                 type="button"
-                className="btn2 px-3 py-3  border-black bg-danger "
-                style={{ width: "14rem" }}
+                className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
+                
               >
                 Delete all rows
               </button>
               <button
                 onClick={handleShow}
                 type="button"
-                className="btn2 px-3 py-3  border-black "
-                style={{ width: "14rem" }}
+                className="btn2 px-3 py-3 text-nowrap   border-black "
+                
               >
                 Calculate Savings
               </button>
@@ -183,7 +183,7 @@ const ListHrs = () => {
                   onClick={handleShow}
                   type="button"
                   className="btn2 px-3 py-3  border-black "
-                  style={{ width: "14rem" }}
+                  
                 >
                   Calculate Savings
                 </button>
@@ -209,20 +209,20 @@ const ListHrs = () => {
                   </div>
                 </>
               )}
-              <Tooltip title="We only charge in the scenario of
+              <Tooltip
+                title="We only charge in the scenario of
 application approval and only a small
-fraction of the savings" className="cursor-pointer ">
-
-              <div
+fraction of the savings"
+                className="cursor-pointer "
+              >
+                <div
                   className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                   style={{ borderRadius: "60px" }}
                 >
                   <h6>I want support with the application</h6>
-                  <img className="h-10" src={hand} alt="email" />
+                  <img className="h-10 d-md-block d-none" src={hand} alt="email" />
                 </div>
-  </Tooltip>
-                
-              
+              </Tooltip>
             </div>
             <div className="">
               <span className="text_head fw-bold"> Disclaimer:</span> The

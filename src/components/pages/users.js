@@ -9,10 +9,10 @@ const Users = () => {
   return (
     <div>
       <>
-        <main className="min-h-screen lg:container py-5 px-10 mx-auto">
+        <main className="min-h-screen lg:container py-5 px-10 ">
           <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
-            <div className="flex">
-              <img className="avatar_img" src={avatar} alt="avatar" />
+            <div className="flex flex-md-row flex-column">
+              <img className="avatar_img" width="60px" src={avatar} alt="avatar" />
               <div className="flex flex-col">
                 <h4 className="manrope_bold max-md:text-xl text_black">
                   John Doe
@@ -21,7 +21,7 @@ const Users = () => {
               </div>
             </div>
           </div>
-          <h4 className="manrope_bold max-md:text-xl text_black">
+          <h4 className="manrope_bold max-md:text-xl text_black w-auto">
             Social Security contributions partial or total exemption
           </h4>
           <h6 className="manrope_bold max-md:text-xl text_secondary mt-16">
@@ -55,7 +55,7 @@ const Users = () => {
           <div className="flex justify-end ">
             <div className="  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 px-3  bg-white  ">
               <h6>I wish to calculate the potencial savings for my company</h6>
-              <img className="h-10" src={hand} alt="email" />
+              <img className="h-10 d-md-block d-none" src={hand}  alt="email" />
             </div>
           </div>
           {/* <Helptable

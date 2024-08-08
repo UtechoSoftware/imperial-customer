@@ -4,12 +4,22 @@ import { StyleSheetManager } from "styled-components";
 import ProductTable from "../DataTable/productTable";
 import { getHelp, updateHelp } from "../api/help";
 import Helptable from "../DataTable/helptable";
+import { Button, Form, Modal, Table } from "react-bootstrap";
+
 import avatar from "../assets/png/avatar1.png";
 import email from "../assets/png/email.png"
 import { question } from "../icons/icon";
 import { message } from "antd";
 const Help = () => {
+  const [show, setShow] = useState(false);
   const [lastId, setLastId] = useState(1);
+  const handleShow = () => setShow(true);
+  const handleClose = () =>{
+     setShow(false)
+     message.success('We will review your query shortly')
+
+  };
+
   const [Id, setId] = useState("");
   const [loading, setLoading] = useState(false);
   const [data, setData] = useState([]);
@@ -140,8 +150,8 @@ const Help = () => {
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
           <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
-            <div className="flex">
-              <img className="avatar_img" src={avatar} alt="avatar" />
+            <div className="flex flex-md-row flex-column">
+              <img className="avatar_img" width="60px" src={avatar} alt="avatar" />
               <div className="flex flex-col">
                 <h4 className="manrope_bold max-md:text-xl text_black">
                   John Doe
@@ -170,10 +180,10 @@ const Help = () => {
             ))}
           </div>
           <div className="flex justify-end ">
-            <div onClick={()=>message.success('your message will be conveyed to admin soon')} className="cursor-pointer  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 bg-white  ">
+            <div onClick={()=>handleShow()} className="cursor-pointer  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 bg-white  ">
               <h6>Still have questions?
               </h6>
-              <img className="h-10" src={email} alt="email" />
+              <img className="h-10 d-md-block d-none" src={email} alt="email" />
             </div>
           </div>
           {/* <Helptable
@@ -188,7 +198,64 @@ const Help = () => {
               getPagData(e);
             }}
           /> */}
-          
+          <Modal
+            show={show}
+            onHide={handleClose}
+            centered
+            dialogClassName="custom-modal pt-0"
+          >
+            <Modal.Body>
+              <h6 className="modal-title mb-3 mt-0 ">
+                Send your Faq to us
+              </h6>
+              <Form>
+                <Form.Group className="mb-2" controlId="formName">
+                  <Form.Label className="m-0">Faq title</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" placeholder="insert title" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formCompanyName">
+                  <Form.Label className="m-0">Description </Form.Label>
+                  <div className="modal_form">
+                    <Form.Control
+                      type="textarea"
+                      placeholder="insert description"
+                    />
+                  </div>
+                </Form.Group>
+                {/* <Form.Group className="mb-2" controlId="formPosition">
+                  <Form.Label className="m-0">Position</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control
+                      type="text"
+                      placeholder="insert your position in the company"
+                    />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formEmail">
+                  <Form.Label className="m-0">E-mail</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control
+                      type="email"
+                      placeholder="example@email.com"
+                    />
+                  </div>
+                </Form.Group> */}
+                <div className="d-flex justify-content-end pt-3">
+                  <button
+                    type="button"
+
+                    className="btn2 px-3 py-2  border-black"
+                    onClick={handleClose}
+                    style={{ width: "9rem" }}
+                  >
+                    Done
+                  </button>
+                </div>
+              </Form>
+            </Modal.Body>
+          </Modal>
         </main>
       </>
     </div>
