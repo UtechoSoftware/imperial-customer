@@ -176,7 +176,6 @@ const ListHrs = () => {
                         <th colSpan="1" style={{ width: "150px" }}>
                          Work History
                         </th>
-                        
                       </tr>
                       <tr>
                         <th style={{ width: "175px" }}>DOB</th>
