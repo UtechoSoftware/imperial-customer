@@ -980,6 +980,114 @@ border-bottom: none !important;
   padding: 1rem   !important;
 }
 
+/* Calculator End */
+.custom-modal .modal-content {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: rgb(240, 240, 240);
+}
+
+.modal-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.modal_form .form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: transparent;
+  height: fit-content;
+  box-shadow: none;
+}
+.form-control{
+  font-size: small;
+  height: 60px;
+}
+.form_modal .form-control:focus {
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+.done-button {
+  width: 100%;
+  background-color: #d5af74;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+table {
+  border-collapse:separate;
+  /* border-spacing: 0 1em; */
+  
+}
+td{
+  /* padding: 9px !important; */
+  text-align: start;
+  border-right: 1px solid var(--para-color);
+}
+tr{
+  border-collapse: collapse;
+  text-align: start;
+}
+th{
+  border-right: 1px solid var(--para-color);
+  text-align: center;
+ 
+}
+td:first-child,
+th:first-child {
+  /* border-radius: 10px 0 0 10px; */
+ 
+  
+}
+td:last-child,
+th:last-child {
+  /* border-radius: 0 10px 10px 0; */
+  /* border: none !important; */
+  /* border-right: none !important; */
+
+}
+.accordion-item{
+  background-color: transparent !important;
+  border: none !important;
+}
+.accordion-button {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid grey ;
+  padding-left: 0%;
+  box-shadow: none !important;
+  padding-right: 0%;
+
+}
+.react-datepicker{
+  margin-left: 2rem !important;
+}
+.text_head .form-label{
+  border:  none !important;
+}
+.accordion-button:focus{
+border-bottom: none !important;
+}
+.ant-tooltip-inner {
+ 
+  background-color: #B39D70 !important;
+  padding: 1rem   !important;
+}
+
 .ant-tooltip-placement-bottom .ant-tooltip-arrow, .ant-tooltip-placement-bottomLeft .ant-tooltip-arrow .ant-tooltip-arrow {
   border-bottom-color: #B39D70 !important;
   background-color: #B39D70 !important;
