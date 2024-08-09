@@ -11,6 +11,8 @@ import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
 import { message, Tabs } from "antd";
 import { Tooltip } from "antd";
+import CompanyTable from "./companyTable";
+import NewTable from "./newTable";
 const ListHrs = () => {
   const location = useLocation();
   const formatDate = (date) => date?.toLocaleDateString();
@@ -25,40 +27,21 @@ const ListHrs = () => {
   const handleShow2 = () => setShow2(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
-  const employeeData = [
-    {
-      employeeType: "New Hire",
-      identifier: "12345",
-      newHiring: "01/01/2023",
-      dob: "01/01/1990",
-      iefp: "Yes",
-      iefpDate: "02/02/2023",
-      employmentContractType: "open-ended contract",
-      startDate: "03/03/2023",
-      salary: "$3000",
-      currentSSCRate: "23,75%",
-      workHistory: "No"
-    },
-    // Add more employee objects as needed
-  ];
+
   const onChange = (key) => {
     console.log(key);
   };
   const items = [
     {
-      key: '1',
-      label: 'New Hire',
-      children:'hello'
+      key: "1",
+      label: "New Hire",
+      children:<CompanyTable /> ,
     },
     {
-      key: '2',
-      label: 'Company Staff',
-      children: ''
-     
- 
-      
+      key: "2",
+      label: "Company Staff",
+      children:  <NewTable />
     },
-   
   ];
   const [formData, setFormData] = useState({
     identifier: "",
@@ -92,8 +75,7 @@ const ListHrs = () => {
   const onDrop = (acceptedFiles) => {
     setFiles(acceptedFiles);
   };
-  
-  
+
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
 
   return (
@@ -138,133 +120,22 @@ const ListHrs = () => {
               </button>
             </div>
           </div>
-       
-            {/* <Table bordered hover responsive>
-              {nodata ? (
-                <div
-                  className="text-center d-flex justify-center align-items-center "
-                  style={{ minHeight: "170px" }}
-                >
-                  no data right now related to HRs....
-                </div>
-              ) : (
-                <>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Company Name</th>
-                      <th>Position</th>
-                      <th>E-mail</th>
-                      <th>Calculation Date</th>
-                      <th>Savings Amount</th>
-                      <th>Contacted Lead</th>
-                      <th>Contact Date</th>
-                      <th>Conversion</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...Array(5)].map((_, index) => (
-                      <tr key={index}>
-                        <td>Text 1</td>
-                        <td>Text 2</td>
-                        <td>Text 3</td>
-                        <td>E-mail</td>
-                        <td>Date</td>
-                        <td>Value</td>
-                        <td>Yes/No</td>
-                        <td>Date</td>
-                        <td>
-                          <button variant="link">+</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </>
-              )}
-            </Table> */}
-            {/* <Table
-              bordered
-              hover
-              responsive
-              style={{ overflowX: "auto", width: "1800px" }}
-            >
-              {nodata ? (
-                <div className="text-center" style={{ minHeight: "170px" }}>
-                  no data right now related to HRs....
-                </div>
-              ) : (
-                <>
-<<<<<<< HEAD
-                  <thead>
-                    <tr>
-                      <th style={{ width: "350px" }}>Name</th>
-                      <th style={{ width: "350px" }}>Company Name</th>
-                      <th style={{ width: "250px" }}>Position</th>
-                      <th style={{ width: "400px" }}>E-mail</th>
-                      <th style={{ width: "250px" }}>Calculation Date</th>
-                      <th style={{ width: "250px" }}>Savings Amount</th>
-                      <th style={{ width: "250px" }}>Contacted Lead</th>
-                      <th style={{ width: "250px" }}>Contact Date</th>
-                      <th style={{ width: "200px" }}>Conversion</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...Array(5)].map((_, index) => (
-                      <tr key={index}>
-                        <td>Text 1</td>
-                        <td>Text 2</td>
-                        <td>Text 3</td>
-                        <td>E-mail</td>
-                        <td>Date</td>
-                        <td>Value</td>
-                        <td>Yes/No</td>
-                        <td>Date</td>
-                        <td>
-                          <button variant="link">+</button>
-                        </td>
-=======
-                  <Table>
-                    <thead>
-                      <tr>
-                       
-                        <th colSpan="1" style={{ width: "175px" }}>
-                          Personal Data
-                        </th>
-                        <th colSpan="1" style={{ width: "175px" }}>
-                          Register as Unemployed
-                        </th>
-                        <th colSpan="2" style={{ width: "250px" }}>
-                          Contract Details
-                        </th>
-                        <th colSpan="1" style={{ width: "170px" }}>
-                          Company's Current Social Security Contribution Rate
-                        </th>
-                        <th colSpan="1" style={{ width: "150px" }}>
-                         Work History
-                        </th>
->>>>>>> 04dea9b342fe4d846d847c89e3058daef30bdabf
-                      </tr>
-                    ))}
-                  </tbody>
-                </>
-              )}
-            </Table> */}
-            <div>
-            <Tabs style={{width:'fit-content'}} defaultActiveKey="1" items={items} onChange={onChange} />
-            </div>
- 
 
-                  
-            
+          <div>
+            <Tabs
+              defaultActiveKey="2"
+              items={items}
+              onChange={onChange}
+            />
+          </div>
 
-              {/* <button className="border-black"   > 
+          {/* <button className="border-black"   > 
               <div className="d-flex align-items-center gap-3 bg_secondary px-4  py-2 "  style={{borderRadius:"50px", border:"1px solid black "}}>
               <img width="20px" src={pdf} alt="pdf"/>
               <p className="m-0 text-white">Export</p>
               </div>
             </button> */}
-            
-          
+
           {login && (
             <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
               <button
