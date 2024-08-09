@@ -121,7 +121,7 @@ const ListHrs = () => {
             </div>
           </div>
 
-          <div>
+          <div className="pb-5">
             <Tabs
               defaultActiveKey="2"
               items={items}

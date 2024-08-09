@@ -5,7 +5,7 @@ const CompanyTable = () => {
   return (
     <div className='table-responsive'>
 
-      <Table  bordered hover >
+      <Table  bordered hover style={{width:"900px"}} >
       <thead>
         <tr>
          
