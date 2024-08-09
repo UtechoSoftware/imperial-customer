@@ -129,7 +129,7 @@ const Register = () => {
                     to="/login"
                   >
 
-                    Register
+                    Login
                   </Link>
                 </span>
               </p>

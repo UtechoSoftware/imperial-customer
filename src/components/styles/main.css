@@ -965,6 +965,9 @@ th:last-child {
   padding-right: 0%;
 
 }
+.react-datepicker{
+  margin-left: 2rem !important;
+}
 .text_head .form-label{
   border:  none !important;
 }

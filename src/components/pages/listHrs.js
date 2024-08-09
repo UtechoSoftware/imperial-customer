@@ -145,46 +145,51 @@ const ListHrs = () => {
                 </>
               )}
             </Table> */}
-            <Table bordered hover responsive style={{ overflowX: "auto", width:"1800px" }}>
-            {nodata ? (
-              <div className="text-center" style={{ minHeight: "170px" }}>
-                no data right now related to HRs....
-              </div>
-            ) : (
-              <>
-                <thead>
-                  <tr>
-                    <th style={{ width: "350px" }}>Name</th>
-                    <th style={{ width: "350px" }}>Company Name</th>
-                    <th style={{ width: "250px" }}>Position</th>
-                    <th style={{ width: "400px" }}>E-mail</th>
-                    <th style={{ width: "250px" }}>Calculation Date</th>
-                    <th style={{ width: "250px" }}>Savings Amount</th>
-                    <th style={{ width: "250px" }}>Contacted Lead</th>
-                    <th style={{ width: "250px" }}>Contact Date</th>
-                    <th style={{ width: "200px" }}>Conversion</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {[...Array(5)].map((_, index) => (
-                    <tr key={index}>
-                      <td>Text 1</td>
-                      <td>Text 2</td>
-                      <td>Text 3</td>
-                      <td>E-mail</td>
-                      <td>Date</td>
-                      <td>Value</td>
-                      <td>Yes/No</td>
-                      <td>Date</td>
-                      <td>
-                        <button variant="link">+</button>
-                      </td>
+            <Table
+              bordered
+              hover
+              responsive
+              style={{ overflowX: "auto", width: "1800px" }}
+            >
+              {nodata ? (
+                <div className="text-center" style={{ minHeight: "170px" }}>
+                  no data right now related to HRs....
+                </div>
+              ) : (
+                <>
+                  <thead>
+                    <tr>
+                      <th style={{ width: "350px" }}>Name</th>
+                      <th style={{ width: "350px" }}>Company Name</th>
+                      <th style={{ width: "250px" }}>Position</th>
+                      <th style={{ width: "400px" }}>E-mail</th>
+                      <th style={{ width: "250px" }}>Calculation Date</th>
+                      <th style={{ width: "250px" }}>Savings Amount</th>
+                      <th style={{ width: "250px" }}>Contacted Lead</th>
+                      <th style={{ width: "250px" }}>Contact Date</th>
+                      <th style={{ width: "200px" }}>Conversion</th>
                     </tr>
-                  ))}
-                </tbody>
-              </>
-            )}
-          </Table>
+                  </thead>
+                  <tbody>
+                    {[...Array(5)].map((_, index) => (
+                      <tr key={index}>
+                        <td>Text 1</td>
+                        <td>Text 2</td>
+                        <td>Text 3</td>
+                        <td>E-mail</td>
+                        <td>Date</td>
+                        <td>Value</td>
+                        <td>Yes/No</td>
+                        <td>Date</td>
+                        <td>
+                          <button variant="link">+</button>
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </>
+              )}
+            </Table>
             <div className="d-flex justify-content-end pb-5">
               {/* <button className="border-black"   > 
               <div className="d-flex align-items-center gap-3 bg_secondary px-4  py-2 "  style={{borderRadius:"50px", border:"1px solid black "}}>
@@ -246,24 +251,39 @@ const ListHrs = () => {
                   </div>
                 </>
               )}
-              <Tooltip 
-              style={{backgroundColor:"yellow"}}
+              <Tooltip
+                style={{ backgroundColor: "yellow" }}
                 title="We only charge in the scenario of
 application approval and only a small
 fraction of the savings"
                 className="cursor-pointer "
               >
-                <div
-                  className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                  style={{ borderRadius: "60px" }}
-                >
-                  <h6>I want support with the application</h6>
-                  <img
-                    className="h-10 d-md-block d-none"
-                    src={hand}
-                    alt="email"
-                  />
-                </div>
+                {!login ? (
+                  <div
+                    onClick={handleShow}
+                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                    style={{ borderRadius: "60px" }}
+                  >
+                    <h6>I want support with the application</h6>
+                    <img
+                      className="h-10 d-md-block d-none"
+                      src={hand}
+                      alt="email"
+                    />
+                  </div>
+                ) : (
+                  <div
+                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                    style={{ borderRadius: "60px" }}
+                  >
+                    <h6>I want support with the application</h6>
+                    <img
+                      className="h-10 d-md-block d-none"
+                      src={hand}
+                      alt="email"
+                    />
+                  </div>
+                )}
               </Tooltip>
             </div>
             <div className="">
@@ -292,6 +312,15 @@ fraction of the savings"
                     <Form.Control type="text" placeholder="insert your name" />
                   </div>
                 </Form.Group>
+                <Form.Group className="mb-2" controlId="formEmail">
+                  <Form.Label className="m-0">E-mail</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control
+                      type="email"
+                      placeholder="example@email.com"
+                    />
+                  </div>
+                </Form.Group>
                 <Form.Group className="mb-2" controlId="formCompanyName">
                   <Form.Label className="m-0">Company Name</Form.Label>
                   <div className="modal_form">
@@ -302,7 +331,7 @@ fraction of the savings"
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formPosition">
-                  <Form.Label className="m-0">Position</Form.Label>
+                  <Form.Label className="m-0">Company Position</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="text"
@@ -310,15 +339,7 @@ fraction of the savings"
                     />
                   </div>
                 </Form.Group>
-                <Form.Group className="mb-2" controlId="formEmail">
-                  <Form.Label className="m-0">E-mail</Form.Label>
-                  <div className="modal_form">
-                    <Form.Control
-                      type="email"
-                      placeholder="example@email.com"
-                    />
-                  </div>
-                </Form.Group>
+
                 <div className="d-flex justify-content-end pt-3">
                   <button
                     type="button"
