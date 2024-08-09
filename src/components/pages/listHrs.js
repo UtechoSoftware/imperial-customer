@@ -194,6 +194,7 @@ const ListHrs = () => {
                 </div>
               ) : (
                 <>
+<<<<<<< HEAD
                   <thead>
                     <tr>
                       <th style={{ width: "350px" }}>Name</th>
@@ -221,6 +222,27 @@ const ListHrs = () => {
                         <td>
                           <button variant="link">+</button>
                         </td>
+=======
+                  <Table>
+                    <thead>
+                      <tr>
+                       
+                        <th colSpan="1" style={{ width: "175px" }}>
+                          Personal Data
+                        </th>
+                        <th colSpan="1" style={{ width: "175px" }}>
+                          Register as Unemployed
+                        </th>
+                        <th colSpan="2" style={{ width: "250px" }}>
+                          Contract Details
+                        </th>
+                        <th colSpan="1" style={{ width: "170px" }}>
+                          Company's Current Social Security Contribution Rate
+                        </th>
+                        <th colSpan="1" style={{ width: "150px" }}>
+                         Work History
+                        </th>
+>>>>>>> 04dea9b342fe4d846d847c89e3058daef30bdabf
                       </tr>
                     ))}
                   </tbody>
