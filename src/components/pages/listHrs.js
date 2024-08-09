@@ -48,108 +48,15 @@ const ListHrs = () => {
     {
       key: '1',
       label: 'New Hire',
-      children: <div style={{ overflowX: "auto" }}>
-      <Table bordered hover>
-        <thead>
-          <tr>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Type of Employee</th>
-            <th colSpan="3" style={{ whiteSpace: "nowrap", textAlign: "center" }}>Personal Data</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>IEFP Status</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>IEFP Registration Date</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Contract Type</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Contract Start Date</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Salary</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Social Security Contribution Rate</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Employee's Work History</th>
-          </tr>
-          <tr>
-            <th></th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Unique Identifier</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Hiring Date</th>
-            <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Date of Birth</th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {employeeData?.map((employee, index) => (
-            <tr key={index}>
-              <td style={{ textAlign: "center" }}>{employee.employeeType}</td>
-              <td style={{ textAlign: "center" }}>{employee.identifier}</td>
-              <td style={{ textAlign: "center" }}>{employee.newHiring}</td>
-              <td style={{ textAlign: "center" }}>{employee.dob}</td>
-              <td style={{ textAlign: "center" }}>{employee.iefp}</td>
-              <td style={{ textAlign: "center" }}>{employee.iefpDate}</td>
-              <td style={{ textAlign: "center" }}>{employee.employmentContractType}</td>
-              <td style={{ textAlign: "center" }}>{employee.startDate}</td>
-              <td style={{ textAlign: "center" }}>{employee.salary}</td>
-              <td style={{ textAlign: "center" }}>{employee.currentSSCRate}</td>
-              <td style={{ textAlign: "center" }}>{employee.workHistory}</td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-    </div>,
+      children:'hello'
     },
     {
       key: '2',
       label: 'Company Staff',
-      children: 
-      <div style={{ overflowX: "auto" }}>
-
-      <Table  bordered hover>
-      <thead>
-        <tr>
-         
-          <th colSpan="1" style={{ width: "175px" }}>
-            Personal Data
-          </th>
-          <th colSpan="1" style={{ width: "175px" }}>
-            Register as Unemployed
-          </th>
-          <th colSpan="2" style={{ width: "250px" }}>
-            Contract Details
-          </th>
-          <th colSpan="1" style={{ width: "170px" }}>
-            Company's Current Social Security Contribution Rate
-          </th>
-          <th colSpan="1" style={{ width: "150px" }}>
-           Work History
-          </th>
-          
-        </tr>
-        <tr>
-          <th style={{ width: "175px" }}>DOB</th>
-          <th style={{ width: "175px" }}>IEFP Reg Date</th>
-          <th style={{ width: "125px" }}>Predicted Start Date</th>
-          <th style={{ width: "125px" }}>Monthly Salary</th>
-          <th style={{ width: "125px" }}>23.75%</th>
-          <th style={{ width: "150px" }}>Yes</th>
-        </tr>
-      </thead>
-      <tbody>
-        {[...Array(5)].map((_, index) => (
-          <tr key={index}>
-            <td>Text 1</td>
-            <td>Text 2</td>
-            <td>Text 3</td>
-            <td>E-mail</td>
-            <td>Date of Birth</td>
-            <td>yes</td>
-            
-            {/* <td>
-              <button variant="link">+</button>
-            </td> */}
-          </tr>
-        ))}
-      </tbody>
-    </Table>
-      </div>
+      children: ''
+     
+ 
+      
     },
    
   ];
