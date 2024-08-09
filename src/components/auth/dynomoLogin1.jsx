@@ -21,11 +21,12 @@ import {
 import {} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
-import { CircularProgress, makeStyles, TextField } from "@mui/material";
+import { CircularProgress, IconButton, InputAdornment, makeStyles, TextField } from "@mui/material";
 import axios from "axios";
 import { ErrorHandler } from "../pages/errorHandler";
 import { getUser } from "../store/reducer/userAuthSlice";
 import { useDispatch } from "react-redux";
+import { Eye, EyeOff } from "react-feather";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
@@ -38,7 +39,7 @@ const DynomoLogin1 = () => {
   };
   const handleSubmit = async (data) => {
     setIsProcessing(true);
-    // navigate("/dashboard");
+    navigate('/list-hr', { state: { login: true } });
         localStorage.setItem("isLogin_imperial", true);
 
     // try {
@@ -55,7 +56,7 @@ const DynomoLogin1 = () => {
     //     }
     //   );
     //   if (res?.data) {
-    //     navigate("/dashboard");
+    //     navigate("/add-hr");
     //     console.log(res?.data,)
     //     localStorage.setItem("login_admin_token", res?.data?.token);
     //     localStorage.setItem(
@@ -171,32 +172,36 @@ const DynomoLogin1 = () => {
                   </div>
                 </div>
             </Form.Item>
-              <Form.Item
-                name="password"
-                className="w-full  placeholder_color mt-4 relative inter_medium"
-                hasFeedback
-              >
-                <div className="">
-                  <div className="flex flex-column gap-0">
-                    {/* <p
-                      style={{ zIndex: "999" }}
-                      className="inter_medium mb-2 mt-2  text_darkprimary  text-md w-full"
+            <Form.Item
+        name="password"
+        className="w-full placeholder_color mt-4 relative inter_medium"
+        hasFeedback
+      >
+        <div className="">
+          <div className="flex flex-column gap-0">
+            <TextField
+              id="password"
+              label="Password"
+              variant="standard"
+              placeholder="Insert your password"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                      edge="end"
                     >
-                      Password
-                    </p> */}
-
-                    <TextField
-                      id="standard-basic"
-                      label="Password"
-                      variant="standard"
-                      placeholder="insert password"
-                      InputLabelProps={{
-        
-      }}
-                    />
-                  </div>
-                </div>
-              </Form.Item>
+                      {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+            />
+          </div>
+        </div>
+      </Form.Item>
               <div className="ms-auto text_head fw-bold">
                 <Link className="">Recover password</Link>
               </div>

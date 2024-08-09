@@ -142,7 +142,7 @@ export const getSearchedQuestion = async (lastId, country, category) => {
 // get dashboard data
 export const getDashboard = async () => {
   try {
-    const res = await axios.get(global.BASEURL + `api/users/admin/dashboard`, {
+    const res = await axios.get(global.BASEURL + `api/info/admin/add-hr`, {
       headers: {
         "Content-Type": "application/json",
         "x-auth-token": localStorage.getItem("login_admin_token"),

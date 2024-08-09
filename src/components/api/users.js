@@ -3,7 +3,7 @@ import axios from "axios";
 export const getUsers = async (lastId,search="") => {
     try {
       const res = await axios.get(
-        global.BASEURL + `api/users/all/${lastId}/${search}`,
+        global.BASEURL + `api/info/all/${lastId}/${search}`,
     
         {
           headers: {
@@ -21,7 +21,7 @@ export const getUsers = async (lastId,search="") => {
 export const updateUsers = async (id,status) => {
     try {
       const res = await axios.put(
-        global.BASEURL + `api/users/userUpdate/${id}`,
+        global.BASEURL + `api/info/userUpdate/${id}`,
         {
 status:status
         },
@@ -41,7 +41,7 @@ status:status
   export const AssignRoles = async (data) => {
     try { 
       const res = await axios.post(
-        global.BASEURL + `api/users/admin/create`,
+        global.BASEURL + `api/info/admin/create`,
           data,
         {
           headers: {
@@ -59,7 +59,7 @@ status:status
     export const EditRoles = async (data,id) => {
       try { 
         const res = await axios.put(
-          global.BASEURL + `api/users/userUpdate/${id}`,
+          global.BASEURL + `api/info/userUpdate/${id}`,
             data,
           {
             headers: {
@@ -77,7 +77,7 @@ status:status
         export const EditPassword = async (data,id) => {
           try { 
             const res = await axios.put(
-              global.BASEURL + `api/users/updatePassword/${id}`,
+              global.BASEURL + `api/info/updatePassword/${id}`,
                 data,
               {
                 headers: {
@@ -95,7 +95,7 @@ status:status
               export const del_Role = async (id) => {
                 try { 
                   const res = await axios.delete(
-                    global.BASEURL + `api/users/${id}`,
+                    global.BASEURL + `api/info/${id}`,
                     {
                       headers: {
                         "Content-Type": "application/json",

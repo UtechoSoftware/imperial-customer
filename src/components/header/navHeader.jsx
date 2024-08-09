@@ -10,7 +10,7 @@ import { Avatar, message } from 'antd';
 import { getUser } from '../store/reducer/userAuthSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { Dropdown } from 'react-bootstrap';
-import { EditPassword } from '../api/users';
+// import { EditPassword } from '../api/info';
 import { CircularProgress } from '@mui/material';
 const NavHeader = ({ broken, setToggled, toggled }) => {
     const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
@@ -56,20 +56,7 @@ const [showModal,setShowModal]=useState(false)
 
         }else{
 
-            EditPassword(data,adminID).then((res)=>{
-              if(res){
-                setEditPassword(false)
-                message.success('Password Changes successfully')
-                setShowModal(false)
-              }else{
-                setEditPassword(false)
-        
-              }
-        
-            }).catch((err)=>{
-              setEditPassword(false)
-        
-            })
+           
         }
     
       }

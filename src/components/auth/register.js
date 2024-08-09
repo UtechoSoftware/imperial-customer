@@ -21,24 +21,31 @@ import {
 import {} from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
-import { CircularProgress, makeStyles, TextField } from "@mui/material";
+import { CircularProgress, IconButton, InputAdornment, makeStyles, TextField } from "@mui/material";
 import axios from "axios";
 import { ErrorHandler } from "../pages/errorHandler";
 import { getUser } from "../store/reducer/userAuthSlice";
 import { useDispatch } from "react-redux";
+import { Eye, EyeOff } from "react-feather";
 
 // import { apiRequest } from '../../api/auth_api'
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const [showPassword2, setShowPassword2] = useState(false);
+
   const [isProcessing, setIsProcessing] = useState(false);
+  
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
+  const togglePasswordVisibility2 = () => {
+    setShowPassword2(!showPassword2);
+  };
   const handleSubmit = async (data) => {
     setIsProcessing(true);
-    navigate("/help");
+    navigate('/list-hr', { state: { login: true } });
     // try {
     //   const res = await axios.post(
     //     `${global.BASEURL}api/auth/admin`,
@@ -53,7 +60,7 @@ const Register = () => {
     //     }
     //   );
     //   if (res?.data) {
-    //     navigate("/dashboard");
+    //     navigate("/add-hr");
     //     console.log(res?.data,)
     //     localStorage.setItem("login_admin_token", res?.data?.token);
     //     localStorage.setItem(
@@ -122,7 +129,7 @@ const Register = () => {
                     to="/login"
                   >
 
-                    Register
+                    Login
                   </Link>
                 </span>
               </p>
@@ -196,83 +203,82 @@ const Register = () => {
                 </div>
               </Form.Item>
               <Form.Item
-                name="password"
-                className="w-full  placeholder_color mt-4 relative inter_medium"
-                hasFeedback
-              >
-                <div className="">
-                  <div className="flex flex-column gap-0">
-                    {/* <p
-                      style={{ zIndex: "999" }}
-                      className="inter_medium mb-2 mt-2  text_darkprimary  text-md w-full"
+        name="position"
+        className="w-full placeholder_color mt-4 relative inter_medium"
+        hasFeedback
+      >
+        <div className="">
+          <div className="flex flex-column gap-0">
+            <TextField
+              id="position"
+              label="Position"
+              variant="standard"
+              placeholder="Insert your position in the company"
+              fullWidth
+            />
+          </div>
+        </div>
+      </Form.Item>
+      <Form.Item
+        name="password"
+        className="w-full placeholder_color mt-4 relative inter_medium"
+        hasFeedback
+      >
+        <div className="">
+          <div className="flex flex-column gap-0">
+            <TextField
+              id="password"
+              label="Password"
+              variant="standard"
+              placeholder="Insert your password"
+              type={showPassword ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility}
+                      edge="end"
                     >
-                      Password
-                    </p> */}
-
-                    <TextField
-                      id="standard-basic"
-                      label="Position"
-                      variant="standard"
-                      placeholder="insert your position in the company"
-                      InputLabelProps={{
-        
-      }}
-                    />
-                  </div>
-                </div>
-              </Form.Item>
-              <Form.Item
-                name="password"
-                className="w-full  placeholder_color mt-4 relative inter_medium"
-                hasFeedback
-              >
-                <div className="">
-                  <div className="flex flex-column gap-0">
-                    {/* <p
-                      style={{ zIndex: "999" }}
-                      className="inter_medium mb-2 mt-2  text_darkprimary  text-md w-full"
+                      {showPassword ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+            />
+          </div>
+        </div>
+      </Form.Item>
+      <Form.Item
+        name="Confirm password"
+        className="w-full placeholder_color mt-4 relative inter_medium"
+        hasFeedback
+      >
+        <div className="">
+          <div className="flex flex-column gap-0">
+            <TextField
+              id="Confirm password"
+              label="Confirm Password"
+              variant="standard"
+              placeholder="confirm your password"
+              type={showPassword2 ? 'text' : 'password'}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      onClick={togglePasswordVisibility2}
+                      edge="end"
                     >
-                      Password
-                    </p> */}
-
-                    <TextField
-                      id="standard-basic"
-                      label="Password"
-                      variant="standard"
-                      placeholder="insert your position in the company"
-                      InputLabelProps={{
-        
-      }}
-                    />
-                  </div>
-                </div>
-              </Form.Item>
-              <Form.Item
-                name="password"
-                className="w-full  placeholder_color mt-4 relative inter_medium"
-                hasFeedback
-              >
-                <div className="">
-                  <div className="flex flex-column gap-0">
-                    {/* <p
-                      style={{ zIndex: "999" }}
-                      className="inter_medium mb-2 mt-2  text_darkprimary  text-md w-full"
-                    >
-                      Password
-                    </p> */}
-
-                    <TextField
-                      id="standard-basic"
-                      label="Confirm Password"
-                      variant="standard"
-                      placeholder="confirm password"
-                      InputLabelProps={{
-        
-      }}
-                    />
-                  </div>
-                </div>
-              </Form.Item>
+                      {showPassword2 ? <Eye size={16} /> : <EyeOff size={16} />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              fullWidth
+            />
+          </div>
+        </div>
+      </Form.Item>
               <p className="pe-md-5 pe-0">
               By continuing, you agree to our <span className=" text_head fw-bold">
               <Link className="">Terms and Conditions</Link>

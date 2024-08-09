@@ -79,7 +79,7 @@ const Parents = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/users/all/parent/${lastId}`, { headers });
+            const res = await axios.get(`${global.BASEURL}api/info/all/parent/${lastId}`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.parents);
                 setCount(res?.data?.count?.totalPage);

@@ -767,9 +767,25 @@
   align-items: center;
   border: 1px solid black;
   width: 33%;
-  min-width: 250px;
 }
+@media screen and (max-width:500px) {
+  .q_card{
 
+    width: 100%;
+  }
+  .q_card >h6{
+    font-size: 12px;
+  }
+.q_card_2 >h6{
+
+  font-size: 12px;
+}
+.q_card_2{
+  display: flex;
+  gap: 1rem;
+}
+  
+}
 /* Help screen end */
 .border_div{
   height: 1px;
@@ -784,10 +800,10 @@
 
 .custom_radius{
   border-radius: 50px;
-  padding: 10px;
 }
 .input_1{
-  max-width: 250px;
+  width: auto;
+  padding: 1rem 3rem;
 }
 .input_3{
   max-width: 350px;
@@ -795,17 +811,47 @@
 .q_card_2{
   display: flex;
   justify-content: space-around;
+  gap: 3rem;
   align-items: center;
   border: 1px solid black;
-  width: 500px ;
+  width: auto ;
+  border-radius: 20px !important;
 }
-.btn{
+
+.q_card_3{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+  width: auto ;
+  
+  border-radius: 20px !important;
+}
+.q_card_4{
+  display: flex;
+  gap: 2rem;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  border: 1px solid black;
+  width: auto ;
+  border-radius: 20px !important;
+}
+.btn_{
   width: 200px;
   background-color: var(--secondary);
   border: 1px solid black;
   color:white ;
   border-radius: 50px;
   height: 60px;
+
+}
+.btn2{
+  background-color: var(--secondary);
+  border: 1px solid black;
+  color:white ;
+  border-radius: 50px;
 
 }
 .cal_lower{
@@ -818,14 +864,96 @@
   font-size: small;
   white-space: pre-line; 
   text-align: center; 
+  min-height: 60px;
+  height: auto;
+}
+.form-control{
+  font-size: small;
   height: 60px;
+  padding: 8px 0px
+}
+.date_picker{
+  width: auto;
+}
+.width_{
+  width: 30% !important;
+}
+
+/* Calculator End */
+.custom-modal .modal-content {
+  border: 1px solid black;
+  border-radius: 15px;
+  padding: 20px;
+  background-color: rgb(240, 240, 240);
+}
+
+.modal-title {
+  font-size: 1.3em;
+  font-weight: bold;
+  margin-bottom: 50px;
+}
+
+.form-group {
+  margin-bottom: 15px;
+}
+
+.form-label {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.modal_form .form-control {
+  border: none;
+  border-bottom: 1px solid #ccc;
+  border-radius: 0;
+  background-color: transparent;
+  height: fit-content;
+  box-shadow: none;
 }
 .form-control{
   font-size: small;
   height: 60px;
 }
-.date_picker{
-  width: 350px;
+.form_modal .form-control:focus {
+  background-color: transparent;
+  box-shadow: none;
+  outline: none;
+  border: none;
+}
+.done-button {
+  width: 100%;
+  background-color: #d5af74;
+  border: none;
+  margin-top: 20px;
+  border-radius: 5px;
+}
+
+.accordion-item{
+  background-color: transparent !important;
+  border: none !important;
+}
+.accordion-button {
+  background-color: transparent !important;
+  border: none !important;
+  border-bottom: 1px solid grey ;
+  padding-left: 0%;
+  box-shadow: none !important;
+  padding-right: 0%;
+
+}
+.react-datepicker{
+  margin-left: 2rem !important;
+}
+.text_head .form-label{
+  border:  none !important;
+}
+.accordion-button:focus{
+border-bottom: none !important;
+}
+.ant-tooltip-inner {
+ 
+  background-color: #B39D70 !important;
+  padding: 1rem   !important;
 }
 
 /* Calculator End */
@@ -882,30 +1010,36 @@ table {
   
 }
 td{
-  /* padding: 9px !important; */
+ 
   text-align: start;
-  border-right: 1px solid var(--para-color);
+  /* border-right: 1px solid var(--para-color) !important; */
+  border: 1px solid var(--para-color) !important;
 }
 tr{
   border-collapse: collapse;
   text-align: start;
+  /* border-right: 1px solid var(--para-color); */
 }
 th{
-  border-right: 1px solid var(--para-color);
+  /* border-right: 1px solid var(--para-color); */
   text-align: center;
+  border: 1px solid var(--para-color) !important;
  
 }
 td:first-child,
 th:first-child {
   /* border-radius: 10px 0 0 10px; */
  
-  
+  /* border-left: none !important; */
+  /* border-right: 1px solid var(--para-color); */
+ 
 }
 td:last-child,
 th:last-child {
   /* border-radius: 0 10px 10px 0; */
   /* border: none !important; */
-  border-right: none !important;
+  /* border-right: none !important; */
+  /* border-right: 1px solid var(--para-color); */
 
 }
 .accordion-item{

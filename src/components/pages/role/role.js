@@ -12,7 +12,7 @@ import { StyleSheetManager } from "styled-components";
 import ProductTable from "../../DataTable/productTable";
 import { ErrorHandler } from "../errorHandler";
 import { eye, eyeoff } from "../../icons/icon";
-import { del_Role, EditPassword, EditRoles } from "../../api/users";
+// import { del_Role, EditPassword, EditRoles } from "../../api/info";
 
 const Role = () => {
   const [search, setSearch] = useState("");
@@ -129,7 +129,7 @@ const Role = () => {
       "x-auth-token": `${global.TOKEN}`,
     };
     try {
-      const res = await axios.get(`${global.BASEURL}api/users/alladmins/1`, {
+      const res = await axios.get(`${global.BASEURL}api/info/alladmins/1`, {
         headers,
       });
       if (res) {
@@ -171,31 +171,31 @@ const Role = () => {
       } else {
         setEditLoader(true);
 
-        EditRoles(data, selectedItem?._id)
-          .then((res) => {
-            if (res) {
-              setEditLoader(false);
-              message.success("Role edited successfully");
-              navigate("/role");
-              setEmail([""]);
-              setShowModal(false);
-              fetchData();
-              setPassword("");
-            let array = [...admins]
-            const index = array?.findIndex((item=>item?._id===selectedItem?._id))
-            if(index!==-1){
-              array[index]= res?.data?.user
-              setAdmins(array)
-            }
+        // EditRoles(data, selectedItem?._id)
+        //   .then((res) => {
+        //     if (res) {
+        //       setEditLoader(false);
+        //       message.success("Role edited successfully");
+        //       navigate("/role");
+        //       setEmail([""]);
+        //       setShowModal(false);
+        //       fetchData();
+        //       setPassword("");
+        //     let array = [...admins]
+        //     const index = array?.findIndex((item=>item?._id===selectedItem?._id))
+        //     if(index!==-1){
+        //       array[index]= res?.data?.user
+        //       setAdmins(array)
+        //     }
 
-            } else {
-              setEditLoader(false);
-            }
-          })
-          .catch((err) => {
-            ErrorHandler(err);
-            setEditLoader(false);
-          });
+        //     } else {
+        //       setEditLoader(false);
+        //     }
+        //   })
+        //   .catch((err) => {
+        //     ErrorHandler(err);
+        //     setEditLoader(false);
+        //   });
       }
     }
   };
@@ -209,19 +209,19 @@ const Role = () => {
       setPasswordError("please enter password first");
       setEditPassword(false);
     } else {
-      EditPassword(data, selectedItem2?._id)
-        .then((res) => {
-          if (res) {
-            setEditPassword(false);
-            message.success("Password Changes successfully");
-            setShowModal2(false);
-          } else {
-            setEditPassword(false);
-          }
-        })
-        .catch((err) => {
-          setEditPassword(false);
-        });
+      // EditPassword(data, selectedItem2?._id)
+      //   .then((res) => {
+      //     if (res) {
+      //       setEditPassword(false);
+      //       message.success("Password Changes successfully");
+      //       setShowModal2(false);
+      //     } else {
+      //       setEditPassword(false);
+      //     }
+      //   })
+      //   .catch((err) => {
+      //     setEditPassword(false);
+      //   });
     }
   };
   useEffect(() => {
@@ -471,24 +471,23 @@ const Role = () => {
                 const index = rowArray.findIndex(
                   (value) => value?._id === selectedItem3?._id
                 );  
-           
                 setDelLoader(true)
-                del_Role(selectedItem3?._id)
-                    fetchData()
-                  .then((res) => {
-                    setDelLoader(false)
-                    setShowModal3(false);
-                    if (index !== -1) {
-                  rowArray?.splice(index, 1);
-                  setAdmins(rowArray);
-                }
+                // del_Role(selectedItem3?._id)
+                //     fetchData()
+                //   .then((res) => {
+                //     setDelLoader(false)
+                //     setShowModal3(false);
+                //     if (index !== -1) {
+                //   rowArray?.splice(index, 1);
+                //   setAdmins(rowArray);
+                // }
 
-                    message.success("Admin deleted successfully");
-                  })
-                  .catch((er) => {
-                    setShowModal3(false);
-                    setDelLoader(false)
-                  });
+                //     message.success("Admin deleted successfully");
+                //   })
+                //   .catch((er) => {
+                //     setShowModal3(false);
+                //     setDelLoader(false)
+                //   });
               }}
             >
               {delLoader ? <Spinner size="sm" /> : "Delete"}

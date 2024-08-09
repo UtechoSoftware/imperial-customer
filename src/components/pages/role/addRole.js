@@ -7,7 +7,6 @@ import { createQuestions } from "../../api/questions";
 import { ErrorHandler } from "../errorHandler";
 import { message } from "antd";
 import { eye, eyeoff } from "../../icons/icon";
-import { AssignRoles } from "../../api/users";
 const AddRole = () => {
     // states-------
     const navigate = useNavigate();
@@ -26,61 +25,61 @@ const AddRole = () => {
   const togglePasswordVisibility = () => {
     setShowPassword(!showPassword);
   };
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!email) {
-        setEmailError('Please Input your E-mail!');
-        setLoader(false)
-      } else if (!/\S+@\S+\.\S+/.test(email)) {
-        setEmailError('The Input is not valid E-mail!');
-        setLoader(false)
+  // const handleSubmit = (e) => {
+  //   e.preventDefault();
+  //   if (!email) {
+  //       setEmailError('Please Input your E-mail!');
+  //       setLoader(false)
+  //     } else if (!/\S+@\S+\.\S+/.test(email)) {
+  //       setEmailError('The Input is not valid E-mail!');
+  //       setLoader(false)
 
-      }
+  //     }
   
-      if (!password) {
-        setPasswordError('Please Enter a strong Password');
-        setLoader(false)
+  //     if (!password) {
+  //       setPasswordError('Please Enter a strong Password');
+  //       setLoader(false)
 
-      } else if (password.length < 6) {
-        setPasswordError('Password must be at least 6 characters');
-        setLoader(false)
+  //     } else if (password.length < 6) {
+  //       setPasswordError('Password must be at least 6 characters');
+  //       setLoader(false)
 
-      }
+  //     }
   
-      if (email && password && password.length >= 6) {
-        const data = {
-            email: email,
-            password: password,
-            roles: selectedCategories,
-          };
-          if( data?.roles?.length<=0){
-            setLoader(false)
-            message.error('please fill up all the fields first')
-          }
-          else{
-    setLoader(true);
+  //     if (email && password && password.length >= 6) {
+  //       const data = {
+  //           email: email,
+  //           password: password,
+  //           roles: selectedCategories,
+  //         };
+  //         if( data?.roles?.length<=0){
+  //           setLoader(false)
+  //           message.error('please fill up all the fields first')
+  //         }
+  //         else{
+  //   setLoader(true);
 
-            AssignRoles(data)
-              .then((res) => {
-                if (res) {
-                    setLoader(false);
-                  message.success("Role assigned successfully");
-                  navigate("/role");
-                  setEmail([""])
-                  setPassword('')
-                }
-                else{
-                    setLoader(false);
-                }
-              })
-              .catch((err) => {
-                ErrorHandler(err);
-                setLoader(false);
-              });
-          }
-      }
+  //           AssignRoles(data)
+  //             .then((res) => {
+  //               if (res) {
+  //                   setLoader(false);
+  //                 message.success("Role assigned successfully");
+  //                 navigate("/role");
+  //                 setEmail([""])
+  //                 setPassword('')
+  //               }
+  //               else{
+  //                   setLoader(false);
+  //               }
+  //             })
+  //             .catch((err) => {
+  //               ErrorHandler(err);
+  //               setLoader(false);
+  //             });
+  //         }
+  //     }
     
-  };
+  // };
  
 
   const handleCheckboxChange = (e) => {
@@ -116,7 +115,7 @@ const AddRole = () => {
         </div>
       </div>
   
-          <Form onSubmit={handleSubmit} className="w-full bg_white rounded-3 shadow-md p-4">
+          <Form  className="w-full bg_white rounded-3 shadow-md p-4">
           <div>
           <Form.Group className="mb-3">
         <Form.Label className="plusJakara_medium text-black text-lg">Email Address</Form.Label>

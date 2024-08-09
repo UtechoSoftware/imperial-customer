@@ -9,10 +9,13 @@ import { useLocation, useNavigate } from "react-router-dom";
 import plane from "../assets/png/paper-plane.png";
 import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
-import { message } from "antd";
+import { message, Tabs } from "antd";
 import { Tooltip } from "antd";
+import CompanyTable from "./companyTable";
+import NewTable from "./newTable";
 const ListHrs = () => {
   const location = useLocation();
+  const formatDate = (date) => date?.toLocaleDateString();
   const { login } = location.state || {};
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -24,6 +27,22 @@ const ListHrs = () => {
   const handleShow2 = () => setShow2(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
+
+  const onChange = (key) => {
+    console.log(key);
+  };
+  const items = [
+    {
+      key: "1",
+      label: "New Hire",
+      children:<CompanyTable /> ,
+    },
+    {
+      key: "2",
+      label: "Company Staff",
+      children:  <NewTable />
+    },
+  ];
   const [formData, setFormData] = useState({
     identifier: "",
     dob: null,
@@ -101,120 +120,22 @@ const ListHrs = () => {
               </button>
             </div>
           </div>
-          <div className="my-4">
-            {/* <Table bordered hover responsive>
-              {nodata ? (
-                <div
-                  className="text-center d-flex justify-center align-items-center "
-                  style={{ minHeight: "170px" }}
-                >
-                  no data right now related to HRs....
-                </div>
-              ) : (
-                <>
-                  <thead>
-                    <tr>
-                      <th>Name</th>
-                      <th>Company Name</th>
-                      <th>Position</th>
-                      <th>E-mail</th>
-                      <th>Calculation Date</th>
-                      <th>Savings Amount</th>
-                      <th>Contacted Lead</th>
-                      <th>Contact Date</th>
-                      <th>Conversion</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {[...Array(5)].map((_, index) => (
-                      <tr key={index}>
-                        <td>Text 1</td>
-                        <td>Text 2</td>
-                        <td>Text 3</td>
-                        <td>E-mail</td>
-                        <td>Date</td>
-                        <td>Value</td>
-                        <td>Yes/No</td>
-                        <td>Date</td>
-                        <td>
-                          <button variant="link">+</button>
-                        </td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </>
-              )}
-            </Table> */}
-            <Table
-              bordered
-              hover
-              responsive
-              style={{ overflowX: "auto", width: "1200px" }}
-            >
-              {nodata ? (
-                <div className="text-center" style={{ minHeight: "170px" }}>
-                  no data right now related to HRs....
-                </div>
-              ) : (
-                <>
-                  <Table>
-                    <thead>
-                      <tr>
-                       
-                        <th colSpan="1" style={{ width: "175px" }}>
-                          Personal Data
-                        </th>
-                        <th colSpan="1" style={{ width: "175px" }}>
-                          Register as Unemployed
-                        </th>
-                        <th colSpan="2" style={{ width: "250px" }}>
-                          Contract Details
-                        </th>
-                        <th colSpan="1" style={{ width: "170px" }}>
-                          Company's Current Social Security Contribution Rate
-                        </th>
-                        <th colSpan="1" style={{ width: "150px" }}>
-                         Work History
-                        </th>
-                      </tr>
-                      <tr>
-                        <th style={{ width: "175px" }}>DOB</th>
-                        <th style={{ width: "175px" }}>IEFP Reg Date</th>
-                        <th style={{ width: "125px" }}>Predicted Start Date</th>
-                        <th style={{ width: "125px" }}>Monthly Salary</th>
-                        <th style={{ width: "125px" }}>23.75%</th>
-                        <th style={{ width: "150px" }}>Yes</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {[...Array(5)].map((_, index) => (
-                        <tr key={index}>
-                          <td>Text 1</td>
-                          <td>Text 2</td>
-                          <td>Text 3</td>
-                          <td>E-mail</td>
-                          <td>Date of Birth</td>
-                          <td>yes</td>
-                          
-                          {/* <td>
-                            <button variant="link">+</button>
-                          </td> */}
-                        </tr>
-                      ))}
-                    </tbody>
-                  </Table>
-                </>
-              )}
-            </Table>
-            <div className="d-flex justify-content-end pb-5">
-              {/* <button className="border-black"   > 
+
+          <div>
+            <Tabs
+              defaultActiveKey="2"
+              items={items}
+              onChange={onChange}
+            />
+          </div>
+
+          {/* <button className="border-black"   > 
               <div className="d-flex align-items-center gap-3 bg_secondary px-4  py-2 "  style={{borderRadius:"50px", border:"1px solid black "}}>
               <img width="20px" src={pdf} alt="pdf"/>
               <p className="m-0 text-white">Export</p>
               </div>
             </button> */}
-            </div>
-          </div>
+
           {login && (
             <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
               <button

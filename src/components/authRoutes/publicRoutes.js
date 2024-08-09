@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 function PublicRoutes() {
   const roles = useSelector(state => state?.adminData?.adminData?.user?.roles);
-  const token = useAuth();
+  const token = useSelector((state)=> state.adminData.adminData.isLogin);
   if (roles && roles.length > 0) {
     for (const role of roles) {
       switch (role) {
@@ -24,8 +24,8 @@ function PublicRoutes() {
     }
   }
 
-  if (token) {
-    return <Navigate to='/dashboard' />;
+  if (!token) {
+    return <Navigate to='/add-hr' />;
   }
   return <Outlet />;
 }
