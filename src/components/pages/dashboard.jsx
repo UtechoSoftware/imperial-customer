@@ -6,7 +6,6 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
-import { format } from "date-fns";
 const Dashboard = () => {
   const [error, setError] = useState("");
   const [identifiers, setIdentifiers] = useState([]);

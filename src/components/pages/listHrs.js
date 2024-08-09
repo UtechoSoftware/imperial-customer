@@ -9,10 +9,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import plane from "../assets/png/paper-plane.png";
 import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
-import { message } from "antd";
+import { message, Tabs } from "antd";
 import { Tooltip } from "antd";
 const ListHrs = () => {
   const location = useLocation();
+  const formatDate = (date) => date?.toLocaleDateString();
   const { login } = location.state || {};
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -24,6 +25,22 @@ const ListHrs = () => {
   const handleShow2 = () => setShow2(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
+  const onChange = (key) => {
+    console.log(key);
+  };
+  const items = [
+    {
+      key: '1',
+      label: 'New Hire',
+      children: 'Content of Tab Pane 1',
+    },
+    {
+      key: '2',
+      label: 'Company Staff',
+      children: 'Content of Tab Pane 2',
+    },
+   
+  ];
   const [formData, setFormData] = useState({
     identifier: "",
     dob: null,
@@ -58,6 +75,53 @@ const ListHrs = () => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
+  const employeeData = [
+    {
+      employeeType: "New Hire",
+      identifier: "12345",
+      newHiring: "01/01/2023",
+      dob: "01/01/1990",
+      iefp: "Yes",
+      iefpDate: "02/02/2023",
+      employmentContractType: "open-ended contract",
+      startDate: "03/03/2023",
+      salary: "$3000",
+      currentSSCRate: "23,75%",
+      workHistory: "No"
+    },
+    {
+      employeeType: "New Hire",
+      identifier: "12345",
+      newHiring: "01/01/2023",
+      dob: "01/01/1990",
+      iefp: "Yes",
+      iefpDate: "02/02/2023",
+      employmentContractType: "open-ended contract",
+      startDate: "03/03/2023",
+      salary: "$3000",
+      currentSSCRate: "23,75%",
+      workHistory: "No"
+    }
+    // Add more employee objects as needed
+  ];
+  
+  
+  const headers = [
+    "Employee Type",
+    "Unique Identifier",
+    "Hiring Date",
+    {
+      label: "Date of Birth",
+      subHeaders: ["Day", "Month", "Year"],
+    },
+    "IEFP Status",
+    "IEFP Registration Date",
+    "Contract Type",
+    "Contract Start Date",
+    "Salary",
+    "Social Security Contribution Rate",
+    "Employee's Work History",
+  ];
 
   return (
     <div>
@@ -145,7 +209,7 @@ const ListHrs = () => {
                 </>
               )}
             </Table> */}
-            <Table
+            {/* <Table
               bordered
               hover
               responsive
@@ -189,7 +253,58 @@ const ListHrs = () => {
                   </tbody>
                 </>
               )}
-            </Table>
+            </Table> */}
+            <div>
+            <Tabs style={{width:'fit-content'}} defaultActiveKey="1" items={items} onChange={onChange} />
+            </div>
+            <div style={{ overflowX: "auto" }}>
+  <Table bordered hover>
+    <thead>
+      <tr>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Type of Employee</th>
+        <th colSpan="3" style={{ whiteSpace: "nowrap", textAlign: "center" }}>Personal Data</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>IEFP Status</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>IEFP Registration Date</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Contract Type</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Contract Start Date</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Salary</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Social Security Contribution Rate</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Employee's Work History</th>
+      </tr>
+      <tr>
+        <th></th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Unique Identifier</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Hiring Date</th>
+        <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>Date of Birth</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+      {employeeData?.map((employee, index) => (
+        <tr key={index}>
+          <td style={{ textAlign: "center" }}>{employee.employeeType}</td>
+          <td style={{ textAlign: "center" }}>{employee.identifier}</td>
+          <td style={{ textAlign: "center" }}>{employee.newHiring}</td>
+          <td style={{ textAlign: "center" }}>{employee.dob}</td>
+          <td style={{ textAlign: "center" }}>{employee.iefp}</td>
+          <td style={{ textAlign: "center" }}>{employee.iefpDate}</td>
+          <td style={{ textAlign: "center" }}>{employee.employmentContractType}</td>
+          <td style={{ textAlign: "center" }}>{employee.startDate}</td>
+          <td style={{ textAlign: "center" }}>{employee.salary}</td>
+          <td style={{ textAlign: "center" }}>{employee.currentSSCRate}</td>
+          <td style={{ textAlign: "center" }}>{employee.workHistory}</td>
+        </tr>
+      ))}
+    </tbody>
+  </Table>
+</div>
+
             <div className="d-flex justify-content-end pb-5">
               {/* <button className="border-black"   > 
               <div className="d-flex align-items-center gap-3 bg_secondary px-4  py-2 "  style={{borderRadius:"50px", border:"1px solid black "}}>
