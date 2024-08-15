@@ -1,6 +1,3 @@
-
-
-
 import React, { Fragment, useEffect, useState } from "react";
 import { Menu, MenuItem, Sidebar, SubMenu } from "react-pro-sidebar";
 import { useSelector } from "react-redux";
@@ -8,6 +5,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import close from "../assets/png/hide.png";
 import open from "../assets/png/open.png";
 
+import { Tooltip } from "antd";
 import {
   BookOpen,
   FileText,
@@ -16,14 +14,14 @@ import {
   Info,
   LogIn,
   LogOut,
-  User
+  User,
 } from "react-feather";
 import { finabeelight } from "../icons/icon";
 const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const getLoggedIn = useSelector((state) => state.adminData.adminData.isLogin);
 
   const location = useLocation();
-    const { login } = location.state || {};
+  const { login } = location.state || {};
   const roles = useSelector(
     (state) => state?.adminData?.adminData?.user?.roles
   );
@@ -31,7 +29,6 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const [selectedLink, setSelectedLink] = useState("0");
   const [show, setShow] = useState(false);
   const navigate = useNavigate();
-
 
   useEffect(() => {
     const handleResize = () => {
@@ -116,45 +113,43 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   } else {
     allowedItems = [
       {
-                      icon: <Grid />,
-                      iconActive: <Grid />,
-                      items: "Calculator",
-                      path: "/list-hr",
-                    },
-                    {
-                      icon: <Info/>,
-                      iconActive: <Info />,
-                      items: "Information",
-                      path: "/info",
-                    },
-                 
-                    {
-                      icon: <User />,
-                      iconActive: <User />,
-                      items: "Profile",
-                      path: "/profile",
-                    },
-                    {
-                      icon: <HelpCircle />,
-                      iconActive: <HelpCircle />,
-                      items: "Help",
-                      path: "/help",
-                    },
-                    getLoggedIn || login ? (
-              
-                      {
-                        icon: <LogOut />,
-                        iconActive: <LogOut />,
-                        items: "Logout",
-                        path: "/list-hr",
-                      }) : 
-                     ( {
-                        icon: <LogIn />,
-                        iconActive: <LogIn />,
-                        items: "Login",
-                        path: "/login",
-                      }
-                    ),
+        icon: <Grid />,
+        iconActive: <Grid />,
+        items: "Calculator",
+        path: "/list-hr",
+      },
+      {
+        icon: <Info />,
+        iconActive: <Info />,
+        items: "Information",
+        path: "/info",
+      },
+
+      {
+        icon: <User />,
+        iconActive: <User />,
+        items: "Profile",
+        path: "/profile",
+      },
+      {
+        icon: <HelpCircle />,
+        iconActive: <HelpCircle />,
+        items: "Help",
+        path: "/help",
+      },
+      getLoggedIn || login
+        ? {
+            icon: <LogOut />,
+            iconActive: <LogOut />,
+            items: "Logout",
+            path: "/list-hr",
+          }
+        : {
+            icon: <LogIn />,
+            iconActive: <LogIn />,
+            items: "Login",
+            path: "/login",
+          },
     ];
   }
 
@@ -210,14 +205,28 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                         className=""
                         alt=""
                       />
-                    </button>  
+                    </button>
                     <button
-                  style={{width:"30px"}}
-                    onClick={toggleSidebar}
-                    className="text-white"
-                  > 
- {collapsed ? <img className="togle1"  src={open} style={{width:"30px"}} alt="open" /> : <img  className="togle"  style={{width:"30px"}} src={close} alt="close" />}
-                  </button>
+                      style={{ width: "30px" }}
+                      onClick={toggleSidebar}
+                      className="text-white"
+                    >
+                      {collapsed ? (
+                        <img
+                          className="togle1"
+                          src={open}
+                          style={{ width: "30px" }}
+                          alt="open"
+                        />
+                      ) : (
+                        <img
+                          className="togle"
+                          style={{ width: "30px" }}
+                          src={close}
+                          alt="close"
+                        />
+                      )}
+                    </button>
                   </div>
                 ) : (
                   <div className="mb-5 flex items-center justify-between px-4 py-3">
@@ -240,9 +249,19 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                     </button>
                     <button onClick={toggleSidebar} className="text-white">
                       {collapsed ? (
-                        <img className="togle1" style={{width:"30px"}} src={open} alt="open" />
+                        <img
+                          className="togle1"
+                          style={{ width: "30px" }}
+                          src={open}
+                          alt="open"
+                        />
                       ) : (
-                        <img className="togle" style={{width:"30px"}} src={close} alt="close" />
+                        <img
+                          className="togle"
+                          style={{ width: "30px" }}
+                          src={close}
+                          alt="close"
+                        />
                       )}
                     </button>
                   </div>
@@ -251,6 +270,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                   <div style={{ flexGrow: 1 }}>
                     {mainItems.map((item, i) => (
                       <Fragment key={i}>
+                        {console.log(item.items, "ii")}
                         {item.subItems ? (
                           <SubMenu
                             icon={item.icon}
@@ -258,7 +278,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                             className={`w-full plusJakara_semibold rounded-3 mb-2 mx-auto  `}
                           >
                             {item.subItems.map((subItem, j) => (
-                              <MenuItem 
+                              <MenuItem
                                 key={`${i}-${j}`}
                                 onClick={() =>
                                   handleLinkClick(`${i}-${j}`, subItem.path)
@@ -299,9 +319,36 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                 ? item.iconActive
                                 : item.icon}
                               {!collapsed && (
-                                <div className="plusJakara_semibold">
-                                  {item.items}
-                                </div>
+                                <>
+                                  {item.items === "Calculator" && (
+                                    <Tooltip title="Calculate the annual potential savings for your company">
+                                      <div className="plusJakara_semibold">
+                                        {item.items}
+                                      </div>
+                                    </Tooltip>
+                                  )}
+                                  {item.items === "Information" && (
+                                    <Tooltip title="Get to know how the Social Security exemption works">
+                                      <div className="plusJakara_semibold">
+                                        {item.items}
+                                      </div>
+                                    </Tooltip>
+                                  )}
+                                  {item.items === "Profile" && (
+                                    <Tooltip title="Review your profile and check your previous simulations">
+                                      <div className="plusJakara_semibold">
+                                        {item.items}
+                                      </div>
+                                    </Tooltip>
+                                  )}
+                                  {item.items === "Help" && (
+                                    <Tooltip title="Check the most frequently asked questions">
+                                      <div className="plusJakara_semibold">
+                                        {item.items}
+                                      </div>
+                                    </Tooltip>
+                                  )}
+                                </>
                               )}
                             </div>
                           </MenuItem>

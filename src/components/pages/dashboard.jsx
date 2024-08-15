@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { message, Tooltip } from "antd";
+import { differenceInYears } from "date-fns";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -8,6 +9,9 @@ import { useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
 const Dashboard = () => {
   const [error, setError] = useState("");
+  const [box4, setBox4] = useState("");
+  const [box8, setBox8] = useState("");
+
   const [identifiers, setIdentifiers] = useState([]);
   const navigate = useNavigate();
   const [employeeType, setEmployeeType] = useState("");
@@ -33,10 +37,20 @@ const Dashboard = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  const handleDateChange = (date, name) => {
-    setFormData({ ...formData, [name]: date });
+  // const handleDateChange = (date, name) => {
+  //   setFormData({ ...formData, [name]: date });
+  // };
+  const handleDateChange = (date, fieldName) => {
+    const currentDate = new Date();
+    const selectedDate = date;
+    const age = differenceInYears(currentDate, selectedDate);
+    setBox4(age);
+    setFormData((prevData) => ({
+      ...prevData,
+      [fieldName]: selectedDate,
+    }));
   };
-
+  console.log(box4, "box4");
   const handleSubmit = () => {
     console.log(formData);
     if (!formData?.salary.includes("€")) {
@@ -77,7 +91,6 @@ const Dashboard = () => {
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             New Entry
           </h4>
-
           {employeeType === "New Hire" ? (
             <div>
               <div className="my-3">
@@ -86,7 +99,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className=" col-lg-4 col-md-6  col-12">
-                  <Tooltip title="prompt text">
+                  <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
                     <div className="">
                       <select
                         className="form-select cursor-pointer py-3 custom_radius text-center"
@@ -107,7 +120,7 @@ const Dashboard = () => {
                 <label className="form-label cursor-pointer manrope_semibold">
                   Personal Data
                 </label>
-                <Tooltip title="prompt text">
+                <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
                   <div className="">
                     <DatePicker
                       selected={formData.dob}
@@ -129,7 +142,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
-                  <Tooltip title="prompt text">
+                  <Tooltip title="Indicate whether, before joining the company, the HR was registered with IEFP as unemployed">
                     <div className="">
                       <select
                         className="form-select cursor-pointer custom_radius  text-center input_3 mr-2 mb-2"
@@ -141,13 +154,20 @@ const Dashboard = () => {
                           Registered on the Portuguese Employment Institut
                           (IEFP)
                         </option>
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        {box4 < 45 || box4 > formData?.startDate ? (
+                          <option value="yes">Yes</option>
+                        ) : (
+                          <>
+                            <option value="yes">Yes</option>
+
+                            <option value="no">No</option>
+                          </>
+                        )}
                       </select>
                     </div>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
-                    <Tooltip title="prompt text">
+                    <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
                       <div className="">
                         <DatePicker
                           selected={formData.iefpDate}
@@ -172,7 +192,7 @@ const Dashboard = () => {
                   </label>
 
                   <div className="d-flex gap-2 flex-wrap">
-                    <Tooltip title="prompt text">
+                    <Tooltip title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.Permanent employment contract (Article 147 of the Portuguese Labor Code) or indefinite-term, associated with a permanent employee/on-staff employee. This contract does not need to be in writing.">
                       <div className="">
                         <select
                           className="form-select custom_radius cursor-pointer text-center py-3  input_3 mr-2 mb-2"
@@ -182,19 +202,27 @@ const Dashboard = () => {
                           onChange={handleInputChange}
                         >
                           <option value="">Type of employment contract</option>
-                          <option value="Non-permanent contract">
-                            Non-permanent contract
-                          </option>
-                          <option value="open-ended contract">
-                            open-ended contract
-                          </option>
+                          {box4 > 2 || formData?.iefp > formData?.startDate ? (
+                            <option value="open-ended contract">
+                              open-ended contract
+                            </option>
+                          ) : (
+                            <>
+                              <option value="open-ended contract">
+                                open-ended contract
+                              </option>
+                              <option value="Non-permanent contract">
+                                Non-permanent contract
+                              </option>
+                            </>
+                          )}
                         </select>
                       </div>
                     </Tooltip>
                     {formData.employmentContractType ===
                       "open-ended contract" && (
                       <>
-                        <Tooltip title="prompt text">
+                        <Tooltip title="Indicate the expected hiring date for the new HR (dd/mm/yyyy)">
                           <div className="">
                             <DatePicker
                               selected={formData.startDate}
@@ -210,7 +238,7 @@ const Dashboard = () => {
                             />
                           </div>
                         </Tooltip>
-                        <Tooltip title="prompt text">
+                        <Tooltip title="Indicate the expected gross monthly salary for the HR">
                           <div className="">
                             <input
                               type="text"
@@ -227,7 +255,7 @@ const Dashboard = () => {
                           <label className="form-label cursor-pointer w-fit manrope_semibold">
                             Company's current Social Security contribution rate
                           </label>
-                          <Tooltip title="prompt text">
+                          <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23,75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
                             <div className="">
                               <select
                                 className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
@@ -251,7 +279,7 @@ const Dashboard = () => {
                             </label>
 
                             <div className="col-12">
-                              <Tooltip title="prompt text">
+                              <Tooltip title="Indicate whether the employment contract to be signed will be the first permanent employment contract ever entered into by the new HR">
                                 <div className="">
                                   <select
                                     className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
@@ -294,7 +322,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className=" col-lg-4 col-md-6  col-12 ">
-                  <Tooltip title="prompt text">
+                  <Tooltip title="New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
                     <div className="">
                       <select
                         className="form-select cursor-pointer py-3 custom_radius  text-center"
@@ -317,7 +345,10 @@ const Dashboard = () => {
                 </label>
 
                 <div className="flex  flex-wrap">
-                  <Tooltip title="prompt text">
+                  <Tooltip
+                    title="Please provide a unique identifier for this HR record, which must be different from all other HR records being entered. We suggest using, for example, the employee's, Tax, Social Security or Identification card numbers
+"
+                  >
                     <div className="">
                       <input
                         type="text"
@@ -333,7 +364,7 @@ const Dashboard = () => {
                     </div>
                   </Tooltip>
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  <Tooltip title="prompt text">
+                  <Tooltip title="Indicate the date when the HR joined the company (dd/mm/yyyy)">
                     <div className="">
                       <DatePicker
                         selected={formData.newHiring}
@@ -347,7 +378,7 @@ const Dashboard = () => {
                       />
                     </div>
                   </Tooltip>
-                  <Tooltip title="prompt text">
+                  <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
                     <div>
                       <DatePicker
                         selected={formData.dob}
@@ -369,7 +400,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
-                  <Tooltip title="prompt text">
+                  <Tooltip title="Indicate whether, before joining the company, the HR was registered with IEFP as unemployed">
                     <select
                       className="form-select cursor-pointer custom_radius  text-center input_3 mr-2 mb-2"
                       name="iefp"
@@ -384,7 +415,7 @@ const Dashboard = () => {
                     </select>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
-                    <Tooltip title="prompt text">
+                    <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
                       <div className="">
                         <DatePicker
                           selected={formData.iefpDate}
@@ -412,7 +443,10 @@ const Dashboard = () => {
                 </label>
 
                 <div className="d-flex gap-2 col-12 flex-wrap">
-                  <Tooltip title="prompt text">
+                  <Tooltip
+                    title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.
+Permanent employment contract (Article 147 of the Portuguese Labor Code) or indefinite-term, associated with a permanent employee/on-staff employee. This contract does not need to be in writing."
+                  >
                     <div className="">
                       <select
                         className="form-select custom_radius cursor-pointer text-center py-3  input_3 mr-2 mb-2"
@@ -436,7 +470,7 @@ const Dashboard = () => {
                   {formData.employmentContractType ===
                     "open-ended contract" && (
                     <>
-                      <Tooltip title="prompt text">
+                      <Tooltip title="Indicate the date of the (most recent) employment contract with the HR (dd/mm/yyyy)">
                         <div>
                           <DatePicker
                             selected={formData.startDate}
@@ -452,7 +486,7 @@ const Dashboard = () => {
                           />
                         </div>
                       </Tooltip>
-                      <Tooltip title="prompt text">
+                      <Tooltip title="Indicate the current gross monthly salary of the HR">
                         <div className="">
                           <input
                             type="text"
@@ -468,7 +502,10 @@ const Dashboard = () => {
                         <label className="form-label cursor-pointer w-fit manrope_semibold">
                           Company's current Social Security contribution rate
                         </label>
-                        <Tooltip title="prompt text">
+                        <Tooltip
+                          title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23,75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
+"
+                        >
                           <div className="">
                             <select
                               className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
@@ -492,7 +529,7 @@ const Dashboard = () => {
                           </label>
 
                           <div className="col-12">
-                            <Tooltip title="prompt text">
+                            <Tooltip title="Indicate whether the current employment contract is the first open-ended employment contract ever entered into by the HR">
                               <div className="">
                                 <select
                                   className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
@@ -532,7 +569,10 @@ const Dashboard = () => {
               </label>
 
               <div className=" col-lg-4 col-md-6  col-12">
-                <Tooltip title="prompt text">
+                <Tooltip
+                  title="New hire - HR to be hired in the near future by the company
+Company's staff - HR already in the company"
+                >
                   <div className="">
                     <select
                       className="form-select cursor-pointer py-3 custom_radius text-center"
