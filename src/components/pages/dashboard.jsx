@@ -1,7 +1,14 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { message, Tooltip } from "antd";
-import { differenceInYears } from "date-fns";
+import {
+  addYears,
+  differenceInYears,
+  format,
+  isAfter,
+  isBefore,
+  subDays,
+} from "date-fns";
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -9,8 +16,15 @@ import { useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
 const Dashboard = () => {
   const [error, setError] = useState("");
-  const [box4, setBox4] = useState("");
-  const [box8, setBox8] = useState("");
+  const [dob, setDob] = useState("");
+  const [DOB, setDOB] = useState("");
+  const [fillingdate, setFillingDate] = useState("");
+
+  const [startDate, setStartDate] = useState("");
+  const [iefpDate, setIefpDate] = useState("");
+  const [iefpDate_, setIefpDate_] = useState("");
+
+  const [btDate, setbtDate] = useState("");
 
   const [identifiers, setIdentifiers] = useState([]);
   const navigate = useNavigate();
@@ -44,19 +58,167 @@ const Dashboard = () => {
     const currentDate = new Date();
     const selectedDate = date;
     const age = differenceInYears(currentDate, selectedDate);
-    setBox4(age);
+    if (fieldName === "dob") {
+      setDob(age);
+      setDOB(selectedDate);
+    } else if (fieldName === "iefpDate") {
+      setIefpDate(age);
+      setIefpDate_(selectedDate);
+    } else if (fieldName === "startDate") {
+      setStartDate(age);
+      setbtDate(selectedDate);
+    }
     setFormData((prevData) => ({
       ...prevData,
       [fieldName]: selectedDate,
     }));
   };
-  console.log(box4, "box4");
   const handleSubmit = () => {
-    console.log(formData);
     if (!formData?.salary.includes("€")) {
       message.error("Monthly based sallery should be in euros(€)");
     } else {
-      navigate("/list-hr");
+      const today = new Date();
+      const formattedDate = today.toISOString().split('T')[0]; 
+      sessionStorage.setItem("todaysDate", formattedDate);
+      const btDatePlus31Years = addYears(btDate, 31);
+      const finalDate = subDays(btDatePlus31Years, 1);
+      const formattedFinalDate = format(finalDate, "dd/MM/yyyy");
+
+      const isBetween_ = isAfter(DOB, btDate) && isBefore(DOB, finalDate);
+      const isDiff64 = Math.abs(differenceInYears(btDate, iefpDate_));
+      const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
+      const isDiff8filling = Math.abs(differenceInYears(btDate, today));
+      console.log(isDiff8filling, "hello");
+      console.log(fillingdate, "48");
+      
+
+      if (employeeType === "New Hire") {
+
+        if (
+          dob >= 45 &&
+          isDiff48 >= 45 &&
+          formData.iefp === "yes" &&
+          iefpDate >= 2 &&
+          isDiff64 >= 2 &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "no"
+        ) {
+          message.success("Eligible for saving ");
+        } else if (
+          dob <= 31 &&
+          isDiff48 <= 31 &&
+          formData.iefp === "no" &&
+          !iefpDate &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "yes"
+        ) {
+          message.success("Eligible for saving ");
+
+
+        } else if (
+          dob &&
+          formData.iefp === "yes" &&
+          iefpDate >= 1 &&
+          isDiff64 >= 1 &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "no"
+        ) {
+          message.success("Eligible for saving ");
+
+
+        }
+        else{
+          message.error('Not eligible for saving...!')
+        }
+      } else if (employeeType === "Company's Staff") {
+        if (
+          dob >= 45 &&
+          isDiff48 >= 45 &&
+          formData.iefp === "yes" &&
+          iefpDate >= 2 &&
+          isDiff64 >= 2 &&
+          formData.newHiring !== "" &&
+          formData.identifier !== "" &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          isDiff8filling <= 2 &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "no"
+        ) {
+          message.success("Eligible for saving ");
+
+
+        console.log('1..')
+
+        } else if (
+          dob <= 31 &&
+          isDiff48 <= 31 &&
+          formData.iefp !== "" &&
+          iefpDate >= 2 &&
+          isDiff64 >= 2 &&
+          formData.newHiring !== "" &&
+          formData.identifier !== "" &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          isDiff8filling < 5 &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "yes"
+        ) {
+          message.success("Eligible for saving ");
+
+
+        console.log('2..')
+
+        } else if (
+          dob &&
+          formData.iefp === "yes" &&
+          iefpDate >= 1 &&
+          isDiff64 >= 1 &&
+          formData.newHiring !== "" &&
+          formData.identifier !== "" &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          isDiff8filling < 3 &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "no"
+        ) {
+          message.success("Eligible for saving ");
+
+        console.log('3..')
+
+        }
+        else if(
+          dob <= 31 &&
+          isDiff48<= 31 &&
+          formData.iefp === "yes" &&
+          iefpDate!=='' &&
+          formData.newHiring !== "" &&
+          formData.identifier !== "" &&
+          formData.salary &&
+          formData.employmentContractType === "open-ended contract" &&
+          isDiff8filling < 5 &&
+          formData.currentSSCRate === "23,75%" &&
+          formData.workHistory === "yes"
+        ){
+          message.success("Eligible for saving ");
+
+          console.log('4..')
+  
+        }
+        else{
+          message.error('Not eligible for saving...!')
+        }
+      } else{
+        message.error('Not eligible for saving...!')
+      }
+      
+      // navigate("/list-hr");
     }
   };
   const handleIdentifierChange = (e) => {
@@ -70,6 +232,23 @@ const Dashboard = () => {
       setFormData({ ...formData, identifier: value });
     }
   };
+  const fillingDateArray = [
+    "23/08/2022",
+    "05/01/2021",
+    "23/06/2020",
+    "23/08/2024",
+  ];
+  const handleFillingDate = () => {
+    // Convert the string dates to Date objects
+    const dateObjects = fillingDateArray.map((dateStr) => {
+      const [day, month, year] = dateStr.split("/");
+      return new Date(`${month}/${day}/${year}`);
+    });
+    const randomIndex = Math.floor(Math.random() * dateObjects.length);
+    const randomDate = dateObjects[randomIndex];
+    setFillingDate(randomDate.toString());
+  };
+  console.log(fillingdate, "hello");
   return (
     <div>
       <>
@@ -128,7 +307,7 @@ const Dashboard = () => {
                       className="form-control cursor-pointer input_1 custom_radius text-center"
                       placeholderText="Date of Birth"
                       dateFormat="dd/MM/yyyy"
-                      maxDate={new Date()}
+                      // maxDate={new Date()}
                       showYearDropdown
                       scrollableYearDropdown
                     />
@@ -154,15 +333,9 @@ const Dashboard = () => {
                           Registered on the Portuguese Employment Institut
                           (IEFP)
                         </option>
-                        {box4 < 45 || box4 > formData?.startDate ? (
-                          <option value="yes">Yes</option>
-                        ) : (
-                          <>
-                            <option value="yes">Yes</option>
 
-                            <option value="no">No</option>
-                          </>
-                        )}
+                        <option value="yes">Yes</option>
+                        <option value="no">No</option>
                       </select>
                     </div>
                   </Tooltip>
@@ -202,20 +375,13 @@ const Dashboard = () => {
                           onChange={handleInputChange}
                         >
                           <option value="">Type of employment contract</option>
-                          {box4 > 2 || formData?.iefp > formData?.startDate ? (
-                            <option value="open-ended contract">
-                              open-ended contract
-                            </option>
-                          ) : (
-                            <>
-                              <option value="open-ended contract">
-                                open-ended contract
-                              </option>
-                              <option value="Non-permanent contract">
-                                Non-permanent contract
-                              </option>
-                            </>
-                          )}
+
+                          <option value="open-ended contract">
+                            open-ended contract
+                          </option>
+                          <option value="Non-permanent contract">
+                            Non-permanent contract
+                          </option>
                         </select>
                       </div>
                     </Tooltip>
@@ -291,8 +457,10 @@ const Dashboard = () => {
                                       Is this the employee's first open-ended
                                       contract?
                                     </option>
-                                    <option value="yes">yes</option>
+
                                     <option value="no">No</option>
+
+                                    <option value="yes">yes</option>
                                   </select>
                                 </div>
                               </Tooltip>
@@ -320,7 +488,6 @@ const Dashboard = () => {
                 <label className="form-label  manrope_semibold">
                   Type of Employee
                 </label>
-
                 <div className=" col-lg-4 col-md-6  col-12 ">
                   <Tooltip title="New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
                     <div className="">
@@ -441,7 +608,12 @@ const Dashboard = () => {
                 <label className="form-label cursor-pointer manrope_semibold">
                   Employment Contract Detail
                 </label>
-
+                <button
+                  className="btn ms-3 my-3 px-2 py-1 btn-sm bg-success  rounded-4 text-white "
+                  onClick={handleFillingDate}
+                >
+                  Random Date
+                </button>
                 <div className="d-flex gap-2 col-12 flex-wrap">
                   <Tooltip
                     title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.
@@ -467,6 +639,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                       </select>
                     </div>
                   </Tooltip>
+
                   {formData.employmentContractType ===
                     "open-ended contract" && (
                     <>
@@ -517,7 +690,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                                 Current Social Security contributions rate
                               </option>
                               <option value="23,75%">23,75%</option>
-                              <option value="Other">Other</option>
+                              {/* <option value="Other">Other</option> */}
                             </select>
                           </div>
                         </Tooltip>
@@ -596,7 +769,7 @@ Company's staff - HR already in the company"
               <img className="h-10" src={plane} alt="email" />
             </div> */}
             <div className="my-4">
-              <button className="btn_" onClick={handleSubmit}>
+              <button className="btn_" type="button" onClick={handleSubmit}>
                 Done
               </button>
             </div>
