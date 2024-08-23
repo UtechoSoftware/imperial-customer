@@ -1,16 +1,15 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+import { message, Tabs, Tooltip } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useState } from "react";
-import { Button, Form, Modal, Table } from "react-bootstrap";
+import { Form, Modal } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDropzone } from "react-dropzone";
 import { useLocation, useNavigate } from "react-router-dom";
 import plane from "../assets/png/paper-plane.png";
 import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
-import { message, Tabs } from "antd";
-import { Tooltip } from "antd";
 import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
 const ListHrs = () => {
@@ -35,12 +34,12 @@ const ListHrs = () => {
     {
       key: "1",
       label: "New Hire",
-      children:<CompanyTable /> ,
+      children: <CompanyTable />,
     },
     {
       key: "2",
       label: "Company Staff",
-      children:  <NewTable />
+      children: <NewTable />,
     },
   ];
   const [formData, setFormData] = useState({
@@ -122,11 +121,7 @@ const ListHrs = () => {
           </div>
 
           <div className="pb-5">
-            <Tabs
-              defaultActiveKey="2"
-              items={items}
-              onChange={onChange}
-            />
+            <Tabs defaultActiveKey="1" items={items} onChange={onChange} />
           </div>
 
           {/* <button className="border-black"   > 

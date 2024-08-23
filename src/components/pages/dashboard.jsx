@@ -34,6 +34,7 @@ const Dashboard = () => {
     dob: null,
     newHiring: "",
     iefpDate: null,
+    iefp: "",
     startDate: null,
     employmentContractType: "",
     salary: "",
@@ -50,7 +51,6 @@ const Dashboard = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-
   // const handleDateChange = (date, name) => {
   //   setFormData({ ...formData, [name]: date });
   // };
@@ -73,27 +73,36 @@ const Dashboard = () => {
       [fieldName]: selectedDate,
     }));
   };
+
   const handleSubmit = () => {
-    if (!formData?.salary.includes("€")) {
-      message.error("Monthly based sallery should be in euros(€)");
-    } else {
-      const today = new Date();
-      const formattedDate = today.toISOString().split('T')[0]; 
-      sessionStorage.setItem("todaysDate", formattedDate);
-      const btDatePlus31Years = addYears(btDate, 31);
-      const finalDate = subDays(btDatePlus31Years, 1);
-      const formattedFinalDate = format(finalDate, "dd/MM/yyyy");
+    const today = new Date();
+    const formattedDate = today.toISOString().split("T")[0];
+    sessionStorage.setItem("todaysDate", formattedDate);
 
-      const isBetween_ = isAfter(DOB, btDate) && isBefore(DOB, finalDate);
-      const isDiff64 = Math.abs(differenceInYears(btDate, iefpDate_));
-      const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
-      const isDiff8filling = Math.abs(differenceInYears(btDate, today));
-      console.log(isDiff8filling, "hello");
-      console.log(fillingdate, "48");
-      
+    const btDatePlus31Years = addYears(btDate, 31);
+    const finalDate = subDays(btDatePlus31Years, 1);
 
-      if (employeeType === "New Hire") {
+    const isBetween_ = isAfter(DOB, btDate) && isBefore(DOB, finalDate);
+    const isDiff64 = Math.abs(differenceInYears(btDate, iefpDate_));
+    const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
+    const isDiff8filling = Math.abs(differenceInYears(btDate, today));
+    if (employeeType === "New Hire") {
+      // Corrected the comparison operator here
+      if (
+        !formData.dob ||
+        // !formData.iefpDate ||
+        // !formData.iefp ||
 
+        !formData.employmentContractType ||
+        (formData.employmentContractType === "open-ended contract" &&
+          (!formData.salary ||
+            !formData.workHistory ||
+            !formData.startDate ||
+            !formData.currentSSCRate))
+      ) {
+        message.error("Form data must be filled first.....");
+      } else {
+        alert("yes...");
         if (
           dob >= 45 &&
           isDiff48 >= 45 &&
@@ -102,7 +111,7 @@ const Dashboard = () => {
           isDiff64 >= 2 &&
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
           message.success("Eligible for saving ");
@@ -113,12 +122,10 @@ const Dashboard = () => {
           !iefpDate &&
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
           message.success("Eligible for saving ");
-
-
         } else if (
           dob &&
           formData.iefp === "yes" &&
@@ -126,17 +133,31 @@ const Dashboard = () => {
           isDiff64 >= 1 &&
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
           message.success("Eligible for saving ");
-
-
+        } else {
+          message.error("Not eligible for saving...!");
         }
-        else{
-          message.error('Not eligible for saving...!')
-        }
-      } else if (employeeType === "Company's Staff") {
+        // Your logic here for when the form data is complete
+      }
+    } else if (employeeType === "Company's Staff") {
+      if (
+        !formData.dob ||
+        !formData.identifier ||
+        !formData.newHiring ||
+        !formData.iefp ||
+        (formData.iefp === "yes" && !formData.iefpDate) ||
+        !formData.employmentContractType ||
+        (formData.employmentContractType === "open-ended contract" &&
+          (!formData.salary ||
+            !formData.workHistory ||
+            !formData.startDate ||
+            !formData.currentSSCRate))
+      ) {
+        message.error("Form data must be filled first");
+      } else {
         if (
           dob >= 45 &&
           isDiff48 >= 45 &&
@@ -148,14 +169,10 @@ const Dashboard = () => {
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
           isDiff8filling <= 2 &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
           message.success("Eligible for saving ");
-
-
-        console.log('1..')
-
         } else if (
           dob <= 31 &&
           isDiff48 <= 31 &&
@@ -167,14 +184,10 @@ const Dashboard = () => {
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
           isDiff8filling < 5 &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
           message.success("Eligible for saving ");
-
-
-        console.log('2..')
-
         } else if (
           dob &&
           formData.iefp === "yes" &&
@@ -185,42 +198,50 @@ const Dashboard = () => {
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
           isDiff8filling < 3 &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
           message.success("Eligible for saving ");
-
-        console.log('3..')
-
-        }
-        else if(
+        } else if (
           dob <= 31 &&
-          isDiff48<= 31 &&
+          isDiff48 <= 31 &&
           formData.iefp === "yes" &&
-          iefpDate!=='' &&
+          iefpDate !== "" &&
           formData.newHiring !== "" &&
           formData.identifier !== "" &&
           formData.salary &&
           formData.employmentContractType === "open-ended contract" &&
           isDiff8filling < 5 &&
-          formData.currentSSCRate === "23,75%" &&
+          formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
-        ){
+        ) {
           message.success("Eligible for saving ");
-
-          console.log('4..')
-  
+        } else {
+          message.error("Not eligible for saving...!");
         }
-        else{
-          message.error('Not eligible for saving...!')
-        }
-      } else{
-        message.error('Not eligible for saving...!')
       }
-      
+
+      // Your logic here for when the form data is complete
+    } else {
+      message.error("Not eligible for saving...!");
+
       // navigate("/list-hr");
     }
+    console.log(typeof formData, "formData");
+    if (employeeType === "New Hire") {
+      const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+      existingData.push(formData);
+      sessionStorage.setItem("hrData", JSON.stringify(existingData));
+      console.log(existingData, "Updated hrData");
+    } else if (employeeType === "Company's Staff") {
+      const existingData2 =
+        JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      existingData2.push(formData);
+      sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
+      console.log(existingData2, "Updated hrData");
+    }
   };
+
   const handleIdentifierChange = (e) => {
     const value = e.target.value;
     if (identifiers.includes(value)) {
@@ -248,7 +269,6 @@ const Dashboard = () => {
     const randomDate = dateObjects[randomIndex];
     setFillingDate(randomDate.toString());
   };
-  console.log(fillingdate, "hello");
   return (
     <div>
       <>
@@ -281,6 +301,7 @@ const Dashboard = () => {
                   <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
                     <div className="">
                       <select
+                        required
                         className="form-select cursor-pointer py-3 custom_radius text-center"
                         value={employeeType} // Bind the value to state
                         onChange={handleChange}
@@ -308,6 +329,7 @@ const Dashboard = () => {
                       placeholderText="Date of Birth"
                       dateFormat="dd/MM/yyyy"
                       // maxDate={new Date()}
+                      required
                       showYearDropdown
                       scrollableYearDropdown
                     />
@@ -329,7 +351,7 @@ const Dashboard = () => {
                         value={formData.iefp}
                         onChange={handleInputChange}
                       >
-                        <option>
+                        <option value="">
                           Registered on the Portuguese Employment Institut
                           (IEFP)
                         </option>
@@ -421,7 +443,7 @@ const Dashboard = () => {
                           <label className="form-label cursor-pointer w-fit manrope_semibold">
                             Company's current Social Security contribution rate
                           </label>
-                          <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23,75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
+                          <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
                             <div className="">
                               <select
                                 className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
@@ -432,13 +454,13 @@ const Dashboard = () => {
                                 <option value="">
                                   Current Social Security contributions rate
                                 </option>
-                                <option value="23,75%">23,75%</option>
+                                <option value="23.75%">23.75%</option>
                                 <option value="Other">Other</option>
                               </select>
                             </div>
                           </Tooltip>
                         </div>
-                        {formData.currentSSCRate === "23,75%" && (
+                        {formData.currentSSCRate === "23.75%" && (
                           <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
                             <label className="form-label cursor-pointer w-fit manrope_semibold">
                               Employees’s work history
@@ -676,7 +698,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                           Company's current Social Security contribution rate
                         </label>
                         <Tooltip
-                          title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23,75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
+                          title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
 "
                         >
                           <div className="">
@@ -689,13 +711,13 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               <option value="">
                                 Current Social Security contributions rate
                               </option>
-                              <option value="23,75%">23,75%</option>
+                              <option value="23.75%">23.75%</option>
                               {/* <option value="Other">Other</option> */}
                             </select>
                           </div>
                         </Tooltip>
                       </div>
-                      {formData.currentSSCRate === "23,75%" && (
+                      {formData.currentSSCRate === "23.75%" && (
                         <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
                           <label className="form-label cursor-pointer w-fit manrope_semibold">
                             Employees’s work history
@@ -748,6 +770,7 @@ Company's staff - HR already in the company"
                 >
                   <div className="">
                     <select
+                      required
                       className="form-select cursor-pointer py-3 custom_radius text-center"
                       value={employeeType} // Bind the value to state
                       onChange={handleChange}
