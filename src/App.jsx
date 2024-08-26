@@ -81,7 +81,7 @@ function App() {
     const isLoginData = JSON.parse(
       localStorage.getItem("isLogin_qMed_admin") || false
     );
-    global.BASEURL = "https://api.theqmed.com/";
+    global.BASEURL = "https://imperialbackend.onrender.com/";
     setIsLogin(isLoginData);
     window.scrollTo(0, 0);
   }, [pathname]);
