@@ -10,6 +10,7 @@ const NewTable = () => {
   const login = useSelector((state) => state.data.data.isLogin_);
   useEffect(() => {
     if (!login) {
+      setLoading(false)
       const storedData =
         JSON.parse(sessionStorage.getItem("hrData_company")) || [];
       setTableData(storedData);
@@ -32,7 +33,7 @@ const NewTable = () => {
   }, [login]);
   return (
     <div className="table-responsive">
-      {loading ? (
+      {loading && login ? (
         <div style={{height:"200px"}} className="d-flex justify-content-center  align-items-center">
           <CircularProgress
             style={{ color: "black" }}
