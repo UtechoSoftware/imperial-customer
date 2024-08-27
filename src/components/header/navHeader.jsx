@@ -38,7 +38,7 @@ const [showModal,setShowModal]=useState(false)
 
     const handleLogout = () => {
         window.localStorage.removeItem("isLogin_imperial_admin");
-        window.localStorage.removeItem("login_admin_token");
+        window.localStorage.removeItem("imperial_token");
         message.success("Logout Successful!");
         console.log("Logging out ");
         dispatch(getUser(''))

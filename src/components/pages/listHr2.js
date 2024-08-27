@@ -12,13 +12,8 @@ import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
 import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
-import { useSelector } from "react-redux";
-const ListHrs = () => {
+const ListHr2 = () => {
   const location = useLocation();
-  const formatDate = (date) => date?.toLocaleDateString();
-  const login = useSelector((state) => state.data.data.isLogin_);
-
-  
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -92,24 +87,7 @@ const ListHrs = () => {
               Savings Calculator
             </h4>
             <div className="d-flex gap-2 flex-wrap flex-row align-items-center">
-              {login && (
-                <button
-                  className="btn2 px-3   border-black"
-                  onClick={() => handleShow2()}
-                  style={{
-                    width: "9rem",
-                    paddingTop: ".7rem",
-                    paddingBottom: ".7rem",
-                  }}
-                >
-                  <div className="d-flex gap-2 align-items-center justify-content-center">
-                    <img src={pdf} width="20px" alt="pdf" />
-                    <p className="m-0 text-white " style={{ fontSize: "14px" }}>
-                      Import Excel
-                    </p>
-                  </div>
-                </button>
-              )}
+             
               <button
                 className="btn2 px-3 py-1  border-black"
                 onClick={() => navigate("/add-hr")}
@@ -134,28 +112,9 @@ const ListHrs = () => {
               </div>
             </button> */}
 
-          {login && (
-            <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
-              <button
-                onClick={() =>
-                  message.success("delete operation will available soon")
-                }
-                type="button"
-                className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
-              >
-                Delete all rows
-              </button>
-              <button
-                onClick={handleShow}
-                type="button"
-                className="btn2 px-3 py-3 text-nowrap   border-black "
-              >
-                Calculate Savings
-              </button>
-            </div>
-          )}
+        
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
-            {!login && (
+         
               <>
                 <button
                   onClick={handleShow}
@@ -165,27 +124,9 @@ const ListHrs = () => {
                   Calculate Savings
                 </button>
               </>
-            )}
+            
             <div className="d-flex gap-4 flex-wrap justify-content-between">
-              {login && (
-                <>
-                  <div
-                    className="q_card_4 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>Export Savings report</h6>
-                    <img className="h-10" src={plane} alt="email" />
-                  </div>
-                  <div
-                    onClick={() => message.success("working")}
-                    className="q_card_3 flex cursor-pointer flx-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>Potential Savings</h6>
-                    <h4 className="text_secondary">2500€</h4>
-                  </div>
-                </>
-              )}
+            
               <Tooltip
                 style={{ backgroundColor: "yellow" }}
                 title="We only charge in the scenario of
@@ -193,7 +134,7 @@ application approval and only a small
 fraction of the savings"
                 className="cursor-pointer "
               >
-                {!login ? (
+
                   <div
                     onClick={handleShow}
                     className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
@@ -206,19 +147,7 @@ fraction of the savings"
                       alt="email"
                     />
                   </div>
-                ) : (
-                  <div
-                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>I want support with the application</h6>
-                    <img
-                      className="h-10 d-md-block d-none"
-                      src={hand}
-                      alt="email"
-                    />
-                  </div>
-                )}
+             
               </Tooltip>
             </div>
             <div className="">
@@ -334,4 +263,4 @@ fraction of the savings"
   );
 };
 
-export default ListHrs;
+export default ListHr2;

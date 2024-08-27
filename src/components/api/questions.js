@@ -145,7 +145,7 @@ export const getDashboard = async () => {
     const res = await axios.get(global.BASEURL + `api/info/admin/add-hr`, {
       headers: {
         "Content-Type": "application/json",
-        "x-auth-token": localStorage.getItem("login_admin_token"),
+        "x-auth-token": localStorage.getItem("imperial_token"),
       },
     });
     return res;

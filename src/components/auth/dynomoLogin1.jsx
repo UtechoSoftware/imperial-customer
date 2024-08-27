@@ -20,6 +20,7 @@ import {
   questionMark,
   rightarrow
 } from "../icons/icon";
+import { setIsLogin_ } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
@@ -41,7 +42,10 @@ const DynomoLogin1 = () => {
       await login(dataToSubmit)
         .then((res) => {
           if(res){
-            navigate("/list-hr", { state: { login: true } });
+            navigate("/list-hr");
+            console.log(res,"res")
+            window.localStorage.setItem('imperial_token', res?.data?.token);
+            dispatch(setIsLogin_(true));
             message.success("login successfully");
             setIsProcessing(false);
           }

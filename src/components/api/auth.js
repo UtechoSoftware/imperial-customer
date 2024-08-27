@@ -42,3 +42,18 @@ export const checkEmail = async (data) => {
       console.log(error, "error");
     }
   };
+  // change password-----------
+  export const changePassword = async (data) => {
+    try {
+      const res = await axios.put(global.BASEURL + `api/users/change-password`, data, {
+        headers: {
+          "Content-Type": "application/json",
+          "x-auth-token": global.TOKEN,
+        },
+      });
+      return res;
+    } catch (error) {
+      console.log(error, "error");
+      message.error(error.response.data.message)
+    }
+  };

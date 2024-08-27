@@ -21,7 +21,7 @@ export const getExams = async (lastId, search="") => {
       {
         headers: {
           "Content-Type": "application/json",
-          "x-auth-token": localStorage.getItem("login_admin_token"),
+          "x-auth-token": localStorage.getItem("imperial_token"),
         },
       }
     );
@@ -36,7 +36,7 @@ export const del_Exams = async (id) => {
     const res = await axios.delete(global.BASEURL + `api/exam/${id}`, {
       headers: {
         "Content-Type": "application/json",
-        "x-auth-token": localStorage.getItem("login_admin_token"),
+        "x-auth-token": localStorage.getItem("imperial_token"),
       },
     });
     return res;

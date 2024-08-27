@@ -4,7 +4,6 @@ import { message, Tooltip } from "antd";
 import {
   addYears,
   differenceInYears,
-  format,
   isAfter,
   isBefore,
   subDays,
@@ -12,14 +11,18 @@ import {
 import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
+import { useSelector } from "react-redux";
+import { create_hr } from "../api/hr";
 const Dashboard = () => {
+  const location = useLocation();
+  const login = useSelector((state) => state.data.data.isLogin_);
   const [error, setError] = useState("");
   const [dob, setDob] = useState("");
   const [DOB, setDOB] = useState("");
   const [fillingdate, setFillingDate] = useState("");
-
+  const [saving, setSaving] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [iefpDate, setIefpDate] = useState("");
   const [iefpDate_, setIefpDate_] = useState("");
@@ -78,31 +81,208 @@ const Dashboard = () => {
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0];
     sessionStorage.setItem("todaysDate", formattedDate);
-
     const btDatePlus31Years = addYears(btDate, 31);
     const finalDate = subDays(btDatePlus31Years, 1);
-
     const isBetween_ = isAfter(DOB, btDate) && isBefore(DOB, finalDate);
     const isDiff64 = Math.abs(differenceInYears(btDate, iefpDate_));
     const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
     const isDiff8filling = Math.abs(differenceInYears(btDate, today));
-    if (employeeType === "New Hire") {
-      // Corrected the comparison operator here
-      if (
-        !formData.dob ||
-        // !formData.iefpDate ||
-        // !formData.iefp ||
+    if (login) {
+      if (employeeType === "newhire") {
+        // Corrected the comparison operator here
+        if (
+          !formData.dob ||
+          // !formData.iefpDate ||
+          // !formData.iefp ||
+          !formData.employmentContractType ||
+          (formData.employmentContractType === "open-ended contract" &&
+            (!formData.salary ||
+              !formData.workHistory ||
+              !formData.startDate ||
+              !formData.currentSSCRate))
+        ) {
+          message.error("Form data must be filled first.....");
+        } else {
+          if (
+            dob >= 45 &&
+            isDiff48 >= 45 &&
+            formData.iefp === "yes" &&
+            iefpDate >= 2 &&
+            isDiff64 >= 2 &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "no"
+          ) {
+            message.success("Eligible for saving ");
+            let saving = 14 * (23.75 / 100);
+            console.log(saving);
+            // Parse the salary first
+            let salary = parseFloat(formData.salary);
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return;
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
+          } else if (
+            dob <= 31 &&
+            isDiff48 <= 31 &&
+            formData.iefp === "no" &&
+            !iefpDate &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "yes"
+          ) {
+            message.success("Eligible for saving ");
+            let saving = 14 * (23.75 / 100);
+            console.log(saving);
 
-        !formData.employmentContractType ||
-        (formData.employmentContractType === "open-ended contract" &&
-          (!formData.salary ||
-            !formData.workHistory ||
-            !formData.startDate ||
-            !formData.currentSSCRate))
-      ) {
-        message.error("Form data must be filled first.....");
+            // Parse the salary first
+            let salary = parseFloat(formData.salary);
+
+            // Check if salary is a valid number
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return; // Early exit if salary is invalid
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
+          } else if (
+            dob &&
+            formData.iefp === "yes" &&
+            iefpDate >= 1 &&
+            isDiff64 >= 1 &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "no"
+          ) {
+            message.success("Eligible for saving ");
+            let saving = 14 * (23.75 / 100);
+            console.log(saving);
+
+            // Parse the salary first
+            let salary = parseFloat(formData.salary);
+
+            // Check if salary is a valid number
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return; // Early exit if salary is invalid
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
+          } else {
+            message.error("Not eligible for saving...!");
+          }
+          // Your logic here for when the form data is complete
+        }
+      } else if (employeeType === "companystaff") {
+        if (
+          !formData.dob ||
+          !formData.identifier ||
+          !formData.newHiring ||
+          !formData.iefp ||
+          (formData.iefp === "yes" && !formData.iefpDate) ||
+          !formData.employmentContractType ||
+          (formData.employmentContractType === "open-ended contract" &&
+            (!formData.salary ||
+              !formData.workHistory ||
+              !formData.startDate ||
+              !formData.currentSSCRate))
+        ) {
+          message.error("Form data must be filled first");
+        } else {
+          if (
+            dob >= 45 &&
+            isDiff48 >= 45 &&
+            formData.iefp === "yes" &&
+            iefpDate >= 2 &&
+            isDiff64 >= 2 &&
+            formData.newHiring !== "" &&
+            formData.identifier !== "" &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            isDiff8filling <= 2 &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "no"
+          ) {
+            message.success("Eligible for saving ");
+          } else if (
+            dob <= 31 &&
+            isDiff48 <= 31 &&
+            formData.iefp !== "" &&
+            iefpDate >= 2 &&
+            isDiff64 >= 2 &&
+            formData.newHiring !== "" &&
+            formData.identifier !== "" &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            isDiff8filling < 5 &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "yes"
+          ) {
+            message.success("Eligible for saving ");
+          } else if (
+            dob &&
+            formData.iefp === "yes" &&
+            iefpDate >= 1 &&
+            isDiff64 >= 1 &&
+            formData.newHiring !== "" &&
+            formData.identifier !== "" &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            isDiff8filling < 3 &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "no"
+          ) {
+            message.success("Eligible for saving ");
+          } else if (
+            dob <= 31 &&
+            isDiff48 <= 31 &&
+            formData.iefp === "yes" &&
+            iefpDate !== "" &&
+            formData.newHiring !== "" &&
+            formData.identifier !== "" &&
+            formData.salary &&
+            formData.employmentContractType === "open-ended contract" &&
+            isDiff8filling < 5 &&
+            formData.currentSSCRate === "23.75%" &&
+            formData.workHistory === "yes"
+          ) {
+            message.success("Eligible for saving ");
+          } else {
+            message.error("Not eligible for saving...!");
+          }
+        }
+
+        // Your logic here for when the form data is complete
       } else {
-        alert("yes...");
+        message.error("Not eligible for saving...!");
+
+        // navigate("/list-hr");
+      }
+    }
+    console.log(typeof formData, "formData");
+    if (!login) {
+      const calculateSaving = (formData) => {
+        let saving = 14 * (23.75 / 100);
+        let salary = parseFloat(formData.salary);
+        if (isNaN(salary)) {
+          console.error("Salary is not a valid number");
+          return null; // Early exit if salary is invalid
+        } else {
+          return saving * salary;
+        }
+      };
+
+      let saving = null;
+
+      if (employeeType === "newhire") {
         if (
           dob >= 45 &&
           isDiff48 >= 45 &&
@@ -114,6 +294,7 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
@@ -125,6 +306,7 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else if (
           dob &&
@@ -136,28 +318,31 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else {
           message.error("Not eligible for saving...!");
         }
-        // Your logic here for when the form data is complete
-      }
-    } else if (employeeType === "Company's Staff") {
-      if (
-        !formData.dob ||
-        !formData.identifier ||
-        !formData.newHiring ||
-        !formData.iefp ||
-        (formData.iefp === "yes" && !formData.iefpDate) ||
-        !formData.employmentContractType ||
-        (formData.employmentContractType === "open-ended contract" &&
-          (!formData.salary ||
-            !formData.workHistory ||
-            !formData.startDate ||
-            !formData.currentSSCRate))
-      ) {
-        message.error("Form data must be filled first");
-      } else {
+
+        const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+        const data = {
+          type: employeeType,
+          currentSSCRate: formData.currentSSCRate,
+          workHistory: formData.workHistory,
+          salary: formData.salary,
+          employmentContractType: formData.employmentContractType,
+          startDate: formData.startDate,
+          iefp: formData.iefp,
+          iefpDate: formData.iefpDate,
+          newHiring: formData.newHiring,
+          dob: formData.dob,
+          identifier: formData.identifier,
+          saving: saving, // Store the calculated saving
+        };
+        existingData.push(data);
+        sessionStorage.setItem("hrData", JSON.stringify(existingData));
+        console.log(existingData, "Updated hrData");
+      } else if (employeeType === "companystaff") {
         if (
           dob >= 45 &&
           isDiff48 >= 45 &&
@@ -172,6 +357,7 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
@@ -187,6 +373,7 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else if (
           dob &&
@@ -201,6 +388,7 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "no"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
@@ -215,30 +403,52 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
+          saving = calculateSaving(formData);
           message.success("Eligible for saving ");
         } else {
           message.error("Not eligible for saving...!");
         }
+
+        const existingData2 =
+          JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+        const data = {
+          type: employeeType,
+          currentSSCRate: formData.currentSSCRate,
+          workHistory: formData.workHistory,
+          salary: formData.salary,
+          employmentContractType: formData.employmentContractType,
+          startDate: formData.startDate,
+          iefp: formData.iefp,
+          iefpDate: formData.iefpDate,
+          newHiring: formData.newHiring,
+          dob: formData.dob,
+          identifier: formData.identifier,
+          saving: saving, // Store the calculated saving
+        };
+        existingData2.push(data);
+        sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
+        console.log(existingData2, "Updated hrData");
       }
-
-      // Your logic here for when the form data is complete
     } else {
-      message.error("Not eligible for saving...!");
-
-      // navigate("/list-hr");
-    }
-    console.log(typeof formData, "formData");
-    if (employeeType === "New Hire") {
-      const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      existingData.push(formData);
-      sessionStorage.setItem("hrData", JSON.stringify(existingData));
-      console.log(existingData, "Updated hrData");
-    } else if (employeeType === "Company's Staff") {
-      const existingData2 =
-        JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      existingData2.push(formData);
-      sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
-      console.log(existingData2, "Updated hrData");
+      const data = {
+        type: employeeType,
+        currentSSCRate: formData.currentSSCRate,
+        // currentSalary:formData.currentSalary,
+        workHistory: formData.workHistory,
+        salary: formData.salary,
+        employmentContractType: formData.employmentContractType,
+        startDate: formData.startDate,
+        iefp: formData.iefp,
+        iefpDate: formData.iefpDate,
+        newHiring: formData.newHiring,
+        dob: formData.dob,
+        identifier: formData.identifier,
+        saving: saving,
+      };
+      console.log(data, "data...");
+      create_hr(data)
+        .then((res) => {})
+        .catch((err) => {});
     }
   };
 
@@ -290,7 +500,7 @@ const Dashboard = () => {
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             New Entry
           </h4>
-          {employeeType === "New Hire" ? (
+          {employeeType === "newhire" ? (
             <div>
               <div className="my-3">
                 <label className="form-label w-fit manrope_semibold cursor-pointer">
@@ -308,8 +518,8 @@ const Dashboard = () => {
                       >
                         <option value="">Select</option>{" "}
                         {/* Default placeholder option */}
-                        <option value="New Hire">New Hire</option>
-                        <option value="Company's Staff">Company's Staff</option>
+                        <option value="newhire">New Hire</option>
+                        <option value="companystaff">Company's Staff</option>
                       </select>
                     </div>
                   </Tooltip>
@@ -504,7 +714,7 @@ const Dashboard = () => {
                 {/* )} */}
               </div>
             </div>
-          ) : employeeType === "Company's Staff" ? (
+          ) : employeeType === "companystaff" ? (
             <div>
               <div className="my-3  ">
                 <label className="form-label  manrope_semibold">
@@ -520,8 +730,8 @@ const Dashboard = () => {
                       >
                         <option value="">Select</option>
 
-                        <option value="New Hire">New Hire</option>
-                        <option value="Company's Staff">Company's Staff</option>
+                        <option value="newhire">New Hire</option>
+                        <option value="companystaff">Company's Staff</option>
                       </select>
                     </div>
                   </Tooltip>
@@ -777,8 +987,8 @@ Company's staff - HR already in the company"
                     >
                       <option value="">Select</option>{" "}
                       {/* Default placeholder option */}
-                      <option value="New Hire">New Hire</option>
-                      <option value="Company's Staff">Company's Staff</option>
+                      <option value="newhire">New Hire</option>
+                      <option value="companystaff">Company's Staff</option>
                     </select>
                   </div>
                 </Tooltip>

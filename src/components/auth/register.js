@@ -31,9 +31,10 @@ import {
 import axios from "axios";
 import { ErrorHandler } from "../pages/errorHandler";
 import { getUser } from "../store/reducer/userAuthSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "react-feather";
 import { checkEmail, register } from "../api/auth";
+import { setIsLogin, setIsLogin_ } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const Register = () => {
@@ -56,7 +57,7 @@ const Register = () => {
     if (formData.confirmPassword !== formData.password) {
       setIsProcessing(false);
       message.error("Password should match with confirm password");
-    } else if (already===true) {
+    } else if (already === true) {
       setIsProcessing(false);
       message.error("Email should be unique");
     } else {
@@ -71,7 +72,9 @@ const Register = () => {
       try {
         await register(dataToSubmit)
           .then((res) => {
-            navigate("/list-hr", { state: { login: true } });
+            navigate("/list-hr");
+            dispatch(setIsLogin_(true));
+            window.localStorage.setItem('imperial_token', res?.data?.token);
             message.success("Account created successfully");
             setIsProcessing(false);
           })
@@ -94,21 +97,19 @@ const Register = () => {
         console.log(res, "res...");
         if (res) {
           setAlready(false);
-        }
-        else{
+        } else {
           setAlready(true);
           message.error("Email already exist");
-
         }
       })
       .catch((er) => {});
   };
   return (
     <>
-      <div className="row w-100 ">
+      <div className="row w-100">
         <div
-          className="bg_primary d-flex flex-column  p-5 col-md-6 col-sm-12   "
-          style={{ minHeight: "100vh", height: "900px" }}
+          className="bg_primary d-flex flex-column p-5 col-md-6 col-sm-12   "
+          style={{ minHeight: "100vh" }}
         >
           <div className="d-flex flex-column gap-4 pt-3 ">
             <img src={finabeelight} width="50px" alt="logo_" />

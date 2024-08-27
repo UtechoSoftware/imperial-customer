@@ -64,6 +64,7 @@ import AddRole from "./components/pages/role/addRole.js";
 import { useSelector } from "react-redux";
 import Register from "./components/auth/register.js";
 import ListHrs from "./components/pages/listHrs.js";
+import ListHr2 from "./components/pages/listHr2.js";
 const NavHeader = lazy(() => import("./components/header/navHeader"));
 const SidebarMenu = lazy(() => import("./components/pages/sidebar"));
 const LoginPage1 = lazy(() => import("./components/auth/dynomoLogin1"));
@@ -71,13 +72,14 @@ const Dashboard = lazy(() => import("./components/pages/dashboard.jsx"));
 const Parents = lazy(() => import("./components/pages/parents"));
 
 function App() {
+  
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
   const [isLogin, setIsLogin] = useState(false);
   const pathname  = useLocation();
   const roles = useSelector((state=>state?.adminData?.adminData?.user?.roles))
   useEffect(() => {
-    global.TOKEN = localStorage.getItem("login_admin_token");
+    global.TOKEN = localStorage.getItem("imperial_token");
     const isLoginData = JSON.parse(
       localStorage.getItem("isLogin_qMed_admin") || false
     );
@@ -125,6 +127,8 @@ function App() {
               <Route path="/help" element={<Help/>} />
               <Route path="/add-hr" element={<Dashboard />}></Route>
               <Route path="/list-hr" element={<ListHrs />}></Route>
+              <Route path="/list-hr2" element={<ListHr2/>}></Route>
+
 
               <Route path="/exam" element={<Exam />} />
               <Route path="/preview-questions/:id" element={<PreviewQuestions/>} />
