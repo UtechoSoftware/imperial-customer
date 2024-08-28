@@ -257,7 +257,7 @@ const Register = () => {
                     </p> */}
 
                     <TextField
-                      onChange={(e) => handleEmailCheck(e)}
+                      onBlur={(e) => handleEmailCheck(e)}
                       id="email"
                       required
                       label="Email"

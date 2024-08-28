@@ -2,103 +2,49 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 
-import React, { useEffect, useState } from "react";
-import {
-  course1,
-  course2,
-  course3,
-  course4,
-  course5,
-  fileavatar,
-} from "../../icons/icon";
 import { CircularProgress } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { Form } from "react-bootstrap";
-import { Input } from "reactstrap";
-import { ArrowLeft } from "react-feather";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { storage } from "../../../config/firebase";
+import { message } from "antd";
 import axios from "axios";
-import { Select, message } from "antd";
-import CKEditorComponent from "../../../newCk";
+import React, { useEffect, useState } from "react";
+import { Form } from "react-bootstrap";
+import { ArrowLeft } from "react-feather";
+import { useNavigate } from "react-router-dom";
+import { create_faq } from "../../api/faqs";
 
 const AddVoucher = () => {
-  const [ckdata, setckData] = useState(null);
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [categoryId, setCategoryId] = useState("");
   const [categories, setCategories] = useState([]);
-  const [honeypots, setHoneypots] = useState("");
   const [fileLoading, setFileLoading] = useState(false);
-  const [selectedImg, setSelectedImg] = useState(null);
-  const [image, setImage] = useState(null);
-  const [longDescription, setLongDescription] = useState("");
-  const [termsAndConditions, setTermsAndConditions] = useState("");
   const [isProcessing, setIsProcessing] = useState(false);
-  const [blogImage, setBlogImage] = useState("");
-  const [selectedDoc, setSelectedDoc] = useState(null);
-  const [docLoading, setDocLoading] = useState(false);
-  const [docFile, setDocFile] = useState(null);
-
   const navigate = useNavigate();
 
-  const uploadDocument = (documentFile) => {
-    setDocLoading(true);
-    if (!documentFile) return;
-    const currentDate = new Date();
-    const uniqueFileName = `${currentDate.getTime()}_${documentFile?.name}`;
-    const documentRef = ref(storage, `productDocument/${uniqueFileName}`);
-    uploadBytes(documentRef, documentFile).then((snapshot) => {
-      getDownloadURL(snapshot.ref).then((url) => {
-        setDocLoading(false);
-        setDocFile(url);
-      });
-    });
-  };
-
-  const handleDocumentChange = (event) => {
-    setDocLoading(true);
-    const file = event.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = () => {
-        setSelectedDoc(reader.result);
-      };
-      reader.readAsDataURL(file);
-    } else {
-      setSelectedDoc(null);
-    }
-    if (file) {
-      uploadDocument(file);
-    }
-  };
-
   const handleSubmit = async (e) => {
-    e.preventDefault();
-    const headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": `${global.TOKEN}`,
-    };
-    // des,title,tos,honeypot,user_type,image,category
-    const formData = {
-      category: categoryId,
+    e.preventDefault()
+    setIsProcessing(true);
+    const dataToSubmit = {
       title: title,
-      description: description,
+      subtitle: description,
     };
     setIsProcessing(true);
     try {
-      const res = await axios.post(
-        `${global.BASEURL}api/faq/create`,
-        formData,
-        { headers }
-      );
-      console.log(res);
-      navigate("/faqs");
-      message.success("Faq Created Successfully");
-    } catch (error) {
-      console.log(error);
-    } finally {
+      await create_faq(dataToSubmit)
+        .then((res) => {
+          if (res) {
+            navigate("/faqs");
+            console.log(res, "res");
+            message.success("faq added successfully");
+            setIsProcessing(false);
+          }
+        })
+        .catch((err) => {
+          setIsProcessing(false);
+        });
       setIsProcessing(false);
+    } catch (error) {
+      setIsProcessing(false);
+      message.error(error?.response?.data?.message);
     }
   };
 
@@ -148,30 +94,6 @@ const AddVoucher = () => {
       >
         <Form.Group className="shadow_def px-3 mb-3">
           <Form.Label className="plusJakara_semibold text_dark">
-            Choose Category
-          </Form.Label>
-          <Select
-            showSearch
-            style={{
-              width: "100%",
-            }}
-            size="large"
-            className="custom_control rounded-2 plusJakara_regular text_secondarydark bg_white"
-            placeholder="Select..."
-            // value={categoryId}
-            required
-            allowClear
-            onChange={(e) => setCategoryId(e)}
-          >
-            {categories.map((item, i) => (
-              <Select.Option key={i} value={item?._id}>
-                {item?.name}
-              </Select.Option>
-            ))}
-          </Select>
-        </Form.Group>
-        <Form.Group className="shadow_def px-3 mb-3">
-          <Form.Label className="plusJakara_semibold text_dark">
             Faq Name
           </Form.Label>
           <Form.Control
@@ -203,23 +125,21 @@ const AddVoucher = () => {
         </Form.Group>
 
         <div className="flex justify-content-end my-4 w-100">
-          {!isProcessing ? (
-            <button
-              type="submit"
-              disabled={fileLoading}
-              className="flex justify-center bg_primary py-3 px-4 rounded-3 items-center"
-            >
-              <span className="plusJakara_semibold text_white">Add Faq</span>
-            </button>
-          ) : (
-            <button
-              type="button"
-              disabled={isProcessing}
-              className="flex justify-center bg_primary py-3 px-5 rounded-3 items-center"
-            >
-              <CircularProgress size={18} className="text_white" />
-            </button>
-          )}
+          <button
+            style={{ borderRadius: "15px", width: "12rem" }}
+            type="submit"
+            className="  bg_primary  text-white px-5 py-2 text-lg inter_regular flex justify-center items-center"
+          >
+            {isProcessing ? (
+              <CircularProgress
+                style={{ color: "white" }}
+                size={24}
+                className="text_white"
+              />
+            ) : (
+              "Add Faq"
+            )}
+          </button>
         </div>
       </Form>
     </main>

@@ -59,8 +59,6 @@ const Help = () => {
       ans: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin blandit velit sit amet neque tempus, pulvinar faucibus nulla facilisis. Suspendisse at ex vel justo commodo molestie. Donec ut sodales odio,tincidunt porta tortor. Fusce aliquet urna",
     },
   ];
- 
-
 
   return (
     <div>
@@ -110,15 +108,32 @@ const Help = () => {
               <img className="h-10 d-md-block d-none" src={email} alt="email" />
             </div>
           </div>
-         
           <Modal
             show={show}
             onHide={handleClose}
             centered
             dialogClassName="custom-modal pt-0"
           >
-            <Modal.Body>
+            <Modal.Body 
+            style={{ position: "relative" }}
+
+            >
               <h6 className="modal-title mb-3 mt-0 ">Send your Faq to us</h6>
+              <button
+                style={{
+                  position: "absolute",
+                  top: "0px",
+                  right: "0px",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                }}
+                type="button"
+                onClick={() => setShow(false)}
+              >
+                ❌
+              </button>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-2" controlId="formFaqTitle">
                   <Form.Label className="m-0">FAQ title</Form.Label>
@@ -145,7 +160,7 @@ const Help = () => {
                     />
                   </div>
                 </Form.Group>
-             
+
                 <div className="d-flex justify-content-end pt-3">
                   <button
                     type="submit"

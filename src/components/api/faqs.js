@@ -1,13 +1,11 @@
 import axios from "axios";
 
 // create blog-----
-export const create_faq_category = async (data) => {
+export const create_faq = async (data) => {
     try {
       const res = await axios.post(
-        global.BASEURL + `api/faq_cat/create`,
-        {
-            name:data
-        },
+        global.BASEURL + `api/users/admin/faq`,
+       data,
         {
           headers: {
             "Content-Type": "application/json",

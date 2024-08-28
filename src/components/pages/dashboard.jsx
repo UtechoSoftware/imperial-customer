@@ -15,7 +15,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
 import { useSelector } from "react-redux";
 import { create_hr } from "../api/hr";
+import { CircularProgress } from "@mui/material";
 const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
   const location = useLocation();
   const login = useSelector((state) => state.data.data.isLogin_);
   const [error, setError] = useState("");
@@ -26,9 +28,7 @@ const Dashboard = () => {
   const [startDate, setStartDate] = useState("");
   const [iefpDate, setIefpDate] = useState("");
   const [iefpDate_, setIefpDate_] = useState("");
-
   const [btDate, setbtDate] = useState("");
-
   const [identifiers, setIdentifiers] = useState([]);
   const navigate = useNavigate();
   const [employeeType, setEmployeeType] = useState("");
@@ -76,8 +76,8 @@ const Dashboard = () => {
       [fieldName]: selectedDate,
     }));
   };
-
   const handleSubmit = () => {
+    setLoading(true);
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0];
     sessionStorage.setItem("todaysDate", formattedDate);
@@ -89,7 +89,6 @@ const Dashboard = () => {
     const isDiff8filling = Math.abs(differenceInYears(btDate, today));
     if (login) {
       if (employeeType === "newhire") {
-        // Corrected the comparison operator here
         if (
           !formData.dob ||
           // !formData.iefpDate ||
@@ -117,7 +116,6 @@ const Dashboard = () => {
             message.success("Eligible for saving ");
             let saving = 14 * (23.75 / 100);
             console.log(saving);
-            // Parse the salary first
             let salary = parseFloat(formData.salary);
             if (isNaN(salary)) {
               console.error("Salary is not a valid number");
@@ -137,16 +135,13 @@ const Dashboard = () => {
             formData.workHistory === "yes"
           ) {
             message.success("Eligible for saving ");
-            let saving = 14 * (23.75 / 100);
+            let saving = 14 * (11.85 / 100);
             console.log(saving);
 
-            // Parse the salary first
             let salary = parseFloat(formData.salary);
-
-            // Check if salary is a valid number
             if (isNaN(salary)) {
               console.error("Salary is not a valid number");
-              return; // Early exit if salary is invalid
+              return;
             } else {
               saving = saving * salary;
               setSaving(saving);
@@ -177,7 +172,7 @@ const Dashboard = () => {
               setSaving(saving);
             }
           } else {
-            message.error("Not eligible for saving...!");
+            // message.error("Not eligible for saving...!");
           }
           // Your logic here for when the form data is complete
         }
@@ -211,7 +206,18 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "no"
           ) {
-            message.success("Eligible for saving ");
+            // message.success("Eligible for saving ");
+            let saving = 14 * (23.75 / 100);
+            console.log(saving);
+
+            let salary = parseFloat(formData.salary);
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return;
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
           } else if (
             dob <= 31 &&
             isDiff48 <= 31 &&
@@ -226,7 +232,18 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "yes"
           ) {
-            message.success("Eligible for saving ");
+            // message.success("Eligible for saving ");
+            let saving = 14 * (11.85 / 100);
+            console.log(saving);
+
+            let salary = parseFloat(formData.salary);
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return;
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
           } else if (
             dob &&
             formData.iefp === "yes" &&
@@ -240,7 +257,18 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "no"
           ) {
-            message.success("Eligible for saving ");
+            // message.success("Eligible for saving ");
+            let saving = 14 * (23.75 / 100);
+            console.log(saving);
+
+            let salary = parseFloat(formData.salary);
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return;
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
           } else if (
             dob <= 31 &&
             isDiff48 <= 31 &&
@@ -254,16 +282,26 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "yes"
           ) {
-            message.success("Eligible for saving ");
+            // message.success("Eligible for saving ");
+            let saving = 14 * (11.85 / 100);
+            console.log(saving);
+
+            let salary = parseFloat(formData.salary);
+            if (isNaN(salary)) {
+              console.error("Salary is not a valid number");
+              return;
+            } else {
+              saving = saving * salary;
+              setSaving(saving);
+            }
           } else {
-            message.error("Not eligible for saving...!");
+            // message.error("Not eligible for saving...!");
           }
         }
 
         // Your logic here for when the form data is complete
       } else {
-        message.error("Not eligible for saving...!");
-
+        // message.error("Not eligible for saving...!");
         // navigate("/list-hr");
       }
     }
@@ -271,6 +309,16 @@ const Dashboard = () => {
     if (!login) {
       const calculateSaving = (formData) => {
         let saving = 14 * (23.75 / 100);
+        let salary = parseFloat(formData.salary);
+        if (isNaN(salary)) {
+          console.error("Salary is not a valid number");
+          return null; // Early exit if salary is invalid
+        } else {
+          return saving * salary;
+        }
+      };
+      const calculateSaving2 = (formData) => {
+        let saving = 14 * (11.85 / 100);
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
           console.error("Salary is not a valid number");
@@ -295,7 +343,7 @@ const Dashboard = () => {
           formData.workHistory === "no"
         ) {
           saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          // message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
           isDiff48 <= 31 &&
@@ -306,8 +354,8 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
-          saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          saving = calculateSaving2(formData);
+          // message.success("Eligible for saving ");
         } else if (
           dob &&
           formData.iefp === "yes" &&
@@ -319,9 +367,9 @@ const Dashboard = () => {
           formData.workHistory === "no"
         ) {
           saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          // message.success("Eligible for saving ");
         } else {
-          message.error("Not eligible for saving...!");
+          // message.error("Not eligible for saving...!");
         }
 
         const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
@@ -358,7 +406,7 @@ const Dashboard = () => {
           formData.workHistory === "no"
         ) {
           saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          // message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
           isDiff48 <= 31 &&
@@ -373,8 +421,8 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
-          saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          saving = calculateSaving2(formData);
+          // message.success("Eligible for saving ");
         } else if (
           dob &&
           formData.iefp === "yes" &&
@@ -389,7 +437,7 @@ const Dashboard = () => {
           formData.workHistory === "no"
         ) {
           saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          // message.success("Eligible for saving ");
         } else if (
           dob <= 31 &&
           isDiff48 <= 31 &&
@@ -403,12 +451,11 @@ const Dashboard = () => {
           formData.currentSSCRate === "23.75%" &&
           formData.workHistory === "yes"
         ) {
-          saving = calculateSaving(formData);
-          message.success("Eligible for saving ");
+          saving = calculateSaving2(formData);
+          // message.success("Eligible for saving ");
         } else {
-          message.error("Not eligible for saving...!");
+          // message.error("Not eligible for saving...!");
         }
-
         const existingData2 =
           JSON.parse(sessionStorage.getItem("hrData_company")) || [];
         const data = {
@@ -447,8 +494,14 @@ const Dashboard = () => {
       };
       console.log(data, "data...");
       create_hr(data)
-        .then((res) => {})
-        .catch((err) => {});
+        .then((res) => {
+          setLoading(false);
+          message.success("Hr Added successfully..");
+          navigate("/list-hr");
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
   };
 
@@ -1003,7 +1056,13 @@ Company's staff - HR already in the company"
             </div> */}
             <div className="my-4">
               <button className="btn_" type="button" onClick={handleSubmit}>
-                Done
+                {loading ? (
+                  <div className="d-flex justify-content-center align-items-center">
+                    <CircularProgress style={{ color: "white" }} size={20} />
+                  </div>
+                ) : (
+                  "Done"
+                )}
               </button>
             </div>
           </div>

@@ -69,41 +69,46 @@ const Blog = () => {
             oldPassword: "",
             newPassword: "",
           });
-          setShow(false)
+          setShow(false);
           message.success("Password updated successfully");
-        }else{
-        setChangeLoader(false)
-
+        } else {
+          setChangeLoader(false);
         }
       })
       .catch((er) => {
-        setChangeLoader(false)
+        setChangeLoader(false);
       });
   };
   const handleButtonClick = () => {
     inputRef.current.click();
   };
-  const handleEdit = () => {
+  const handleEdit = (e) => {
+    e.preventDefault();
     setLoading(true);
-    const data = {
-      name: name,
-      position: position,
-      comp_name: companyName,
-      profilePicture: imageUrl,
-    };
-    updateUsers(data)
-      .then((res) => {
-        setLoading(false);
+    if (!imageUrl) {
+      setLoading(false);
+      message.error("Profile Picture is required");
+    } else {
+      const data = {
+        name: name,
+        position: position,
+        comp_name: companyName,
+        profilePicture: imageUrl,
+      };
+      updateUsers(data)
+        .then((res) => {
+          setLoading(false);
 
-        message.success("user updated successfully");
-        setName("");
-        setPosition("");
-        setCompanyName("");
-        setImageUrl(null);
-      })
-      .catch((er) => {
-        setLoading(false);
-      });
+          message.success("user updated successfully");
+          setName("");
+          setPosition("");
+          setCompanyName("");
+          setImageUrl(null);
+        })
+        .catch((er) => {
+          setLoading(false);
+        });
+    }
   };
   return (
     <>
@@ -161,7 +166,7 @@ const Blog = () => {
                   className="rounded-circle d-flex justify-content-center align-items-center"
                   style={{ width: "4.5rem", height: "4.5rem" }}
                 >
-                  <CircularProgress size={20} />
+                  <CircularProgress style={{ color: "white" }} size={20} />
                 </div>
               ) : (
                 <label htmlFor="fileInput" className="cursor-pointer">
@@ -190,6 +195,7 @@ const Blog = () => {
               )}
               <Form.Control
                 type="file"
+                required
                 id="fileInput"
                 className="d-none"
                 onChange={handleFileChange}
@@ -212,12 +218,16 @@ const Blog = () => {
             </Button>
           </div>
 
-          <Form className="d-flex flex-wrap justify-content-between">
+          <Form
+            onSubmit={handleEdit}
+            className="d-flex flex-wrap justify-content-between"
+          >
             <Form.Group className="w-100 mb-3">
               <Form.Label>Name</Form.Label>
               <div className="modal_form">
                 <Form.Control
                   type="text"
+                  required
                   placeholder="Insert your name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
@@ -230,6 +240,7 @@ const Blog = () => {
               <div className="modal_form">
                 <Form.Control
                   type="text"
+                  required
                   placeholder="Insert the company’s name"
                   value={companyName}
                   onChange={(e) => setCompanyName(e.target.value)}
@@ -242,6 +253,7 @@ const Blog = () => {
               <div className="modal_form">
                 <Form.Control
                   type="text"
+                  required
                   placeholder="Insert your position"
                   value={position}
                   onChange={(e) => setPosition(e.target.value)}
@@ -251,9 +263,9 @@ const Blog = () => {
 
             <div className="mb-4 mt-3 ms-auto">
               <Button
-                onClick={handleEdit}
+                // onClick={handleEdit}
                 style={{ borderRadius: "15px" }}
-                type="button"
+                type="submit"
                 className="bg_primary text-white text-nowrap px-5 py-2 text-lg inter_regular d-flex justify-content-center align-items-center"
               >
                 {loading ? (

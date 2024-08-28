@@ -20,7 +20,7 @@ import { storage } from "../../../config/firebase";
 import axios from "axios";
 import { message } from "antd";
 import Select from "react-select";
-import { create_faq_category } from "../../api/faqs";
+import { create_faq } from "../../api/faqs";
 const AddVoucherCat = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
@@ -50,7 +50,7 @@ const AddVoucherCat = () => {
     setIsProcessing(true)
     e.preventDefault();
  
-create_faq_category(title).then((res)=>{
+create_faq(title).then((res)=>{
   setIsProcessing(false)
   message.success('Category created successfully')
   setTitle('')

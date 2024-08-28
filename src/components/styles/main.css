@@ -761,12 +761,14 @@
   margin-right: 10px;
 }
 
-.q_card{
+.q_card {
+  padding: 0rem 1rem;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  gap: 1rem;
   align-items: center;
   border: 1px solid black;
-  width: 33%;
+  width: auto;
 }
 @media screen and (max-width:500px) {
   .q_card{
