@@ -188,10 +188,10 @@ const Dashboard = () => {
             setLoading(false);
             if (res) {
               message.success("Hr Added successfully..");
-             
+
+              navigate("/list-hr");
             }
 
-            // navigate("/list-hr");
           })
           .catch((err) => {
             setLoading(false);
@@ -300,9 +300,9 @@ const Dashboard = () => {
             if (res) {
               message.success("Hr Added successfully..");
              
+              navigate("/list-hr");
             }
 
-            // navigate("/list-hr");
           })
           .catch((err) => {
             setLoading(false);

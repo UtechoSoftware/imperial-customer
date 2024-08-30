@@ -3,7 +3,6 @@
 import { message, Tabs, Tooltip } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
-import { Form, Modal } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDropzone } from "react-dropzone";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -13,15 +12,19 @@ import { fileavatar, pdf } from "../icons/icon";
 import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
 import { useSelector } from "react-redux";
+import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { del_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 const ListHrs = () => {
+  const [tableloading, setTableLoading] = useState(false);
   const location = useLocation();
+  const [showModal2, setShowModal2] = useState(false);
   const formatDate = (date) => date?.toLocaleDateString();
   const login = useSelector((state) => state.data.data.isLogin_);
-  const [newHire, setNewhire] = useState(false);
+  const [newHire, setNewhire] = useState(true);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [delLoader, setDelLoader] = useState(false);
   const [show2, setShow2] = useState(false);
   const [files, setFiles] = useState([]);
   const handleClose = () => setShow(false);
@@ -34,6 +37,8 @@ const ListHrs = () => {
   const [employeeType, setEmployeeType] = useState("New Hire");
   const onChange = (key) => {
     setLoading(true);
+    setTableLoading(true);
+
     console.log(key, "key");
     let value;
     if (key === "1") {
@@ -42,19 +47,19 @@ const ListHrs = () => {
     } else if (key === "2") {
       value = "companystaff";
       setNewhire(false);
+      
     }
     getPotential(value)
-      .then((res) => {
-        setLoading(false);
-        setPotential(res?.data?.totalSums);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    .then((res) => {
+      setPotential(res?.data?.totalSums);
+      setLoading(false);
+    })
+    .catch((err) => {
+      setLoading(false);
+    });
   };
   useEffect(() => {
     setLoading(true);
-
     getPotential("newhire")
       .then((res) => {
         setPotential(res?.data?.totalSums);
@@ -70,12 +75,22 @@ const ListHrs = () => {
     {
       key: "1",
       label: "New Hire",
-      children: <CompanyTable />,
+      children: (
+        <CompanyTable
+          tableloading={tableloading}
+          setTableLoading={setTableLoading}
+        />
+      ),
     },
     {
       key: "2",
       label: "Company Staff",
-      children: <NewTable />,
+      children: (
+        <NewTable
+          tableloading={tableloading}
+          setTableLoading={setTableLoading}
+        />
+      ),
     },
   ];
   const [formData, setFormData] = useState({
@@ -90,11 +105,7 @@ const ListHrs = () => {
     currentSSCRate: "",
   });
 
-  const handleDelete = () => {
-    del_hr(newHire === true ? "newhire" : "companystaff")
-      .then((res) => {})
-      .catch((err) => {});
-  };
+  const handleDelete = () => setShowModal2(true);
   const onDrop = (acceptedFiles) => {
     setFiles(acceptedFiles);
   };
@@ -162,7 +173,7 @@ const ListHrs = () => {
                 type="button"
                 className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
               >
-                Delete all rows
+                {"Delete all rows"}
               </button>
               <button
                 onClick={handleShow}
@@ -196,7 +207,6 @@ const ListHrs = () => {
                     <img className="h-10" src={plane} alt="email" />
                   </div>
                   <div
-                    onClick={() => message.success("working")}
                     className="q_card_3 flex cursor-pointer flx-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                     style={{ borderRadius: "60px" }}
                   >
@@ -352,6 +362,44 @@ fraction of the savings"
                 >
                   Done
                 </button>
+              </div>
+            </Modal.Body>
+          </Modal>
+          <Modal show={showModal2} onHide={() => setShowModal2(false)} centered>
+            <Modal.Header
+              className="border-0 mt-2 mr-2 p-0"
+              closeButton
+            ></Modal.Header>
+            <Modal.Body className="text-center">
+              <h5>Are you sure?</h5>
+              <div className="d-flex justify-content-center gap-3 mt-4">
+                <Button
+                  style={{ backgroundColor: "#B39D70" }}
+                  onClick={() => setShowModal2(false)}
+                >
+                  Cancel
+                </Button>
+                <Button
+                  style={{ backgroundColor: "#161920" }}
+                  className="me-2"
+                  onClick={() => {
+                    setDelLoader(true);
+                    del_hr(newHire === true ? "newhire" : "companystaff")
+                      .then((res) => {
+                        if (res) {
+                          setDelLoader(false);
+                          message.success("Data deleted successfully");
+                          setShowModal2(false);
+                        }
+                      })
+                      .catch(() => {
+                        setDelLoader(false);
+                        setShowModal2(false);
+                      });
+                  }}
+                >
+                  {delLoader ? <Spinner size="sm" /> : "Delete"}
+                </Button>
               </div>
             </Modal.Body>
           </Modal>
