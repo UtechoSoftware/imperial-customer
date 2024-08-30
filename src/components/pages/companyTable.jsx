@@ -113,7 +113,7 @@ const CompanyTable = () => {
                   <td>{data.salary || "N/A"}</td>
                   <td>{data.currentSSCRate || "N/A"}</td>
                   <td>{data.workHistory || "N/A"}</td>
-                  <td>{data.saving || "N/A"}</td>
+                  <td> {data.saving !== null && data.saving !== undefined ? data?.saving.toFixed(2) : "N/A"}</td>
                 </tr>
               ))
             ) : (

@@ -31,6 +31,7 @@ const NewTable = () => {
         });
     }
   }, [login]);
+  console.log(tableData,"ttt")
   return (
     <div className="table-responsive">
       {loading && login ? (
@@ -153,7 +154,8 @@ const NewTable = () => {
                 </td>
                 <td style={{ textAlign: "center" }}>{employee.workHistory}</td>
                 <td style={{ textAlign: "center" }}>
-                  {employee.saving || "N/A"}
+                {employee.saving !== null && employee.saving !== undefined ? employee?.saving.toFixed(2) : "N/A"}
+
                 </td>
               </tr>
             ))}

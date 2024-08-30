@@ -13,10 +13,12 @@ import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { create_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
+import { setSaving } from "../store/reducer/imperialAuth";
 const Dashboard = () => {
+  const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
   const login = useSelector((state) => state.data.data.isLogin_);
@@ -24,7 +26,6 @@ const Dashboard = () => {
   const [dob, setDob] = useState("");
   const [DOB, setDOB] = useState("");
   const [fillingdate, setFillingDate] = useState("");
-  const [saving, setSaving] = useState(null);
   const [startDate, setStartDate] = useState("");
   const [iefpDate, setIefpDate] = useState("");
   const [iefpDate_, setIefpDate_] = useState("");
@@ -88,6 +89,28 @@ const Dashboard = () => {
     const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
     const isDiff8filling = Math.abs(differenceInYears(btDate, today));
     if (login) {
+      const calculateSaving = (formData) => {
+        let saving = 14 * (23.75 / 100);
+        let salary = parseFloat(formData.salary);
+        if (isNaN(salary)) {
+          console.error("Salary is not a valid number");
+          return null; // Early exit if salary is invalid
+        } else {
+          return saving * salary;
+        }
+      };
+      const calculateSaving2 = (formData) => {
+        let saving = 14 * (11.85 / 100);
+        let salary = parseFloat(formData.salary);
+        if (isNaN(salary)) {
+          console.error("Salary is not a valid number");
+          return null; // Early exit if salary is invalid
+        } else {
+          return saving * salary;
+        }
+      };
+
+      let saving = null;
       if (employeeType === "newhire") {
         if (
           !formData.dob ||
@@ -113,17 +136,8 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "no"
           ) {
-            message.success("Eligible for saving ");
-            let saving = 14 * (23.75 / 100);
-            console.log(saving);
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            message.success("Eligible for saving 1 ");
+            saving = calculateSaving(formData);
           } else if (
             dob <= 31 &&
             isDiff48 <= 31 &&
@@ -134,18 +148,8 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "yes"
           ) {
-            message.success("Eligible for saving ");
-            let saving = 14 * (11.85 / 100);
-            console.log(saving);
-
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            message.success("Eligible for saving 2");
+            saving = calculateSaving2(formData);
           } else if (
             dob &&
             formData.iefp === "yes" &&
@@ -156,26 +160,42 @@ const Dashboard = () => {
             formData.currentSSCRate === "23.75%" &&
             formData.workHistory === "no"
           ) {
-            message.success("Eligible for saving ");
-            let saving = 14 * (23.75 / 100);
-            console.log(saving);
-
-            // Parse the salary first
-            let salary = parseFloat(formData.salary);
-
-            // Check if salary is a valid number
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return; // Early exit if salary is invalid
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            message.success("Eligible for saving..3 ");
+            saving = calculateSaving(formData);
           } else {
             // message.error("Not eligible for saving...!");
           }
           // Your logic here for when the form data is complete
         }
+        const data = {
+          type: employeeType,
+          currentSSCRate: formData.currentSSCRate,
+          // currentSalary:formData.currentSalary,
+          workHistory: formData.workHistory,
+          salary: formData.salary,
+          employmentContractType: formData.employmentContractType,
+          startDate: formData.startDate,
+          iefp: formData.iefp,
+          iefpDate: formData.iefpDate,
+          newHiring: formData.newHiring,
+          saving: saving,
+          dob: formData.dob,
+          identifier: formData.identifier,
+        };
+        console.log(data, "data...");
+        create_hr(data)
+          .then((res) => {
+            setLoading(false);
+            if (res) {
+              message.success("Hr Added successfully..");
+             
+            }
+
+            // navigate("/list-hr");
+          })
+          .catch((err) => {
+            setLoading(false);
+          });
       } else if (employeeType === "companystaff") {
         if (
           !formData.dob ||
@@ -207,17 +227,7 @@ const Dashboard = () => {
             formData.workHistory === "no"
           ) {
             // message.success("Eligible for saving ");
-            let saving = 14 * (23.75 / 100);
-            console.log(saving);
-
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            saving = calculateSaving(formData);
           } else if (
             dob <= 31 &&
             isDiff48 <= 31 &&
@@ -233,17 +243,7 @@ const Dashboard = () => {
             formData.workHistory === "yes"
           ) {
             // message.success("Eligible for saving ");
-            let saving = 14 * (11.85 / 100);
-            console.log(saving);
-
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            saving = calculateSaving(formData);
           } else if (
             dob &&
             formData.iefp === "yes" &&
@@ -258,17 +258,7 @@ const Dashboard = () => {
             formData.workHistory === "no"
           ) {
             // message.success("Eligible for saving ");
-            let saving = 14 * (23.75 / 100);
-            console.log(saving);
-
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            saving = calculateSaving(formData);
           } else if (
             dob <= 31 &&
             isDiff48 <= 31 &&
@@ -283,22 +273,40 @@ const Dashboard = () => {
             formData.workHistory === "yes"
           ) {
             // message.success("Eligible for saving ");
-            let saving = 14 * (11.85 / 100);
-            console.log(saving);
-
-            let salary = parseFloat(formData.salary);
-            if (isNaN(salary)) {
-              console.error("Salary is not a valid number");
-              return;
-            } else {
-              saving = saving * salary;
-              setSaving(saving);
-            }
+            saving = calculateSaving(formData);
           } else {
             // message.error("Not eligible for saving...!");
           }
         }
+        const data = {
+          type: employeeType,
+          currentSSCRate: formData.currentSSCRate,
+          // currentSalary:formData.currentSalary,
+          workHistory: formData.workHistory,
+          salary: formData.salary,
+          employmentContractType: formData.employmentContractType,
+          startDate: formData.startDate,
+          iefp: formData.iefp,
+          iefpDate: formData.iefpDate,
+          newHiring: formData.newHiring,
+          saving: saving,
+          dob: formData.dob,
+          identifier: formData.identifier,
+        };
+        console.log(data, "data...");
+        create_hr(data)
+          .then((res) => {
+            setLoading(false);
+            if (res) {
+              message.success("Hr Added successfully..");
+             
+            }
 
+            // navigate("/list-hr");
+          })
+          .catch((err) => {
+            setLoading(false);
+          });
         // Your logic here for when the form data is complete
       } else {
         // message.error("Not eligible for saving...!");
@@ -390,6 +398,7 @@ const Dashboard = () => {
         existingData.push(data);
         sessionStorage.setItem("hrData", JSON.stringify(existingData));
         console.log(existingData, "Updated hrData");
+        navigate("/list-hr");
       } else if (employeeType === "companystaff") {
         if (
           dob >= 45 &&
@@ -474,34 +483,9 @@ const Dashboard = () => {
         };
         existingData2.push(data);
         sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
+        navigate("/list-hr");
         console.log(existingData2, "Updated hrData");
       }
-    } else {
-      const data = {
-        type: employeeType,
-        currentSSCRate: formData.currentSSCRate,
-        // currentSalary:formData.currentSalary,
-        workHistory: formData.workHistory,
-        salary: formData.salary,
-        employmentContractType: formData.employmentContractType,
-        startDate: formData.startDate,
-        iefp: formData.iefp,
-        iefpDate: formData.iefpDate,
-        newHiring: formData.newHiring,
-        dob: formData.dob,
-        identifier: formData.identifier,
-        saving: saving,
-      };
-      console.log(data, "data...");
-      create_hr(data)
-        .then((res) => {
-          setLoading(false);
-          message.success("Hr Added successfully..");
-          navigate("/list-hr");
-        })
-        .catch((err) => {
-          setLoading(false);
-        });
     }
   };
 
@@ -674,21 +658,22 @@ const Dashboard = () => {
                       "open-ended contract" && (
                       <>
                         <Tooltip title="Indicate the expected hiring date for the new HR (dd/mm/yyyy)">
-                          <div className="">
-                            <DatePicker
-                              selected={formData.startDate}
-                              onChange={(date) =>
-                                handleDateChange(date, "startDate")
-                              }
-                              className="form-control input_1 cursor-pointer custom_radius text-center mr-2 mb-2"
-                              placeholderText="Predicted start date"
-                              dateFormat="dd/MM/yyyy"
-                              minDate={new Date()}
-                              showYearDropdown
-                              scrollableYearDropdown
-                            />
-                          </div>
+                          {/* <h5 className="">
+                          Predicted Start Date
+                          </h5> */}
                         </Tooltip>
+                        <DatePicker
+                          selected={formData.startDate}
+                          onChange={(date) =>
+                            handleDateChange(date, "startDate")
+                          }
+                          className="form-control input_1 cursor-pointer custom_radius text-center mr-2 mb-2"
+                          placeholderText="Predicted start date"
+                          dateFormat="dd/MM/yyyy"
+                          minDate={new Date()}
+                          showYearDropdown
+                          scrollableYearDropdown
+                        />
                         <Tooltip title="Indicate the expected gross monthly salary for the HR">
                           <div className="">
                             <input
@@ -1056,7 +1041,7 @@ Company's staff - HR already in the company"
             </div> */}
             <div className="my-4">
               <button className="btn_" type="button" onClick={handleSubmit}>
-                {loading ? (
+                {loading && login ? (
                   <div className="d-flex justify-content-center align-items-center">
                     <CircularProgress style={{ color: "white" }} size={20} />
                   </div>

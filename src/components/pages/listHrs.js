@@ -2,7 +2,7 @@
 /* eslint-disable no-unused-vars */
 import { message, Tabs, Tooltip } from "antd";
 import "bootstrap/dist/css/bootstrap.min.css";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import "react-datepicker/dist/react-datepicker.css";
 import { useDropzone } from "react-dropzone";
@@ -13,12 +13,13 @@ import { fileavatar, pdf } from "../icons/icon";
 import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
 import { useSelector } from "react-redux";
+import { del_hr, getPotential } from "../api/hr";
+import { CircularProgress } from "@mui/material";
 const ListHrs = () => {
   const location = useLocation();
   const formatDate = (date) => date?.toLocaleDateString();
   const login = useSelector((state) => state.data.data.isLogin_);
-
-  
+  const [newHire, setNewhire] = useState(false);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
   const [show2, setShow2] = useState(false);
@@ -27,12 +28,44 @@ const ListHrs = () => {
   const handleShow = () => setShow(true);
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
+  const [potential, setPotential] = useState("");
+  const [loading, setLoading] = useState(false);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
-
   const onChange = (key) => {
-    console.log(key);
+    setLoading(true);
+    console.log(key, "key");
+    let value;
+    if (key === "1") {
+      value = "newhire";
+      setNewhire(true);
+    } else if (key === "2") {
+      value = "companystaff";
+      setNewhire(false);
+    }
+    getPotential(value)
+      .then((res) => {
+        setLoading(false);
+        setPotential(res?.data?.totalSums);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
   };
+  useEffect(() => {
+    setLoading(true);
+
+    getPotential("newhire")
+      .then((res) => {
+        setPotential(res?.data?.totalSums);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  }, []);
+
+  console.log(potential, "pp");
   const items = [
     {
       key: "1",
@@ -57,22 +90,10 @@ const ListHrs = () => {
     currentSSCRate: "",
   });
 
-  const handleChange = (event) => {
-    setEmployeeType(event.target.value);
-    console.log(event.target.value);
-  };
-
-  const handleInputChange = (event) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
-
-  const handleDateChange = (date, name) => {
-    setFormData({ ...formData, [name]: date });
-  };
-
-  const handleSubmit = () => {
-    console.log(formData);
+  const handleDelete = () => {
+    del_hr(newHire === true ? "newhire" : "companystaff")
+      .then((res) => {})
+      .catch((err) => {});
   };
   const onDrop = (acceptedFiles) => {
     setFiles(acceptedFiles);
@@ -137,9 +158,7 @@ const ListHrs = () => {
           {login && (
             <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
               <button
-                onClick={() =>
-                  message.success("delete operation will available soon")
-                }
+                onClick={handleDelete}
                 type="button"
                 className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
               >
@@ -182,7 +201,15 @@ const ListHrs = () => {
                     style={{ borderRadius: "60px" }}
                   >
                     <h6>Potential Savings</h6>
-                    <h4 className="text_secondary">2500€</h4>
+                    {loading ? (
+                      <CircularProgress
+                        style={{ color: "black" }}
+                        size={24}
+                        className="text_white"
+                      />
+                    ) : (
+                      <h4 className="text_secondary">{potential}€</h4>
+                    )}
                   </div>
                 </>
               )}

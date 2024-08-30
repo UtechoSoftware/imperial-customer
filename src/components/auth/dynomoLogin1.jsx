@@ -187,9 +187,9 @@ const DynomoLogin1 = () => {
                   </div>
                 </div>
               </Form.Item>
-              <div className="ms-auto text_head fw-bold">
+              {/* <div className="ms-auto text_head fw-bold">
                 <Link className="">Recover password</Link>
-              </div>
+              </div> */}
               <div className="w-full my-3">
                
                   <button

@@ -760,7 +760,15 @@
   height: 55px;
   margin-right: 10px;
 }
-
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-tabs .ant-tabs-tab.ant-tabs-tab-active .ant-tabs-tab-btn {
+  color: #B39D70 !important;
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-tabs .ant-tabs-ink-bar {
+  background: rgb(110, 109, 109) !important;
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-tabs .ant-tabs-tab:hover {
+color :black !important 
+}
 .q_card {
   padding: 0rem 1rem;
   display: flex;

@@ -31,7 +31,7 @@ export const get_hr = async (type) => {
 // get all hrs --------------
 export const del_hr = async (type) => {
     try {
-      const res = await axios.get(global.BASEURL + `api/hr/all/${type}/`, {
+      const res = await axios.delete(global.BASEURL + `api/hr/all/${type}/`, {
         headers: {
           "Content-Type": "application/json",
           "x-auth-token": global.TOKEN,
@@ -43,3 +43,17 @@ export const del_hr = async (type) => {
     }
   };
 // api/hr/all/type ----> delete req
+// calculate potential saving against type-----------
+export const getPotential = async (type) => {
+  try {
+    const res = await axios.get(global.BASEURL + `api/hr/saving/${type}`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": global.TOKEN,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error, "error");
+  }
+};

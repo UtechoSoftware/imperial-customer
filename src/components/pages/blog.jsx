@@ -166,7 +166,7 @@ const Blog = () => {
                   className="rounded-circle d-flex justify-content-center align-items-center"
                   style={{ width: "4.5rem", height: "4.5rem" }}
                 >
-                  <CircularProgress style={{ color: "white" }} size={20} />
+                  <CircularProgress style={{ color: "black" }} size={20} />
                 </div>
               ) : (
                 <label htmlFor="fileInput" className="cursor-pointer">
