@@ -62,7 +62,7 @@ const DynomoLogin1 = () => {
   const handleLinkedInLogin = () => {
     const clientId = '77mw3n47spnyhx';
     const redirectUri = 'http://localhost:3000';
-    const linkedInUrl = " https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77mw3n47spnyhx&redirect_uri=http://localhost:3000/ ";
+    const linkedInUrl = " https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77u3lce2scwzni&redirect_uri=http://localhost:3000/ ";
     window.open(linkedInUrl, "_blank", "width=600,height=600");
   };
 
