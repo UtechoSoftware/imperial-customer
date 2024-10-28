@@ -12,7 +12,7 @@ const Help = () => {
   const [loading, setLoading] = useState(false);
   const [show, setShow] = useState(false);
   const handleShow = () => setShow(true);
-  const handleClose = () => {};
+  const handleClose = () => { };
   const handleSubmit = (e) => {
     e.preventDefault();
     setLoading(true);
@@ -114,11 +114,11 @@ const Help = () => {
             centered
             dialogClassName="custom-modal pt-0"
           >
-            <Modal.Body 
-            style={{ position: "relative" }}
+            <Modal.Body
+              style={{ position: "relative" }}
 
             >
-              <h6 className="modal-title mb-3 mt-0 ">Send your Faq to us</h6>
+              <h6 className="modal-title mb-3 mt-0 ">Send your FAQ to us</h6>
               <button
                 style={{
                   position: "absolute",
@@ -136,7 +136,7 @@ const Help = () => {
               </button>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-2" controlId="formFaqTitle">
-                  <Form.Label className="m-0">FAQ title</Form.Label>
+                  <Form.Label className="m-0">Subject</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="text"

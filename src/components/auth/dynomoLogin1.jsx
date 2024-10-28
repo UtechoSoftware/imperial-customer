@@ -41,9 +41,9 @@ const DynomoLogin1 = () => {
     try {
       await login(dataToSubmit)
         .then((res) => {
-          if(res){
+          if (res) {
             navigate("/list-hr");
-            console.log(res,"res")
+            console.log(res, "res")
             window.localStorage.setItem('imperial_token', res?.data?.token);
             dispatch(setIsLogin_(true));
             message.success("login successfully");
@@ -59,15 +59,21 @@ const DynomoLogin1 = () => {
       message.error(error?.response?.data?.message);
     }
   };
+  const handleLinkedInLogin = () => {
+    const clientId = '77mw3n47spnyhx';
+    const redirectUri = 'http://localhost:3000';
+    const linkedInUrl = " https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77mw3n47spnyhx&redirect_uri=http://localhost:3000/ ";
+    window.open(linkedInUrl, "_blank", "width=600,height=600");
+  };
 
   return (
     <>
       <div className="row w-100 ">
         <div
-          className="bg_primary d-flex flex-column  p-5 col-md-6 col-sm-12 h-100  "
+          className="bg_primary d-flex flex-column justify-content-center align-items-center  p-5 col-md-6 col-sm-12 h-100  "
           style={{ minHeight: "100vh" }}
         >
-          <div className="d-flex flex-column gap-4 pt-3 ">
+          <div className="d-flex flex-column gap-2 pt-3 ">
             <img src={finabeelight} width="50px" alt="logo_" />
             <div className="d-flex flex-column gap-3 mt-4">
               <h5 className="text-secondary">Welcome</h5>
@@ -78,7 +84,7 @@ const DynomoLogin1 = () => {
               </p>
             </div>
             <div className="d-flex flex-column gap-3 mt-4">
-              <h5 className="text-secondary">Did you know that...</h5>
+              {/* <h5 className="text-secondary">Did you know that...</h5> */}
               <p className="text_para">
                 Fixed-term contracts in certain circumstances automatically
                 convert to open-ended contracts, even without a formal written
@@ -95,7 +101,7 @@ const DynomoLogin1 = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-6 col-sm-12  p-4 d-flex flex-column ">
+        <div className="col-md-6 col-sm-12 justify-content-center p-4 d-flex flex-column ">
           <div className="border border-white p-4">
             <div className="d-flex flex-lg-row flex-column justify-content-between">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
@@ -117,7 +123,10 @@ const DynomoLogin1 = () => {
               <p className="poppins_semibold m-0 text_darkprimary">
                 Login with Linkedin
               </p>
-              <img width="70px" src={linkedin_} alt="linkdin" />
+              <div className="cursor-pointer" onClick={handleLinkedInLogin}>
+
+                <img width="70px" src={linkedin_} alt="linkdin" />
+              </div>
             </div>
             <div className="d-flex flex-row align-items-center gap-2">
               <div className="border_div"></div>
@@ -191,12 +200,12 @@ const DynomoLogin1 = () => {
                 <Link className="">Recover password</Link>
               </div> */}
               <div className="w-full my-3">
-               
-                  <button
-                    style={{ borderRadius: "15px", width: "12rem" }}
-                    type="submit"
-                    className="  bg_primary  text-white px-5 py-2 text-lg inter_regular flex justify-center items-center"
-                  >
+
+                <button
+                  style={{ borderRadius: "15px", width: "12rem" }}
+                  type="submit"
+                  className="  bg_primary  text-white px-5 py-2 text-lg inter_regular flex justify-center items-center"
+                >
                   {isProcessing ? (
                     <CircularProgress
                       style={{ color: "white" }}
@@ -206,8 +215,8 @@ const DynomoLogin1 = () => {
                   ) : (
                     "Login"
                   )}
-                  </button>
-               
+                </button>
+
               </div>
             </Form>
           </div>

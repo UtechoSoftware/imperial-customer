@@ -24,16 +24,16 @@ root.render(
       <CircularProgress className='text_darkprimary' size={40} thickness={2} />
       {/* <img style={{ width: '2rem', height: "auto" }} src={finabeesingle} className='absolute' alt="" /> */}
     </main>
-  }>  
-    <React.StrictMode>  
+  }>
+    <React.StrictMode>
       <BrowserRouter>
-      <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-      <QueryClientProvider client={queryClient}>
-        <App />
-      </QueryClientProvider>
-      </PersistGate>
-      </Provider>
+        <Provider store={store}>
+          <PersistGate loading={null} persistor={persistor}>
+            <QueryClientProvider client={queryClient}>
+              <App />
+            </QueryClientProvider>
+          </PersistGate>
+        </Provider>
       </BrowserRouter>
     </React.StrictMode>
   </Suspense>

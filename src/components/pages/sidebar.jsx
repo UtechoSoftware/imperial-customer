@@ -4,6 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import close from "../assets/png/hide.png";
 import open from "../assets/png/open.png";
+import Switch from 'react-switch';
+
 
 import { Tooltip } from "antd";
 import {
@@ -26,6 +28,33 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const roles = useSelector(
     (state) => state?.adminData?.adminData?.user?.roles
   );
+  const LanguageSwitcher = () => {
+    const [isPortuguese, setIsPortuguese] = useState(true);  // Default is Portuguese
+
+    const handleLanguageToggle = () => {
+      const newLanguage = isPortuguese ? 'english' : 'portuguese';
+      // axiosInstanceApi.put(`/users/update-language/${newLanguage}`);
+      setIsPortuguese(!isPortuguese);
+    };
+
+    return (
+      <div style={{ display: 'flex', alignItems: 'center', minWidth: '220px' }}>
+        <Switch
+          onChange={handleLanguageToggle}
+          checked={isPortuguese}
+          offColor="#888"
+          height={18}
+          width={36}
+          onColor="#AA8555"  // Green color when Portuguese
+          uncheckedIcon={false}
+          checkedIcon={false}
+        />
+        <span style={{ marginLeft: '10px', color: isPortuguese ? '#AA8555' : 'grey' }}>
+          {isPortuguese ? 'Português' : 'English'}
+        </span>
+      </div>
+    );
+  };
   const [collapsed, setCollapsed] = useState(false);
   const [selectedLink, setSelectedLink] = useState("0");
   const [show, setShow] = useState(false);
@@ -119,7 +148,8 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
           break;
       }
     });
-  } else {
+  } else if (login) {
+
     allowedItems = [
       {
         icon: <Grid />,
@@ -148,29 +178,75 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
       },
       login
         ? {
-            icon: <LogOut />,
-            iconActive: <LogOut />,
-            items: "Logout",
-            path: "/login",
-          }
+          icon: <LogOut />,
+          iconActive: <LogOut />,
+          items: "Logout",
+          path: "/login",
+        }
         : {
-            icon: <LogIn />,
-            iconActive: <LogIn />,
-            items: "Login",
-            path: "/login",
-          },
-    ];
+          icon: <LogIn />,
+          iconActive: <LogIn />,
+          items: "Login",
+          path: "/login",
+        },
+    ]
+
+  } else {
+    allowedItems = [
+      {
+        icon: <Grid />,
+        iconActive: <Grid />,
+        items: "Calculator",
+        path: "/list-hr",
+      },
+      {
+        icon: <Info />,
+        iconActive: <Info />,
+        items: "Information",
+        path: "/info",
+      },
+
+      {
+        icon: <HelpCircle />,
+        iconActive: <HelpCircle />,
+        items: "Help",
+        path: "/help",
+      },
+      {
+        icon: <LanguageSwitcher />,
+        iconActive: <LanguageSwitcher />,
+        items: "Language",  // Optional label, can also be omitted
+        path: "#",  // Or an empty path if it doesn’t link to a new page
+      },
+      login
+        ? {
+          icon: <LogOut />,
+          iconActive: <LogOut />,
+          items: "Logout",
+          path: "/login",
+        }
+        : {
+          icon: <LogIn />,
+          iconActive: <LogIn />,
+          items: "Login",
+          path: "/login",
+        },
+
+    ]
   }
 
   // Separate Profile and Help items
-  const mainItems = allowedItems.slice(0, -1);
-  const bottomItems = allowedItems.slice(-1);
+  const mainItems = allowedItems.slice(0, -2);  // Excludes the last two items
+  const bottomItems = allowedItems.slice(-2);   // Includes only the last two items
+
+
+
 
   return (
     <>
       {window.location.pathname === "/login" ||
-      window.location.pathname === "/register" ||
-      window.location.pathname === "/" ? (
+        window.location.pathname === "/register" ||
+        window.location.pathname === "/" ? (
         children
       ) : login || !login ? (
         <div className="flex h-screen min-h-screen">
@@ -206,7 +282,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                     >
                       <img
                         style={{
-                          height: "2.5rem",
+                          height: "2rem",
                           width: "auto",
                           marginLeft: "auto",
                           marginBottom: "2rem",
@@ -248,7 +324,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                     >
                       <img
                         style={{
-                          height: "4rem",
+                          height: "3.5rem",
                           width: "auto",
                           marginLeft: "auto",
                         }}
@@ -294,11 +370,10 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                   handleLinkClick(`${i}-${j}`, subItem.path)
                                 }
                                 component={<Link to={subItem.path} />}
-                                className={`w-full pb-2 sub_m  ${
-                                  isChildPath(subItem.path, location.pathname)
-                                    ? "text_secondary plusJakara_semibold"
-                                    : "text_white"
-                                }`}
+                                className={`w-full pb-2 sub_m  ${isChildPath(subItem.path, location.pathname)
+                                  ? "text_secondary plusJakara_semibold"
+                                  : "text_white"
+                                  }`}
                               >
                                 <div className="flex items-center gap-4">
                                   {isChildPath(subItem.path, location.pathname)
@@ -318,11 +393,10 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                               handleLinkClick(i.toString(), item.path)
                             }
                             component={<Link to={item.path} />}
-                            className={`w-full rounded-3 mb-2 ${
-                              isChildPath(item.path, location.pathname)
-                                ? "text_secondary plusJakara_semibold"
-                                : "text-white"
-                            }`}
+                            className={`w-full rounded-3 mb-2 ${isChildPath(item.path, location.pathname)
+                              ? "text_secondary plusJakara_semibold"
+                              : "text-white"
+                              }`}
                           >
                             <div className="flex items-center gap-4">
                               {isChildPath(item.path, location.pathname)
@@ -372,11 +446,10 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                         key={i}
                         onClick={() => handleLinkClick(i.toString(), item.path)}
                         component={<Link to={item.path} />}
-                        className={`w-full rounded-3 mb-2 ${
-                          isChildPath(item.path, location.pathname)
-                            ? "text_secondary plusJakara_semibold"
-                            : "text-white"
-                        }`}
+                        className={`w-full rounded-3 mb-2 ${isChildPath(item.path, location.pathname)
+                          ? "text_secondary plusJakara_semibold"
+                          : "text-white"
+                          }`}
                       >
                         <div className="flex items-center gap-4">
                           {isChildPath(item.path, location.pathname)

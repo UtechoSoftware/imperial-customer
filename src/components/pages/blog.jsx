@@ -1,5 +1,5 @@
 import { message, Tooltip } from "antd";
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Button, Form, Modal } from "react-bootstrap";
 import { Eye, EyeOff, Lock } from "react-feather";
 import { avatarman, finabeelight } from "../icons/icon";
@@ -7,9 +7,14 @@ import { uploadAndGetUrl } from "../api/uploadFile";
 import { CircularProgress } from "@mui/material";
 import { updateUsers } from "../api/users";
 import { changePassword } from "../api/auth";
-
+import { useDispatch, useSelector } from "react-redux";
+import { setUserData } from "../store/reducer/imperialAuth";
 const Blog = () => {
+  const dispatch = useDispatch()
+  const user = useSelector(state => state.data.data.user)
+  console.log(user, 'user')
   const [loading, setLoading] = useState(false);
+
   const [changeloader, setChangeLoader] = useState(false);
   const [name, setName] = useState("");
   const [companyName, setCompanyName] = useState("");
@@ -24,12 +29,10 @@ const Blog = () => {
   });
   const toggleOldPasswordVisibility = () => {
     setShowOldPassword(!showOldPassword);
-  };
-
+  }
   const toggleNewPasswordVisibility = () => {
     setShowNewPassword(!showNewPassword);
-  };
-
+  }
   const [selectedFile, setSelectedFile] = useState(null);
   const [show, setShow] = useState(false);
   const inputRef = useRef(null);
@@ -48,7 +51,7 @@ const Blog = () => {
       const url = await uploadAndGetUrl(selectedFile);
       console.log(url, "url");
       if (url) {
-        setImageUrl(url); // Save the returned image URL
+        setImageUrl(url);
         setFileLoading(false);
       }
     }
@@ -98,18 +101,26 @@ const Blog = () => {
       updateUsers(data)
         .then((res) => {
           setLoading(false);
-
           message.success("user updated successfully");
-          setName("");
-          setPosition("");
-          setCompanyName("");
-          setImageUrl(null);
+          // setName("");
+          dispatch(setUserData(res?.data?.user))
+
+          // setPosition("");
+          // setCompanyName("");
+          // setImageUrl(null);
         })
         .catch((er) => {
           setLoading(false);
         });
     }
   };
+  useEffect(() => {
+    setName(user?.name)
+    setCompanyName(user?.comp_name)
+    setPosition(user?.position)
+    setImageUrl(user?.profilePicture)
+
+  }, [user])
   return (
     <>
       <div className="pt-5">
@@ -129,7 +140,7 @@ const Blog = () => {
                 className="text_para plusJakara_regular"
                 style={{ fontSize: "14px" }}
               >
-                Customer profile
+                Profile
               </h6>
             </div>
           </div>
@@ -166,7 +177,10 @@ const Blog = () => {
                   className="rounded-circle d-flex justify-content-center align-items-center"
                   style={{ width: "4.5rem", height: "4.5rem" }}
                 >
-                  <CircularProgress style={{ color: "black" }} size={20} />
+                  <CircularProgress
+                    style={{ color: "white" }}
+                    size={20}
+                  />
                 </div>
               ) : (
                 <label htmlFor="fileInput" className="cursor-pointer">
@@ -270,10 +284,13 @@ const Blog = () => {
               >
                 {loading ? (
                   <div className="d-flex justify-content-center align-items-center">
-                    <CircularProgress size={20} />
+                    <CircularProgress
+                      style={{ color: "white" }}
+                      size={20}
+                    />
                   </div>
                 ) : (
-                  "Edit Profile"
+                  "Update Profile"
                 )}
               </Button>
             </div>

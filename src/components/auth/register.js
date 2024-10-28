@@ -18,7 +18,7 @@ import {
   rightarrow,
   techLogin,
 } from "../icons/icon";
-import {} from "react-bootstrap";
+import { } from "react-bootstrap";
 import { Link, useNavigate } from "react-router-dom";
 import { Form, Input, message } from "antd";
 import {
@@ -34,7 +34,7 @@ import { getUser } from "../store/reducer/userAuthSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "react-feather";
 import { checkEmail, register } from "../api/auth";
-import { setIsLogin, setIsLogin_ } from "../store/reducer/imperialAuth";
+import { setIsLogin, setIsLogin_, setUserData } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const Register = () => {
@@ -75,6 +75,8 @@ const Register = () => {
             navigate("/list-hr");
             dispatch(setIsLogin_(true));
             window.localStorage.setItem('imperial_token', res?.data?.token);
+            console.log(res?.data?.user)
+            dispatch(setUserData(res?.data?.user))
             message.success("Account created successfully");
             setIsProcessing(false);
           })
@@ -102,7 +104,7 @@ const Register = () => {
           message.error("Email already exist");
         }
       })
-      .catch((er) => {});
+      .catch((er) => { });
   };
   return (
     <>
@@ -111,7 +113,7 @@ const Register = () => {
           className="bg_primary d-flex flex-column p-5 col-md-6 col-sm-12   "
           style={{ minHeight: "100vh" }}
         >
-          <div className="d-flex flex-column gap-4 pt-3 ">
+          <div className="d-flex flex-column gap-2 pt-3 ">
             <img src={finabeelight} width="50px" alt="logo_" />
             <div className="d-flex flex-column gap-3 mt-4">
               <h5 className="text-secondary">Welcome</h5>
@@ -122,7 +124,7 @@ const Register = () => {
               </p>
             </div>
             <div className="d-flex flex-column gap-3 mt-4">
-              <h5 className="text-secondary">Did you know that...</h5>
+              {/* <h5 className="text-secondary">Did you know that...</h5> */}
               <p className="text_para">
                 Fixed-term contracts in certain circumstances automatically
                 convert to open-ended contracts, even without a formal written
@@ -143,7 +145,7 @@ const Register = () => {
           <div className="border border-white p-4">
             <div className="d-flex flex-lg-row flex-column justify-content-between ">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
-                Registeration
+                Registration
               </h5>
               <p className="text-sm text_para poppins_regular my-2">
                 ALready have an account ?{" "}
@@ -226,7 +228,7 @@ const Register = () => {
               <Form.Item
                 required
                 name="position"
-                className="w-full placeholder_color mt-4 relative inter_medium"
+                className="w-full placeholder_color  relative inter_medium"
                 hasFeedback
               >
                 <div className="">
@@ -306,7 +308,7 @@ const Register = () => {
               <Form.Item
                 required
                 name="confirmPassword"
-                className="w-full placeholder_color mt-4 relative inter_medium"
+                className="w-full placeholder_color  relative inter_medium"
                 hasFeedback
               >
                 <div className="">

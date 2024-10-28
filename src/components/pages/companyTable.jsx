@@ -3,11 +3,18 @@ import { Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { get_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
-
+import { FaPencilAlt, FaTrash } from "react-icons/fa";
+import { Edit2, Trash2 } from "react-feather";
 const CompanyTable = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
-
+  const editRow = (index) => {
+    console.log("Editing row at index:", index);
+  };
+  const deleteRow = (index) => {
+    const newData = tableData.filter((_, i) => i !== index);
+    setTableData(newData);
+  };
   const login = useSelector((state) => state.data.data.isLogin_);
   useEffect(() => {
     if (!login) {
@@ -20,14 +27,19 @@ const CompanyTable = () => {
     setLoading(true);
 
     if (login) {
-      get_hr("newhire")
-        .then((res) => {
-          setTableData(res?.data?.data);
-          setLoading(false);
-        })
-        .catch((er) => {
-          setLoading(false);
-        });
+      if (global.BASEURL) {
+        get_hr("newhire")
+          .then((res) => {
+            setTableData(res?.data?.data);
+            setLoading(false);
+          })
+          .catch((er) => {
+            setLoading(false);
+          });
+      } else {
+        setLoading(true);
+
+      }
     }
   }, [login]);
   console.log(tableData, "tt");
@@ -75,6 +87,8 @@ const CompanyTable = () => {
               <th style={{ width: "125px" }}>23.75% Or Other</th>
               <th style={{ width: "150px" }}>Yes</th>
               <th style={{ width: "150px" }}>______</th>
+              <th style={{ width: "150px" }}>Actions</th>
+
             </tr>
           </thead>
           <tbody>
@@ -84,36 +98,43 @@ const CompanyTable = () => {
                   <td>
                     {data.dob
                       ? new Date(data.dob).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
                       : "N/A"}
                   </td>
                   <td>
                     {data.iefpDate
                       ? new Date(data.iefpDate).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
                       : "N/A"}
                   </td>
 
                   <td>
                     {data.startDate
                       ? new Date(data.startDate).toLocaleDateString("en-GB", {
-                          day: "2-digit",
-                          month: "2-digit",
-                          year: "numeric",
-                        })
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
                       : "N/A"}
                   </td>
-
                   <td>{data.salary || "N/A"}</td>
                   <td>{data.currentSSCRate || "N/A"}</td>
                   <td>{data.workHistory || "N/A"}</td>
                   <td> {data.saving !== null && data.saving !== undefined ? data?.saving.toFixed(2) : "N/A"}</td>
+                  <td>
+                    {/* hello are */}
+                    <div className="d-flex flex-row  justify-content-center">
+
+                      <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(index)} />
+                      <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(index)} />
+                    </div>
+                  </td>
                 </tr>
               ))
             ) : (

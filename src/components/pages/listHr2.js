@@ -87,7 +87,7 @@ const ListHr2 = () => {
               Savings Calculator
             </h4>
             <div className="d-flex gap-2 flex-wrap flex-row align-items-center">
-             
+
               <button
                 className="btn2 px-3 py-1  border-black"
                 onClick={() => navigate("/add-hr")}
@@ -112,21 +112,21 @@ const ListHr2 = () => {
               </div>
             </button> */}
 
-        
+
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
-         
-              <>
-                <button
-                  onClick={handleShow}
-                  type="button"
-                  className="btn2 px-3 py-3  border-black "
-                >
-                  Calculate Savings
-                </button>
-              </>
-            
+
+            <>
+              <button
+                onClick={handleShow}
+                type="button"
+                className="btn2 px-3 py-3  border-black "
+              >
+                Calculate Savings
+              </button>
+            </>
+
             <div className="d-flex gap-4 flex-wrap justify-content-between">
-            
+
               <Tooltip
                 style={{ backgroundColor: "yellow" }}
                 title="We only charge in the scenario of
@@ -135,19 +135,19 @@ fraction of the savings"
                 className="cursor-pointer "
               >
 
-                  <div
-                    onClick={handleShow}
-                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>I want support with the application</h6>
-                    <img
-                      className="h-10 d-md-block d-none"
-                      src={hand}
-                      alt="email"
-                    />
-                  </div>
-             
+                <div
+                  onClick={handleShow}
+                  className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                  style={{ borderRadius: "60px" }}
+                >
+                  <h6>I want support with the application</h6>
+                  <img
+                    className="h-10 d-md-block d-none"
+                    src={hand}
+                    alt="email"
+                  />
+                </div>
+
               </Tooltip>
             </div>
             <div className="">
@@ -164,10 +164,28 @@ fraction of the savings"
             centered
             dialogClassName="custom-modal"
           >
-            <Modal.Body>
+            <Modal.Body
+              style={{ position: "relative" }}
+
+            >
               <h6 className="modal-title">
                 Fill in your details to receive the calculation
               </h6>
+              <button
+                style={{
+                  position: "absolute",
+                  top: "0px",
+                  right: "0px",
+                  // background: "transparent",
+                  border: "none",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                }}
+                type="button"
+                onClick={() => setShow(false)}
+              >
+                ❌
+              </button>
               <Form>
                 <Form.Group className="mb-2" controlId="formName">
                   <Form.Label className="m-0">Name</Form.Label>

@@ -299,7 +299,7 @@ const Dashboard = () => {
             setLoading(false);
             if (res) {
               message.success("Hr Added successfully..");
-             
+
               navigate("/list-hr");
             }
 
@@ -520,17 +520,22 @@ const Dashboard = () => {
     <div>
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
-          <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
-            <div className="flex">
-              <img className="avatar_img" src={avatar} alt="avatar" />
-              <div className="flex flex-col">
-                <h4 className="manrope_bold max-md:text-xl text_black">
-                  John Doe
-                </h4>
-                <p>Hr Director - Tesla Corp.</p>
+          {
+            login && (
+
+              <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
+                <div className="flex">
+                  <img className="avatar_img" src={avatar} alt="avatar" />
+                  <div className="flex flex-col">
+                    <h4 className="manrope_bold max-md:text-xl text_black">
+                      John Doe
+                    </h4>
+                    <p>Hr Director - Tesla Corp.</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )
+          }
           <p className="manrope_bold  fs-5 text_black">
             Social Security contributions partial or total exemption
           </p>
@@ -539,52 +544,56 @@ const Dashboard = () => {
           </h4>
           {employeeType === "newhire" ? (
             <div>
-              <div className="my-3">
-                <label className="form-label w-fit manrope_semibold cursor-pointer">
-                  Type of Employee
-                </label>
+              <div className="">
+                <div className="flex flex-row items-center flex-wrap  gap-3">
 
-                <div className=" col-lg-4 col-md-6  col-12">
-                  <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
-                    <div className="">
-                      <select
-                        required
-                        className="form-select cursor-pointer py-3 custom_radius text-center"
-                        value={employeeType} // Bind the value to state
-                        onChange={handleChange}
-                      >
-                        <option value="">Select</option>{" "}
-                        {/* Default placeholder option */}
-                        <option value="newhire">New Hire</option>
-                        <option value="companystaff">Company's Staff</option>
-                      </select>
-                    </div>
-                  </Tooltip>
+                  <div className=" col-lg-4 col-md-6  col-12">
+                    <label className="form-label w-fit manrope_semibold cursor-pointer">
+                      Type of Employee
+                    </label>
+                    <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
+                      <div className="">
+                        <select
+                          required
+                          className="form-select cursor-pointer py-3 custom_radius text-center"
+                          value={employeeType} // Bind the value to state
+                          onChange={handleChange}
+                        >
+                          <option value="">Select</option>{" "}
+                          {/* Default placeholder option */}
+                          <option value="newhire">New Hire</option>
+                          <option value="companystaff">Company's Staff</option>
+                        </select>
+                      </div>
+                    </Tooltip>
+                  </div>
+
+                  <div className="my-4 d-flex flex-column  align-items-baseline flex-wrap">
+
+                    <label className="form-label cursor-pointer manrope_semibold">
+                      Personal Data
+                    </label>
+                    <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
+                      <div className="">
+                        <DatePicker
+                          selected={formData.dob}
+                          onChange={(date) => handleDateChange(date, "dob")}
+                          className="form-control cursor-pointer input_1 custom_radius text-center"
+                          placeholderText="Date of Birth"
+                          dateFormat="dd/MM/yyyy"
+                          // maxDate={new Date()}
+                          required
+                          showYearDropdown
+                          scrollableYearDropdown
+                        />
+                      </div>
+                    </Tooltip>
+                  </div>
                 </div>
               </div>
 
-              <div className="my-4 d-flex gap-md-3 gap-sm-2 gap-1 align-items-baseline flex-wrap">
-                <label className="form-label cursor-pointer manrope_semibold">
-                  Personal Data
-                </label>
-                <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
-                  <div className="">
-                    <DatePicker
-                      selected={formData.dob}
-                      onChange={(date) => handleDateChange(date, "dob")}
-                      className="form-control cursor-pointer input_1 custom_radius text-center"
-                      placeholderText="Date of Birth"
-                      dateFormat="dd/MM/yyyy"
-                      // maxDate={new Date()}
-                      required
-                      showYearDropdown
-                      scrollableYearDropdown
-                    />
-                  </div>
-                </Tooltip>
-              </div>
               {/* </div> */}
-              <div className="my-4 ">
+              <div className=" ">
                 <label className="form-label cursor-pointer manrope_semibold">
                   Registration as unemployed
                 </label>
@@ -656,85 +665,85 @@ const Dashboard = () => {
                     </Tooltip>
                     {formData.employmentContractType ===
                       "open-ended contract" && (
-                      <>
-                        <Tooltip title="Indicate the expected hiring date for the new HR (dd/mm/yyyy)">
-                          {/* <h5 className="">
+                        <>
+                          <Tooltip title="Indicate the expected hiring date for the new HR (dd/mm/yyyy)">
+                            {/* <h5 className="">
                           Predicted Start Date
                           </h5> */}
-                        </Tooltip>
-                        <DatePicker
-                          selected={formData.startDate}
-                          onChange={(date) =>
-                            handleDateChange(date, "startDate")
-                          }
-                          className="form-control input_1 cursor-pointer custom_radius text-center mr-2 mb-2"
-                          placeholderText="Predicted start date"
-                          dateFormat="dd/MM/yyyy"
-                          minDate={new Date()}
-                          showYearDropdown
-                          scrollableYearDropdown
-                        />
-                        <Tooltip title="Indicate the expected gross monthly salary for the HR">
-                          <div className="">
-                            <input
-                              type="text"
-                              className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
-                              name="salary"
-                              placeholder="Monthly base salary"
-                              value={formData.salary}
-                              onChange={handleInputChange}
-                            />
-                          </div>
-                        </Tooltip>
-
-                        <div className="  my-2 col-md-6 col-12">
-                          <label className="form-label cursor-pointer w-fit manrope_semibold">
-                            Company's current Social Security contribution rate
-                          </label>
-                          <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
+                          </Tooltip>
+                          <DatePicker
+                            selected={formData.startDate}
+                            onChange={(date) =>
+                              handleDateChange(date, "startDate")
+                            }
+                            className="form-control input_1 cursor-pointer custom_radius text-center mr-2 mb-2"
+                            placeholderText="Predicted start date"
+                            dateFormat="dd/MM/yyyy"
+                            minDate={new Date()}
+                            showYearDropdown
+                            scrollableYearDropdown
+                          />
+                          <Tooltip title="Indicate the expected gross monthly salary for the HR">
                             <div className="">
-                              <select
-                                className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
-                                name="currentSSCRate"
-                                value={formData.currentSSCRate}
+                              <input
+                                type="text"
+                                className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
+                                name="salary"
+                                placeholder="Monthly base salary"
+                                value={formData.salary}
                                 onChange={handleInputChange}
-                              >
-                                <option value="">
-                                  Current Social Security contributions rate
-                                </option>
-                                <option value="23.75%">23.75%</option>
-                                <option value="Other">Other</option>
-                              </select>
+                              />
                             </div>
                           </Tooltip>
-                        </div>
-                        {formData.currentSSCRate === "23.75%" && (
-                          <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+
+                          <div className="  my-2 col-md-6 col-12">
                             <label className="form-label cursor-pointer w-fit manrope_semibold">
-                              Employees’s work history
+                              Company's current Social Security contribution rate
                             </label>
+                            <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
+                              <div className="">
+                                <select
+                                  className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
+                                  name="currentSSCRate"
+                                  value={formData.currentSSCRate}
+                                  onChange={handleInputChange}
+                                >
+                                  <option value="">
+                                    Current Social Security contributions rate
+                                  </option>
+                                  <option value="23.75%">23.75%</option>
+                                  <option value="Other">Other</option>
+                                </select>
+                              </div>
+                            </Tooltip>
+                          </div>
+                          {formData.currentSSCRate === "23.75%" && (
+                            <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+                              <label className="form-label cursor-pointer w-fit manrope_semibold">
+                                Employees’s work history
+                              </label>
 
-                            <div className="col-12">
-                              <Tooltip title="Indicate whether the employment contract to be signed will be the first permanent employment contract ever entered into by the new HR">
-                                <div className="">
-                                  <select
-                                    className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
-                                    name="workHistory"
-                                    value={formData.workHistory}
-                                    onChange={handleInputChange}
-                                  >
-                                    <option value="">
-                                      Is this the employee's first open-ended
-                                      contract?
-                                    </option>
+                              <div className="col-12">
+                                <Tooltip title="Indicate whether the employment contract to be signed will be the first permanent employment contract ever entered into by the new HR">
+                                  <div className="">
+                                    <select
+                                      className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
+                                      name="workHistory"
+                                      value={formData.workHistory}
+                                      onChange={handleInputChange}
+                                    >
+                                      <option value="">
+                                        Is this the employee's first open-ended
+                                        contract?
+                                      </option>
 
-                                    <option value="no">No</option>
+                                      <option value="no">No</option>
 
-                                    <option value="yes">yes</option>
-                                  </select>
-                                </div>
-                              </Tooltip>
-                              {/* <input
+                                      <option value="yes">yes</option>
+                                    </select>
+                                  </div>
+                                </Tooltip>
+                                {/* <input
                               type="text"
                               className="form-control w-100 custom_radius text-center mr-2"
                               name="workHistory"
@@ -742,11 +751,11 @@ const Dashboard = () => {
                               value={formData.workHistory}
                               onChange={handleInputChange}
                             /> */}
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </>
-                    )}
+                          )}
+                        </>
+                      )}
                   </div>
                 </div>
                 {/* )} */}
@@ -796,7 +805,7 @@ const Dashboard = () => {
                         onChange={handleIdentifierChange}
                         className="form-control cursor-pointer input_1 custom_radius text-center mr-2 mb-2"
 
-                        // className="form-control"
+                      // className="form-control"
                       />
                     </div>
                   </Tooltip>
@@ -878,12 +887,12 @@ const Dashboard = () => {
                 <label className="form-label cursor-pointer manrope_semibold">
                   Employment Contract Detail
                 </label>
-                <button
+                {/* <button
                   className="btn ms-3 my-3 px-2 py-1 btn-sm bg-success  rounded-4 text-white "
                   onClick={handleFillingDate}
                 >
                   Random Date
-                </button>
+                </button> */}
                 <div className="d-flex gap-2 col-12 flex-wrap">
                   <Tooltip
                     title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.
@@ -912,84 +921,84 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
 
                   {formData.employmentContractType ===
                     "open-ended contract" && (
-                    <>
-                      <Tooltip title="Indicate the date of the (most recent) employment contract with the HR (dd/mm/yyyy)">
-                        <div>
-                          <DatePicker
-                            selected={formData.startDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "startDate")
-                            }
-                            className="form-control input_1 cursor-pointer custom_radius  text-center mr-2 mb-2"
-                            placeholderText="contract start date"
-                            dateFormat="dd/MM/yyyy"
-                            maxDate={new Date()}
-                            showYearDropdown
-                            scrollableYearDropdown
-                          />
-                        </div>
-                      </Tooltip>
-                      <Tooltip title="Indicate the current gross monthly salary of the HR">
-                        <div className="">
-                          <input
-                            type="text"
-                            className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
-                            name="salary"
-                            placeholder="Monthly base salary"
-                            value={formData.salary}
-                            onChange={handleInputChange}
-                          />
-                        </div>
-                      </Tooltip>
-                      <div className="  my-2 col-md-6 col-12">
-                        <label className="form-label cursor-pointer w-fit manrope_semibold">
-                          Company's current Social Security contribution rate
-                        </label>
-                        <Tooltip
-                          title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
-"
-                        >
-                          <div className="">
-                            <select
-                              className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
-                              name="currentSSCRate"
-                              value={formData.currentSSCRate}
-                              onChange={handleInputChange}
-                            >
-                              <option value="">
-                                Current Social Security contributions rate
-                              </option>
-                              <option value="23.75%">23.75%</option>
-                              {/* <option value="Other">Other</option> */}
-                            </select>
+                      <>
+                        <Tooltip title="Indicate the date of the (most recent) employment contract with the HR (dd/mm/yyyy)">
+                          <div>
+                            <DatePicker
+                              selected={formData.startDate}
+                              onChange={(date) =>
+                                handleDateChange(date, "startDate")
+                              }
+                              className="form-control input_1 cursor-pointer custom_radius  text-center mr-2 mb-2"
+                              placeholderText="contract start date"
+                              dateFormat="dd/MM/yyyy"
+                              maxDate={new Date()}
+                              showYearDropdown
+                              scrollableYearDropdown
+                            />
                           </div>
                         </Tooltip>
-                      </div>
-                      {formData.currentSSCRate === "23.75%" && (
-                        <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+                        <Tooltip title="Indicate the current gross monthly salary of the HR">
+                          <div className="">
+                            <input
+                              type="text"
+                              className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
+                              name="salary"
+                              placeholder="Monthly base salary"
+                              value={formData.salary}
+                              onChange={handleInputChange}
+                            />
+                          </div>
+                        </Tooltip>
+                        <div className="  my-2 col-md-6 col-12">
                           <label className="form-label cursor-pointer w-fit manrope_semibold">
-                            Employees’s work history
+                            Company's current Social Security contribution rate
                           </label>
+                          <Tooltip
+                            title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
+"
+                          >
+                            <div className="">
+                              <select
+                                className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
+                                name="currentSSCRate"
+                                value={formData.currentSSCRate}
+                                onChange={handleInputChange}
+                              >
+                                <option value="">
+                                  Current Social Security contributions rate
+                                </option>
+                                <option value="23.75%">23.75%</option>
+                                {/* <option value="Other">Other</option> */}
+                              </select>
+                            </div>
+                          </Tooltip>
+                        </div>
+                        {formData.currentSSCRate === "23.75%" && (
+                          <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+                            <label className="form-label cursor-pointer w-fit manrope_semibold">
+                              Employees’s work history
+                            </label>
 
-                          <div className="col-12">
-                            <Tooltip title="Indicate whether the current employment contract is the first open-ended employment contract ever entered into by the HR">
-                              <div className="">
-                                <select
-                                  className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
-                                  name="workHistory"
-                                  value={formData.workHistory}
-                                  onChange={handleInputChange}
-                                >
-                                  <option value="">
-                                    Is this the employee's first open-ended
-                                    contract?
-                                  </option>
-                                  <option value="yes">yes</option>
-                                  <option value="no">No</option>
-                                </select>
-                              </div>
-                            </Tooltip>
-                            {/* <input
+                            <div className="col-12">
+                              <Tooltip title="Indicate whether the current employment contract is the first open-ended employment contract ever entered into by the HR">
+                                <div className="">
+                                  <select
+                                    className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
+                                    name="workHistory"
+                                    value={formData.workHistory}
+                                    onChange={handleInputChange}
+                                  >
+                                    <option value="">
+                                      Is this the employee's first open-ended
+                                      contract?
+                                    </option>
+                                    <option value="yes">yes</option>
+                                    <option value="no">No</option>
+                                  </select>
+                                </div>
+                              </Tooltip>
+                              {/* <input
                               type="text"
                               className="form-control w-100 custom_radius text-center mr-2"
                               name="workHistory"
@@ -997,11 +1006,11 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               value={formData.workHistory}
                               onChange={handleInputChange}
                             /> */}
+                            </div>
                           </div>
-                        </div>
-                      )}
-                    </>
-                  )}
+                        )}
+                      </>
+                    )}
                 </div>
               </div>
             </div>

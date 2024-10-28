@@ -38,7 +38,6 @@ const ListHrs = () => {
   const onChange = (key) => {
     setLoading(true);
     setTableLoading(true);
-
     console.log(key, "key");
     let value;
     if (key === "1") {
@@ -47,27 +46,37 @@ const ListHrs = () => {
     } else if (key === "2") {
       value = "companystaff";
       setNewhire(false);
-      
+
     }
-    getPotential(value)
-    .then((res) => {
-      setPotential(res?.data?.totalSums);
-      setLoading(false);
-    })
-    .catch((err) => {
-      setLoading(false);
-    });
+    if (global.BASEURL) {
+      getPotential(value)
+        .then((res) => {
+          setPotential(res?.data?.totalSums);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    } else {
+      setTableLoading(true);
+      setLoading(true);
+    }
   };
   useEffect(() => {
     setLoading(true);
-    getPotential("newhire")
-      .then((res) => {
-        setPotential(res?.data?.totalSums);
-        setLoading(false);
-      })
-      .catch((err) => {
-        setLoading(false);
-      });
+    if (global.BASEURL) {
+      getPotential("newhire")
+        .then((res) => {
+          setPotential(res?.data?.totalSums);
+          setLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(true);
+
+    }
   }, []);
 
   console.log(potential, "pp");
@@ -196,67 +205,74 @@ const ListHrs = () => {
                 </button>
               </>
             )}
-            <div className="d-flex gap-4 flex-wrap justify-content-between">
-              {login && (
-                <>
-                  <div
-                    className="q_card_4 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>Export Savings report</h6>
-                    <img className="h-10" src={plane} alt="email" />
-                  </div>
-                  <div
-                    className="q_card_3 flex cursor-pointer flx-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>Potential Savings</h6>
-                    {loading ? (
-                      <CircularProgress
-                        style={{ color: "black" }}
-                        size={24}
-                        className="text_white"
-                      />
-                    ) : (
-                      <h4 className="text_secondary">{potential}€</h4>
-                    )}
-                  </div>
-                </>
-              )}
-              <Tooltip
-                style={{ backgroundColor: "yellow" }}
-                title="We only charge in the scenario of
+            <div className="flex justify-content-center w-full">
+
+              <div className="d-flex gap-4 flex-wrap justify-content-between">
+                {login && (
+                  <>
+                    <div
+                      className="q_card_4 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                      style={{ borderRadius: "60px" }}
+                    >
+                      <h6>Export Savings report</h6>
+                      <img className="h-10" src={plane} alt="email" />
+                    </div>
+                    <div
+                      className="q_card_3 flex cursor-pointer flx-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                      style={{ borderRadius: "60px" }}
+                    >
+                      <h6>Potential annual saving</h6>
+                      {loading ? (
+                        <CircularProgress
+                          style={{ color: "black" }}
+                          size={24}
+                          className="text_white"
+                        />
+                      ) : (
+                        <h4 className="text_secondary">
+                          {Number.isNaN(Number(potential)) ? 0 : (Number.isInteger(Number(potential)) ? Number(potential) : parseFloat(Number(potential).toFixed(2)))}
+
+
+                          €</h4>
+                      )}
+                    </div>
+                  </>
+                )}
+                <Tooltip
+                  style={{ backgroundColor: "yellow" }}
+                  title="We only charge in the scenario of
 application approval and only a small
 fraction of the savings"
-                className="cursor-pointer "
-              >
-                {!login ? (
-                  <div
-                    onClick={handleShow}
-                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>I want support with the application</h6>
-                    <img
-                      className="h-10 d-md-block d-none"
-                      src={hand}
-                      alt="email"
-                    />
-                  </div>
-                ) : (
-                  <div
-                    className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                    style={{ borderRadius: "60px" }}
-                  >
-                    <h6>I want support with the application</h6>
-                    <img
-                      className="h-10 d-md-block d-none"
-                      src={hand}
-                      alt="email"
-                    />
-                  </div>
-                )}
-              </Tooltip>
+                  className="cursor-pointer "
+                >
+                  {!login ? (
+                    <div
+                      onClick={handleShow}
+                      className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                      style={{ borderRadius: "60px" }}
+                    >
+                      <h6>I want support with the application</h6>
+                      <img
+                        className="h-10 d-md-block d-none"
+                        src={hand}
+                        alt="email"
+                      />
+                    </div>
+                  ) : (
+                    <div
+                      className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                      style={{ borderRadius: "60px" }}
+                    >
+                      <h6>I want support with the application</h6>
+                      <img
+                        className="h-10 d-md-block d-none"
+                        src={hand}
+                        alt="email"
+                      />
+                    </div>
+                  )}
+                </Tooltip>
+              </div>
             </div>
             <div className="">
               <span className="text_head fw-bold"> Disclaimer:</span> The
@@ -272,10 +288,34 @@ fraction of the savings"
             centered
             dialogClassName="custom-modal"
           >
-            <Modal.Body>
-              <h6 className="modal-title">
-                Fill in your details to receive the calculation
-              </h6>
+            <Modal.Body
+              style={{ position: "relative" }}
+
+            >
+              <div className="d-flex justify-content-between ">
+
+                <div className="modal-title mb-3 ">
+                  Fill in your details to receive
+                  the
+                  <br />
+                  calculation
+                </div>
+              </div>
+              <button
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-3px",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                }}
+                type="button"
+                onClick={() => setShow(false)}
+              >
+                ❌
+              </button>
               <Form>
                 <Form.Group className="mb-2" controlId="formName">
                   <Form.Label className="m-0">Name</Form.Label>

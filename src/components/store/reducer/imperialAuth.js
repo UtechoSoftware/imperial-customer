@@ -16,12 +16,15 @@ export const imperialAuthSlice = createSlice({
     setIsLogin_(state, action) {
       state.data.isLogin_ = action.payload;
     },
+    setUserData(state, action) {
+      state.data.user = action.payload;
+    },
     setSaving(state, action) {
       state.data.saving = action.payload;
     },
   },
 });
 
-export const { setIsLogin_, setSaving } = imperialAuthSlice.actions;
+export const { setIsLogin_, setSaving, setUserData } = imperialAuthSlice.actions;
 
 export default imperialAuthSlice.reducer;
