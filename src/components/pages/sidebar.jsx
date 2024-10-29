@@ -176,6 +176,12 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
         items: "Help",
         path: "/help",
       },
+      {
+        icon: <LanguageSwitcher />,
+        iconActive: <LanguageSwitcher />,
+        items: "Language",  // Optional label, can also be omitted
+        path: "#",  // Or an empty path if it doesn’t link to a new page
+      },
       login
         ? {
           icon: <LogOut />,

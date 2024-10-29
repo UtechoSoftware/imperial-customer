@@ -8,19 +8,20 @@ import {
   isBefore,
   subDays,
 } from "date-fns";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
 import { useDispatch, useSelector } from "react-redux";
-import { create_hr } from "../api/hr";
+import { create_hr, update_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { setSaving } from "../store/reducer/imperialAuth";
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
+  const [editData, setEditData] = useState('')
   const login = useSelector((state) => state.data.data.isLogin_);
   const [error, setError] = useState("");
   const [dob, setDob] = useState("");
@@ -104,7 +105,7 @@ const Dashboard = () => {
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
           console.error("Salary is not a valid number");
-          return null; // Early exit if salary is invalid
+          return null;
         } else {
           return saving * salary;
         }
@@ -182,20 +183,35 @@ const Dashboard = () => {
           dob: formData.dob,
           identifier: formData.identifier,
         };
-        console.log(data, "data...");
-        create_hr(data)
-          .then((res) => {
-            setLoading(false);
-            if (res) {
-              message.success("Hr Added successfully..");
+        if (editData) {
+          update_hr(data, editData?._id)
+            .then((res) => {
+              setLoading(false);
+              if (res) {
+                message.success("Hr Updated successfully..");
+                navigate("/list-hr");
+              }
 
-              navigate("/list-hr");
-            }
+            })
+            .catch((err) => {
+              setLoading(false);
+            });
+        }
+        else {
+          create_hr(data)
+            .then((res) => {
+              setLoading(false);
+              if (res) {
+                message.success("Hr Added successfully..");
 
-          })
-          .catch((err) => {
-            setLoading(false);
-          });
+                navigate("/list-hr");
+              }
+
+            })
+            .catch((err) => {
+              setLoading(false);
+            });
+        }
       } else if (employeeType === "companystaff") {
         if (
           !formData.dob ||
@@ -294,19 +310,33 @@ const Dashboard = () => {
           identifier: formData.identifier,
         };
         console.log(data, "data...");
-        create_hr(data)
-          .then((res) => {
-            setLoading(false);
-            if (res) {
-              message.success("Hr Added successfully..");
+        if (editData) {
+          update_hr(data, editData?._id)
+            .then((res) => {
+              setLoading(false);
+              if (res) {
+                message.success("Hr Updated successfully..");
+                navigate("/list-hr");
+              }
+            }).catch((err) => {
+              setLoading(false);
 
-              navigate("/list-hr");
-            }
+            })
+        } else {
 
-          })
-          .catch((err) => {
-            setLoading(false);
-          });
+          create_hr(data)
+            .then((res) => {
+              setLoading(false);
+              if (res) {
+                message.success("Hr Added successfully..");
+                navigate("/list-hr");
+              }
+
+            })
+            .catch((err) => {
+              setLoading(false);
+            });
+        }
         // Your logic here for when the form data is complete
       } else {
         // message.error("Not eligible for saving...!");
@@ -516,6 +546,19 @@ const Dashboard = () => {
     const randomDate = dateObjects[randomIndex];
     setFillingDate(randomDate.toString());
   };
+  const handleParamsData = () => {
+    const params = new URLSearchParams(location.search);
+    if (params.get("data")) {
+      console.log(JSON.parse(params.get("data")));
+      setEditData(JSON.parse(params.get("data")));
+      setFormData(JSON.parse(params.get("data")))
+      setEmployeeType(JSON.parse(params.get("data")).type)
+    }
+  };
+  useEffect(() => {
+    handleParamsData();
+  }, []);
+  console.log(editData, "editData")
   return (
     <div>
       <>
@@ -567,9 +610,7 @@ const Dashboard = () => {
                       </div>
                     </Tooltip>
                   </div>
-
                   <div className="my-4 d-flex flex-column  align-items-baseline flex-wrap">
-
                     <label className="form-label cursor-pointer manrope_semibold">
                       Personal Data
                     </label>
@@ -591,7 +632,6 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-
               {/* </div> */}
               <div className=" ">
                 <label className="form-label cursor-pointer manrope_semibold">

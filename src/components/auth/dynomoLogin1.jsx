@@ -6,6 +6,7 @@ import {
   TextField
 } from "@mui/material";
 import { Form, message } from "antd";
+import { useLinkedIn } from 'react-linkedin-login-oauth2';
 import React, { useState } from "react";
 import { } from "react-bootstrap";
 import { Eye, EyeOff } from "react-feather";
@@ -59,13 +60,25 @@ const DynomoLogin1 = () => {
       message.error(error?.response?.data?.message);
     }
   };
+  // const handleLinkedInLogin = () => {
+  //   const clientId = '77mw3n47spnyhx';
+  //   const redirectUri = 'http://localhost:3000';
+  //   const linkedInUrl = " https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77u3lce2scwzni&redirect_uri=http://localhost:3000/ ";
+  //   window.open(linkedInUrl, "_blank", "width=600,height=600");
+  // };
+  const { linkedInLogin } = useLinkedIn({
+    clientId: '77mw3n47spnyhx',
+    redirectUri: `${window.location.origin}/linkedin`,
+    onSuccess: (code) => {
+      console.log(code);
+    },
+    onError: (error) => {
+      console.log(error);
+    },
+  });
   const handleLinkedInLogin = () => {
-    const clientId = '77mw3n47spnyhx';
-    const redirectUri = 'http://localhost:3000';
-    const linkedInUrl = " https://www.linkedin.com/oauth/v2/authorization?response_type=code&client_id=77u3lce2scwzni&redirect_uri=http://localhost:3000/ ";
-    window.open(linkedInUrl, "_blank", "width=600,height=600");
-  };
-
+    linkedInLogin();
+  }
   return (
     <>
       <div className="row w-100 ">

@@ -5,11 +5,19 @@ import { get_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { Edit2, Trash2 } from "react-feather";
+import { useNavigate } from "react-router-dom";
 const CompanyTable = () => {
   const [tableData, setTableData] = useState([]);
   const [loading, setLoading] = useState(false);
-  const editRow = (index) => {
-    console.log("Editing row at index:", index);
+  const navigate = useNavigate();
+  const editRow = (item, index) => {
+    console.log(item, "hello")
+    const params = new URLSearchParams();
+    params.set('data', JSON.stringify(item))
+    navigate({
+      pathname: '/add-hr',
+      search: params.toString()
+    })
   };
   const deleteRow = (index) => {
     const newData = tableData.filter((_, i) => i !== index);
@@ -25,7 +33,6 @@ const CompanyTable = () => {
   }, [!login]);
   useEffect(() => {
     setLoading(true);
-
     if (login) {
       if (global.BASEURL) {
         get_hr("newhire")
@@ -38,7 +45,6 @@ const CompanyTable = () => {
           });
       } else {
         setLoading(true);
-
       }
     }
   }, [login]);
@@ -80,12 +86,12 @@ const CompanyTable = () => {
               </th>
             </tr>
             <tr>
-              <th style={{ width: "175px" }}>DOB</th>
+              <th style={{ width: "175px" }}>Date of Birth</th>
               <th style={{ width: "175px" }}>IEFP Reg Date</th>
               <th style={{ width: "125px" }}>Predicted Start Date</th>
               <th style={{ width: "125px" }}>Monthly Salary</th>
               <th style={{ width: "125px" }}>23.75% Or Other</th>
-              <th style={{ width: "150px" }}>Yes</th>
+              <th style={{ width: "150px" }}>Yes/No</th>
               <th style={{ width: "150px" }}>______</th>
               <th style={{ width: "150px" }}>Actions</th>
 
@@ -131,7 +137,7 @@ const CompanyTable = () => {
                     {/* hello are */}
                     <div className="d-flex flex-row  justify-content-center">
 
-                      <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(index)} />
+                      <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(data, index)} />
                       <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(index)} />
                     </div>
                   </td>

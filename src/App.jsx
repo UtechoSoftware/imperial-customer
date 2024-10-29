@@ -65,6 +65,7 @@ import { useSelector } from "react-redux";
 import Register from "./components/auth/register.js";
 import ListHrs from "./components/pages/listHrs.js";
 import ListHr2 from "./components/pages/listHr2.js";
+import LinkedInPage from "./components/auth/linkedinPage.js";
 const NavHeader = lazy(() => import("./components/header/navHeader"));
 const SidebarMenu = lazy(() => import("./components/pages/sidebar"));
 const LoginPage1 = lazy(() => import("./components/auth/dynomoLogin1"));
@@ -122,6 +123,8 @@ function App() {
             {/* <Route element={<PublicRoutes />}> */}
             {/* <Route index element={<LoginPage1 />}></Route> */}
             <Route path="/login" element={<LoginPage1 />}></Route>
+            <Route path="/linkedinPage" element={<LinkedInPage />}></Route>
+
             <Route path="/register" element={<Register />}></Route>
             {/* </Route> */}
             {/* <Route element={<PrivateRoutes />}> */}
