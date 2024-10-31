@@ -13,6 +13,7 @@ import { Eye, EyeOff } from "react-feather";
 import "react-phone-input-2/lib/style.css";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
+import { useTranslation } from 'react-i18next';
 import { login } from "../api/auth";
 import {
   finabeelight,
@@ -25,6 +26,7 @@ import { setIsLogin_ } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
+  const { t, i18n } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
   const navigate = useNavigate();
@@ -54,7 +56,6 @@ const DynomoLogin1 = () => {
         .catch((err) => {
           setIsProcessing(false);
         });
-      setIsProcessing(false);
     } catch (error) {
       setIsProcessing(false);
       message.error(error?.response?.data?.message);
@@ -67,13 +68,18 @@ const DynomoLogin1 = () => {
   //   window.open(linkedInUrl, "_blank", "width=600,height=600");
   // };
   const { linkedInLogin } = useLinkedIn({
-    clientId: '77mw3n47spnyhx',
-    redirectUri: `${window.location.origin}/linkedin`,
+    clientId: "77u3lce2scwzni",
+    redirectUri: `http://localhost:3000/linkedinPage`,
     onSuccess: (code) => {
       console.log(code);
+      // setCode(code);
+      // setErrorMessage("");
     },
+    scope: "openid profile email",
     onError: (error) => {
       console.log(error);
+      // setCode("");
+      // setErrorMessage(error.errorMessage);
     },
   });
   const handleLinkedInLogin = () => {
@@ -89,28 +95,31 @@ const DynomoLogin1 = () => {
           <div className="d-flex flex-column gap-2 pt-3 ">
             <img src={finabeelight} width="50px" alt="logo_" />
             <div className="d-flex flex-column gap-3 mt-4">
-              <h5 className="text-secondary">Welcome</h5>
+              <h5 className="text-secondary">{t('login_h1')}</h5>
               <p className="text_para">
-                This is the first free digital tool to simulate the application
+                {/* This is the first free digital tool to simulate the application
                 of the Social Security contributions partial or total exemption,
-                available to Portuguese entities
+                available to Portuguese entities */}
+                {t('login_p3')}
               </p>
             </div>
             <div className="d-flex flex-column gap-3 mt-4">
               {/* <h5 className="text-secondary">Did you know that...</h5> */}
               <p className="text_para">
-                Fixed-term contracts in certain circumstances automatically
+                {/* Fixed-term contracts in certain circumstances automatically
                 convert to open-ended contracts, even without a formal written
-                contract, making them potentially eligible for this benefit.
+                contract, making them potentially eligible for this benefit. */}
+                {t('login_p4')}
+
               </p>
             </div>
-            <div className="d-flex gap-2">
+            {/* <div className="d-flex gap-2">
               <img src={left} width="20px" alt="left" />
               <img src={rightarrow} width="20px" alt="right" />
-            </div>
+            </div> */}
             <div className="d-flex align-items-center gap-3">
               <img src={questionMark} width="20px" alt="question" />
-              <p className="m-0 text-white">Help</p>
+              <p className="m-0 text-white">{t('help')}</p>
             </div>
           </div>
         </div>
@@ -118,23 +127,29 @@ const DynomoLogin1 = () => {
           <div className="border border-white p-4">
             <div className="d-flex flex-lg-row flex-column justify-content-between">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
-                Login
+                {/* Login */}
+                {t('Login')}
               </h5>
               <p className="text-sm text_para poppins_regular my-2">
-                Do not have an account yet?{" "}
+                {/* Do not have an account yet?{" "} */}
+                {t('Login_p2')}
+
+                { }
                 <span className="text_darkprimary">
                   <Link
                     className="text_darkprimary poppins_semibold text-decoration-none"
                     to="/register"
                   >
-                    Register
+                    {t('Register')}
+
                   </Link>
                 </span>
               </p>
             </div>
             <div className="d-flex flex-column gap-0">
               <p className="poppins_semibold m-0 text_darkprimary">
-                Login with Linkedin
+                {/* Login with Linkedin */}
+                {t('Login_p1')}
               </p>
               <div className="cursor-pointer" onClick={handleLinkedInLogin}>
 
@@ -168,7 +183,7 @@ const DynomoLogin1 = () => {
                     <TextField
                       id="email"
                       required
-                      label="Email"
+                      label={t('email')}
                       placeholder="insert your email"
                       variant="standard"
                     />
@@ -184,7 +199,7 @@ const DynomoLogin1 = () => {
                   <div className="flex flex-column gap-0">
                     <TextField
                       id="password"
-                      label="Password"
+                      label={t('password')}
                       variant="standard"
                       placeholder="Insert your password"
                       type={showPassword ? "text" : "password"}
@@ -226,7 +241,7 @@ const DynomoLogin1 = () => {
                       className="text_white"
                     />
                   ) : (
-                    "Login"
+                    t('Login')
                   )}
                 </button>
 

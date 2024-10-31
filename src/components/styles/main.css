@@ -1076,3 +1076,6 @@ th:last-child {
 .ant-tooltip-arrow {
   display: none !important;
 }
+.fs-small {
+  font-size: 12px !important;
+}

@@ -5,8 +5,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import close from "../assets/png/hide.png";
 import open from "../assets/png/open.png";
 import Switch from 'react-switch';
-
-
 import { Tooltip } from "antd";
 import {
   BookOpen,
@@ -20,7 +18,9 @@ import {
 } from "react-feather";
 import { finabeelight } from "../icons/icon";
 import { setIsLogin_ } from "../store/reducer/imperialAuth";
+import { useTranslation } from "react-i18next";
 const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
   const login = useSelector((state) => state.data.data.isLogin_);
@@ -94,8 +94,6 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const handleLogout = () => {
     dispatch(setIsLogin_(false));
     window.localStorage.removeItem('imperial_token');
-
-
   };
   const getParentPath = (path) => {
     const pathSegments = path.split("/");
@@ -154,26 +152,26 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
       {
         icon: <Grid />,
         iconActive: <Grid />,
-        items: "Calculator",
+        items: t('Calculator'),
         path: "/list-hr",
       },
       {
         icon: <Info />,
         iconActive: <Info />,
-        items: "Information",
+        items: t('Information'),
         path: "/info",
       },
 
       {
         icon: <User />,
         iconActive: <User />,
-        items: "Profile",
+        items: t('profile'),
         path: "/profile",
       },
       {
         icon: <HelpCircle />,
         iconActive: <HelpCircle />,
-        items: "Help",
+        items: t('help'),
         path: "/help",
       },
       {
@@ -186,13 +184,13 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
         ? {
           icon: <LogOut />,
           iconActive: <LogOut />,
-          items: "Logout",
+          items: t('logout'),
           path: "/login",
         }
         : {
           icon: <LogIn />,
           iconActive: <LogIn />,
-          items: "Login",
+          items: t('login'),
           path: "/login",
         },
     ]
@@ -202,20 +200,20 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
       {
         icon: <Grid />,
         iconActive: <Grid />,
-        items: "Calculator",
+        items: t('Calculator'),
         path: "/list-hr",
       },
       {
         icon: <Info />,
         iconActive: <Info />,
-        items: "Information",
+        items: t('Information'),
         path: "/info",
       },
 
       {
         icon: <HelpCircle />,
         iconActive: <HelpCircle />,
-        items: "Help",
+        items: t('help'),
         path: "/help",
       },
       {
@@ -228,13 +226,13 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
         ? {
           icon: <LogOut />,
           iconActive: <LogOut />,
-          items: "Logout",
+          items: t('logout'),
           path: "/login",
         }
         : {
           icon: <LogIn />,
           iconActive: <LogIn />,
-          items: "Login",
+          items: t('login'),
           path: "/login",
         },
 

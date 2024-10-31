@@ -1,35 +1,35 @@
-import React from "react";
+
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import { useLinkedIn } from "react-linkedin-login-oauth2";
 import linkedin from "react-linkedin-login-oauth2/assets/linkedin.png";
+import { useEditor } from "@tiptap/react";
 
 function LinkedInPage() {
-    const { linkedInLogin } = useLinkedIn({
-        clientId: "77u3lce2scwzni",
-        redirectUri: `https://imperial-customer.vercel.app/linkedinPage`,
-        onSuccess: (code) => {
-            console.log(code);
-            setCode(code);
-            setErrorMessage("");
-        },
-        scope: "r_emailaddress r_liteprofile",
-        onError: (error) => {
-            console.log(error);
-            setCode("");
-            setErrorMessage(error.errorMessage);
-        },
-    });
     const [code, setCode] = React.useState("");
     const [errorMessage, setErrorMessage] = React.useState("");
-
+    function GetURLParameter() {
+        alert("Get URL parameter")
+        let sPageURL = window.location.href
+        console.log(sPageURL, "ccc")
+        const queryString = new URL(sPageURL).search;
+        const searchParams = new URLSearchParams(queryString);
+        const code = searchParams.get('code');
+        setCode(code)
+        console.log(code, "ccc")
+        return code
+    }
+    useEffect(() => {
+        GetURLParameter()
+    }, [])
     return (
         <Wrapper>
-            <img
+            {/* <img
                 onClick={linkedInLogin}
                 src={linkedin}
                 alt="Log in with Linked In"
                 style={{ maxWidth: "180px", cursor: "pointer" }}
-            />
+            /> */}
 
             {!code && <div>No code</div>}
             {code && (

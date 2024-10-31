@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { message, Tabs, Tooltip } from "antd";
+import Skeleton from "@mui/material/Skeleton"
 import "bootstrap/dist/css/bootstrap.min.css";
 import React, { useEffect, useState } from "react";
 import "react-datepicker/dist/react-datepicker.css";
@@ -15,8 +16,11 @@ import { useSelector } from "react-redux";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { del_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
+import { useTranslation } from "react-i18next";
 const ListHrs = () => {
+  const { t, i18n } = useTranslation();
   const [tableloading, setTableLoading] = useState(false);
+  const [updating, setUpdating] = useState(false);
   const location = useLocation();
   const [showModal2, setShowModal2] = useState(false);
   const formatDate = (date) => date?.toLocaleDateString();
@@ -32,7 +36,7 @@ const ListHrs = () => {
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
   const [potential, setPotential] = useState("");
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
   const onChange = (key) => {
@@ -86,6 +90,7 @@ const ListHrs = () => {
       label: "New Hire",
       children: (
         <CompanyTable
+          updating={updating}
           tableloading={tableloading}
           setTableLoading={setTableLoading}
         />
@@ -96,6 +101,8 @@ const ListHrs = () => {
       label: "Company Staff",
       children: (
         <NewTable
+          updating={updating}
+
           tableloading={tableloading}
           setTableLoading={setTableLoading}
         />
@@ -126,11 +133,13 @@ const ListHrs = () => {
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
           <p className="manrope_bold  fs-5 text_black">
-            Social Security contributions partial or total exemption
+            {t('calculator_h1')}
+            {/* Social Security contributions partial or total exemption */}
           </p>
           <div className="d-flex flex-wrap gap-2 justify-content-between align-items-baseline mt-5">
             <h4 className="manrope_bold max-md:text-xl  text_secondary ">
-              Savings Calculator
+              {/* Savings Calculator */}
+              {t('calculator_h2')}
             </h4>
             <div className="d-flex gap-2 flex-wrap flex-row align-items-center">
               {login && (
@@ -146,7 +155,8 @@ const ListHrs = () => {
                   <div className="d-flex gap-2 align-items-center justify-content-center">
                     <img src={pdf} width="20px" alt="pdf" />
                     <p className="m-0 text-white " style={{ fontSize: "14px" }}>
-                      Import Excel
+                      {/* Import Excel */}
+                      {t('imp_excel')}
                     </p>
                   </div>
                 </button>
@@ -158,7 +168,7 @@ const ListHrs = () => {
               >
                 <div className="d-flex gap-3 align-items-center justify-content-center">
                   <p className="fs-4 m-0 text-white">+</p>
-                  <p className="m-0 text-white">Add HR</p>
+                  <p className="m-0 text-white">{t('add_hr')}</p>
                 </div>
               </button>
             </div>
@@ -189,7 +199,8 @@ const ListHrs = () => {
                 type="button"
                 className="btn2 px-3 py-3 text-nowrap   border-black "
               >
-                Calculate Savings
+                {/* Calculate Savings */}
+                {t('calculate_saving')}
               </button>
             </div>
           )}
@@ -201,7 +212,9 @@ const ListHrs = () => {
                   type="button"
                   className="btn2 px-3 py-3  border-black "
                 >
-                  Calculate Savings
+                  {/* Calculate Savings
+                   */}
+                  {t('calculate_saving')}
                 </button>
               </>
             )}
@@ -214,26 +227,37 @@ const ListHrs = () => {
                       className="q_card_4 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
-                      <h6>Export Savings report</h6>
+                      <h6>
+                        {/* Export Savings report */}
+                        {t('card_1')}
+
+
+                      </h6>
                       <img className="h-10" src={plane} alt="email" />
                     </div>
                     <div
-                      className="q_card_3 flex cursor-pointer flx-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                      className="q_card_3 flex cursor-pointer flex-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
-                      <h6>Potential annual saving</h6>
+                      <h6>
+                        {/* Potential annual saving */}
+                        {t('card_2')}
+                      </h6>
                       {loading ? (
-                        <CircularProgress
-                          style={{ color: "black" }}
-                          size={24}
-                          className="text_white"
-                        />
+                        <div style={{ width: "100%", padding: "0rem" }}>
+                          <Skeleton variant="text" width="100%" height={20} animation="wave" />
+                          {/* <Skeleton variant="text" width="90%" height={18} animation="wave" style={{ marginTop: 1 }} />
+                          <Skeleton variant="text" width="80%" height={18} animation="wave" style={{ marginTop: 1 }} /> */}
+                        </div>
                       ) : (
                         <h4 className="text_secondary">
-                          {Number.isNaN(Number(potential)) ? 0 : (Number.isInteger(Number(potential)) ? Number(potential) : parseFloat(Number(potential).toFixed(2)))}
-
-
-                          €</h4>
+                          {Number.isNaN(Number(potential))
+                            ? 0
+                            : Number.isInteger(Number(potential))
+                              ? Number(potential)
+                              : parseFloat(Number(potential).toFixed(2))}
+                          €
+                        </h4>
                       )}
                     </div>
                   </>
@@ -251,7 +275,7 @@ fraction of the savings"
                       className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
-                      <h6>I want support with the application</h6>
+                      <h6>{t('card_3')}</h6>
                       <img
                         className="h-10 d-md-block d-none"
                         src={hand}
@@ -263,7 +287,7 @@ fraction of the savings"
                       className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
-                      <h6>I want support with the application</h6>
+                      <h6>{t('card_3')}</h6>
                       <img
                         className="h-10 d-md-block d-none"
                         src={hand}
@@ -275,11 +299,7 @@ fraction of the savings"
               </div>
             </div>
             <div className="">
-              <span className="text_head fw-bold"> Disclaimer:</span> The
-              completion of the diagnosis and savings computation requires the
-              verification of additional criteria for each employee and company.
-              Therefore, the potential estimate should be reviewed by
-              specialists before submitting the application.
+              <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
             </div>
           </div>
           <Modal
@@ -295,10 +315,9 @@ fraction of the savings"
               <div className="d-flex justify-content-between ">
 
                 <div className="modal-title mb-3 ">
-                  Fill in your details to receive
-                  the
+                  {t('fill_in')}
                   <br />
-                  calculation
+                  {t('calculation')}
                 </div>
               </div>
               <button
@@ -318,14 +337,14 @@ fraction of the savings"
               </button>
               <Form>
                 <Form.Group className="mb-2" controlId="formName">
-                  <Form.Label className="m-0">Name</Form.Label>
+                  <Form.Label className="m-0">{t('Register_h1')}</Form.Label>
 
                   <div className="modal_form">
                     <Form.Control type="text" placeholder="insert your name" />
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formEmail">
-                  <Form.Label className="m-0">E-mail</Form.Label>
+                  <Form.Label className="m-0">{t('email')}</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="email"
@@ -334,7 +353,7 @@ fraction of the savings"
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formCompanyName">
-                  <Form.Label className="m-0">Company Name</Form.Label>
+                  <Form.Label className="m-0">{t('Register_h2')}</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="text"
@@ -343,7 +362,7 @@ fraction of the savings"
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formPosition">
-                  <Form.Label className="m-0">Company Position</Form.Label>
+                  <Form.Label className="m-0">{t('Register_h3')}</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="text"
@@ -359,7 +378,7 @@ fraction of the savings"
                     onClick={handleClose}
                     style={{ width: "9rem" }}
                   >
-                    Done
+                    {t('done_btn')}
                   </button>
                 </div>
               </Form>
@@ -372,7 +391,7 @@ fraction of the savings"
             dialogClassName="custom-modal"
           >
             <Modal.Body>
-              <h4 className="modal-title">Import excel</h4>
+              <h4 className="modal-title">{t('imp_excel')}</h4>
               <div {...getRootProps({ className: "dropzone" })}>
                 <input {...getInputProps()} />
                 {/* <UploadIcon className="upload-icon" /> */}
@@ -391,7 +410,7 @@ fraction of the savings"
                 onClick={() => message.success("user can download file soon")}
               >
                 <a href="#" className="download-link ">
-                  Download excel template
+                  {t('download')}
                 </a>
               </div>
               <div className="d-flex justify-content-end pt-3">
@@ -400,7 +419,7 @@ fraction of the savings"
                   onClick={handleClose2}
                   style={{ width: "9rem" }}
                 >
-                  Done
+                  {t('done_btn')}
                 </button>
               </div>
             </Modal.Body>
@@ -411,13 +430,13 @@ fraction of the savings"
               closeButton
             ></Modal.Header>
             <Modal.Body className="text-center">
-              <h5>Are you sure?</h5>
+              <h5>{t('are_you_sure')}</h5>
               <div className="d-flex justify-content-center gap-3 mt-4">
                 <Button
                   style={{ backgroundColor: "#B39D70" }}
                   onClick={() => setShowModal2(false)}
                 >
-                  Cancel
+                  {t('cancel_btn')}
                 </Button>
                 <Button
                   style={{ backgroundColor: "#161920" }}
@@ -427,18 +446,23 @@ fraction of the savings"
                     del_hr(newHire === true ? "newhire" : "companystaff")
                       .then((res) => {
                         if (res) {
+                          setUpdating(true);
                           setDelLoader(false);
                           message.success("Data deleted successfully");
+                          // fetchData()
+
                           setShowModal2(false);
                         }
                       })
                       .catch(() => {
                         setDelLoader(false);
+                        setUpdating(false);
+
                         setShowModal2(false);
                       });
                   }}
                 >
-                  {delLoader ? <Spinner size="sm" /> : "Delete"}
+                  {delLoader ? <Spinner size="sm" /> : t('del_btn')}
                 </Button>
               </div>
             </Modal.Body>

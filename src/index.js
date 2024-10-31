@@ -14,6 +14,8 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from "../src/components/store/index";
 
 import { QueryClient, QueryClientProvider } from 'react-query';
+import { I18nextProvider } from 'react-i18next';
+import i18n from './components/extension/i18n';
 
 const App = lazy(() => import('./App'))
 const queryClient = new QueryClient();
@@ -30,7 +32,9 @@ root.render(
         <Provider store={store}>
           <PersistGate loading={null} persistor={persistor}>
             <QueryClientProvider client={queryClient}>
-              <App />
+              <I18nextProvider i18n={i18n}>
+                <App />
+              </I18nextProvider>
             </QueryClientProvider>
           </PersistGate>
         </Provider>

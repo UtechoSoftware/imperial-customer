@@ -6,7 +6,10 @@ import { CircularProgress } from "@mui/material";
 import { message } from "antd";
 import avatar from "../assets/png/avatar1.png";
 import email from "../assets/png/email.png";
+import { useTranslation } from "react-i18next";
 const Help = () => {
+  const { t, i18n } = useTranslation();
+
   const [faqTitle, setFaqTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -82,7 +85,7 @@ const Help = () => {
           </div>
           {/* <h4 className="manrope_bold max-md:text-xl text_black">Help</h4> */}
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
-            FAQs
+            {t('faq_h1')}
           </h4>
           <div className="felx flex-col py-2">
             {dummy.map((item, index) => (
@@ -104,7 +107,7 @@ const Help = () => {
               onClick={() => handleShow()}
               className="cursor-pointer  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 bg-white  "
             >
-              <h6>Still have questions?</h6>
+              <h6>{t('faq_btn')}</h6>
               <img className="h-10 d-md-block d-none" src={email} alt="email" />
             </div>
           </div>
@@ -118,7 +121,7 @@ const Help = () => {
               style={{ position: "relative" }}
 
             >
-              <h6 className="modal-title mb-3 mt-0 ">Send your FAQ to us</h6>
+              <h6 className="modal-title mb-3 mt-0 ">{t('faq_m_h')}</h6>
               <button
                 style={{
                   position: "absolute",
@@ -136,7 +139,7 @@ const Help = () => {
               </button>
               <Form onSubmit={handleSubmit}>
                 <Form.Group className="mb-2" controlId="formFaqTitle">
-                  <Form.Label className="m-0">Subject</Form.Label>
+                  <Form.Label className="m-0">{t('faq_m_h1')}</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       type="text"
@@ -149,7 +152,7 @@ const Help = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="formDescription">
-                  <Form.Label className="m-0">Description</Form.Label>
+                  <Form.Label className="m-0">{t('faq_m_h2')}</Form.Label>
                   <div className="modal_form">
                     <Form.Control
                       required
@@ -175,7 +178,7 @@ const Help = () => {
                         />
                       </div>
                     ) : (
-                      "Done"
+                      t('done_btn')
                     )}
                   </button>
                 </div>

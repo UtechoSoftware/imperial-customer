@@ -35,15 +35,15 @@ import { useDispatch, useSelector } from "react-redux";
 import { Eye, EyeOff } from "react-feather";
 import { checkEmail, register } from "../api/auth";
 import { setIsLogin, setIsLogin_, setUserData } from "../store/reducer/imperialAuth";
+import { useTranslation } from "react-i18next";
 
 // import { apiRequest } from '../../api/auth_api'
 const Register = () => {
+  const { t, i18n } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
   const [already, setAlready] = useState(false);
-
   const [isProcessing, setIsProcessing] = useState(false);
-
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const togglePasswordVisibility = () => {
@@ -110,34 +110,39 @@ const Register = () => {
     <>
       <div className="row w-100">
         <div
-          className="bg_primary d-flex flex-column p-5 col-md-6 col-sm-12   "
+          className="bg_primary d-flex flex-column justify-content-center p-5 col-md-6 col-sm-12   "
           style={{ minHeight: "100vh" }}
         >
-          <div className="d-flex flex-column gap-2 pt-3 ">
+          <div className="d-flex flex-column   gap-2 pt-3 ">
             <img src={finabeelight} width="50px" alt="logo_" />
             <div className="d-flex flex-column gap-3 mt-4">
-              <h5 className="text-secondary">Welcome</h5>
-              <p className="text_para">
-                This is the first free digital tool to simulate the application
+              <h5 className="text-secondary">{t('welcome')}</h5>
+              <p className="text_para m-0">
+                {/* This is the first free digital tool to simulate the application
                 of the Social Security contributions partial or total exemption,
-                available to Portuguese entities
+                available to Portuguese entities */}
+                {t('login_p3')}
               </p>
             </div>
             <div className="d-flex flex-column gap-3 mt-4">
               {/* <h5 className="text-secondary">Did you know that...</h5> */}
-              <p className="text_para">
-                Fixed-term contracts in certain circumstances automatically
+              <p className="text_para m-0">
+                {/* Fixed-term contracts in certain circumstances automatically
                 convert to open-ended contracts, even without a formal written
-                contract, making them potentially eligible for this benefit.
+                contract, making them potentially eligible for this benefit. */}
+                {t('login_p4')}
               </p>
             </div>
-            <div className="d-flex gap-2">
+            {/* <div className="d-flex gap-2">
               <img src={left} width="20px" alt="left" />
               <img src={rightarrow} width="20px" alt="right" />
-            </div>
-            <div className="d-flex align-items-center gap-3">
+            </div> */}
+            <div className="d-flex align-items-center gap-3 pt-3">
               <img src={questionMark} width="20px" alt="question" />
-              <p className="m-0 text-white">Help</p>
+              <p className="m-0 text-white">
+                {t('help')}
+
+              </p>
             </div>
           </div>
         </div>
@@ -145,29 +150,35 @@ const Register = () => {
           <div className="border border-white p-4">
             <div className="d-flex flex-lg-row flex-column justify-content-between ">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
-                Registration
+                {/* Registration */}
+                {t('Register')}
               </h5>
               <p className="text-sm text_para poppins_regular my-2">
-                ALready have an account ?{" "}
+                {/* Already have an account ?{" "} */}
+                {t('Register_p1')}
                 <span className="text_darkprimary">
                   <Link
                     className="text_darkprimary poppins_semibold text-decoration-none"
                     to="/login"
                   >
-                    Login
+                    {/* Login
+                     */}
+                    {t('Login')}
                   </Link>
                 </span>
               </p>
             </div>
             <div className="d-flex flex-column gap-0">
-              <p className="poppins_semibold mt-4 text_darkprimary">
-                Create an account with Linkedin
+              <p className="poppins_semibold mt-1 text_darkprimary">
+                {/* Continue with Linkedin
+                 */}
+                {t('Login_p1')}
               </p>
               <img width="70px" src={linkedin_} alt="linkdin" />
             </div>
             <div className="d-flex flex-row align-items-center gap-2">
               <div className="border_div"></div>
-              <p>or</p>
+              <p>{t('or')}</p>
               <div className="border_div"></div>
             </div>
             <Form
@@ -192,7 +203,7 @@ const Register = () => {
                     <TextField
                       id="name"
                       required
-                      label="Name"
+                      label={t('Register_h1')}
                       placeholder="insert your name"
                       variant="standard"
                     />
@@ -217,7 +228,7 @@ const Register = () => {
                     <TextField
                       required
                       id="companyName"
-                      label="Company Name"
+                      label={t('Register_h2')}
                       variant="standard"
                       placeholder="insert the company’s name"
                       InputLabelProps={{}}
@@ -236,7 +247,7 @@ const Register = () => {
                     <TextField
                       required
                       id="position"
-                      label="Position"
+                      label={t('Register_h3')}
                       variant="standard"
                       placeholder="Insert your position in the company"
                       fullWidth
@@ -262,7 +273,7 @@ const Register = () => {
                       onBlur={(e) => handleEmailCheck(e)}
                       id="email"
                       required
-                      label="Email"
+                      label={t('email')}
                       placeholder="insert your email"
                       variant="standard"
                     />
@@ -280,7 +291,7 @@ const Register = () => {
                     <TextField
                       id="password"
                       required
-                      label="Password"
+                      label={t('password')}
                       variant="standard"
                       placeholder="Insert your password"
                       type={showPassword ? "text" : "password"}
@@ -316,7 +327,7 @@ const Register = () => {
                     <TextField
                       required
                       id="confirmPassword"
-                      label="Confirm Password"
+                      label={t('Register_h4')}
                       variant="standard"
                       placeholder="confirm your password"
                       type={showPassword2 ? "text" : "password"}
@@ -342,13 +353,15 @@ const Register = () => {
                 </div>
               </Form.Item>
               <p className="pe-md-5 pe-0">
-                By continuing, you agree to our{" "}
+                {/* By continuing, you agree to our{" "} */}
+                {t('Register_p4')}
                 <span className=" text_head fw-bold">
-                  <Link className="">Terms and Conditions</Link>
+                  <Link className="">{t('r_term')}</Link>
                 </span>{" "}
-                Terms and Conditions and{" "}
+
+                {/* {t('r_term')} */}
                 <span className=" text_head fw-bold">
-                  <Link className="">Privacy Policy</Link>
+                  <Link className="">{t('r_policy')}</Link>
                 </span>
               </p>
               <div className=" text_head fw-bold"></div>

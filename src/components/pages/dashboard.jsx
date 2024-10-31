@@ -34,6 +34,7 @@ const Dashboard = () => {
   const [identifiers, setIdentifiers] = useState([]);
   const navigate = useNavigate();
   const [employeeType, setEmployeeType] = useState("");
+  const [errors, setErrors] = useState({});
   const [formData, setFormData] = useState({
     identifier: "",
     dob: null,
@@ -47,6 +48,52 @@ const Dashboard = () => {
     currentSalary: "",
     currentSSCRate: "",
   });
+  const validateForm = () => {
+    const newErrors = {};
+    if (!formData.dob) newErrors.dob = "Date of Birth is required.";
+    if (!formData.iefp) newErrors.iefp = "IEFP status is required.";
+    if (!formData.iefpDate && formData.iefp === 'yes') newErrors.iefpDate = "IEFP Date  is required.";
+    if (formData.employmentContractType === "open-ended contract" && !formData.startDate) newErrors.startDate = "Predicted Start Date"
+    if (formData.employmentContractType === "open-ended contract" && !formData.currentSSCRate) newErrors.currentSSCRate = "Company's current Social Security contribution rate is required"
+    if (formData.employmentContractType === "open-ended contract" && !formData.salary) newErrors.salary = "Monthly Salary is required"
+    if (formData.currentSSCRate === "23.75%" && formData.workHistory !== 'yes' && formData.workHistory !== 'no') {
+      newErrors.workHistory = "Work History should be selected";
+    }
+
+    setErrors(newErrors);
+    console.log(Object.keys(newErrors), "work")
+    console.log("identifier:", formData.identifier);
+    console.log("newHiring:", formData.newHiring);
+    console.log("salary:", formData.salary);
+    console.log("workHistory:", formData.workHistory);
+    return Object.keys(newErrors).length === 0;
+  };
+  const validateForm2 = () => {
+    const newErrors = {};
+    if (!formData.identifier) newErrors.identifier = "Unique Identifier is required";
+    if (!formData.newHiring) newErrors.newHiring = " Hiring Date is required";
+    if (!formData.dob) newErrors.dob = "Date of birth is required.";
+    if (!formData.iefp) newErrors.iefp = "IEFP status is required.";
+    if (!formData.iefpDate && formData.iefp === 'yes') newErrors.iefpDate = "IEFP Date  is required.";
+    if (formData.employmentContractType === "open-ended contract" && !formData.startDate) newErrors.startDate = "Contract Start Date"
+    if (formData.employmentContractType === "open-ended contract" && !formData.currentSSCRate) newErrors.currentSSCRate = "Company's current Social Security contribution rate is required"
+    if (formData.employmentContractType === "open-ended contract" && !formData.salary) newErrors.salary = "Monthly Salary is required"
+    if (formData.currentSSCRate === "23.75%" && formData.workHistory !== 'yes' && formData.workHistory !== 'no') {
+      newErrors.workHistory = "Work History should be selected";
+    }
+
+    setErrors(newErrors);
+    console.log(Object.keys(newErrors), "work")
+    console.log("identifier:", formData.identifier);
+    console.log("newHiring:", formData.newHiring);
+    console.log("salary:", formData.salary);
+    console.log("workHistory:", formData.workHistory);
+    return Object.keys(newErrors).length === 0;
+  };
+  // const ans = validateForm()
+  // console.log(ans)
+
+
 
   const handleChange = (event) => {
     setEmployeeType(event.target.value);
@@ -77,9 +124,9 @@ const Dashboard = () => {
       ...prevData,
       [fieldName]: selectedDate,
     }));
+    setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   };
   const handleSubmit = () => {
-    setLoading(true);
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0];
     sessionStorage.setItem("todaysDate", formattedDate);
@@ -94,7 +141,7 @@ const Dashboard = () => {
         let saving = 14 * (23.75 / 100);
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
-          console.error("Salary is not a valid number");
+          // console.error("Salary is not a valid number");
           return null; // Early exit if salary is invalid
         } else {
           return saving * salary;
@@ -104,13 +151,12 @@ const Dashboard = () => {
         let saving = 14 * (11.85 / 100);
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
-          console.error("Salary is not a valid number");
+          // console.error("Salary is not a valid number");
           return null;
         } else {
           return saving * salary;
         }
       };
-
       let saving = null;
       if (employeeType === "newhire") {
         if (
@@ -124,7 +170,7 @@ const Dashboard = () => {
               !formData.startDate ||
               !formData.currentSSCRate))
         ) {
-          message.error("Form data must be filled first.....");
+          // message.error("Form data must be filled first.....");
         } else {
           if (
             dob >= 45 &&
@@ -183,7 +229,9 @@ const Dashboard = () => {
           dob: formData.dob,
           identifier: formData.identifier,
         };
-        if (editData) {
+        if (editData && validateForm()) {
+          setLoading(true);
+
           update_hr(data, editData?._id)
             .then((res) => {
               setLoading(false);
@@ -198,19 +246,25 @@ const Dashboard = () => {
             });
         }
         else {
-          create_hr(data)
-            .then((res) => {
-              setLoading(false);
-              if (res) {
-                message.success("Hr Added successfully..");
+          if (validateForm()) {
+            setLoading(true)
 
-                navigate("/list-hr");
-              }
+            create_hr(data)
+              .then((res) => {
+                setLoading(false);
+                if (res) {
+                  message.success("Hr Added successfully..");
+                  navigate("/list-hr");
+                }
+              })
+              .catch((err) => {
+                setLoading(false);
+              });
+          } else {
+            // message.error('Form data must be filled')
+            setLoading(false);
 
-            })
-            .catch((err) => {
-              setLoading(false);
-            });
+          }
         }
       } else if (employeeType === "companystaff") {
         if (
@@ -226,7 +280,8 @@ const Dashboard = () => {
               !formData.startDate ||
               !formData.currentSSCRate))
         ) {
-          message.error("Form data must be filled first");
+          setLoading(false)
+          // message.error("Form data must be filled first");
         } else {
           if (
             dob >= 45 &&
@@ -309,8 +364,8 @@ const Dashboard = () => {
           dob: formData.dob,
           identifier: formData.identifier,
         };
-        console.log(data, "data...");
-        if (editData) {
+        // console.log(data, "data...");
+        if (editData && validateForm2()) {
           update_hr(data, editData?._id)
             .then((res) => {
               setLoading(false);
@@ -323,19 +378,24 @@ const Dashboard = () => {
 
             })
         } else {
+          if (validateForm2()) {
+            setLoading(true)
+            create_hr(data)
+              .then((res) => {
+                setLoading(false);
+                if (res) {
+                  message.success("Hr Added successfully..");
+                  navigate("/list-hr");
+                }
 
-          create_hr(data)
-            .then((res) => {
-              setLoading(false);
-              if (res) {
-                message.success("Hr Added successfully..");
-                navigate("/list-hr");
-              }
-
-            })
-            .catch((err) => {
-              setLoading(false);
-            });
+              })
+              .catch((err) => {
+                setLoading(false);
+              });
+          } else {
+            // message.error('Form data must be filled')
+            setLoading(false);
+          }
         }
         // Your logic here for when the form data is complete
       } else {
@@ -343,13 +403,13 @@ const Dashboard = () => {
         // navigate("/list-hr");
       }
     }
-    console.log(typeof formData, "formData");
+    // console.log(typeof formData, "formData");
     if (!login) {
       const calculateSaving = (formData) => {
         let saving = 14 * (23.75 / 100);
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
-          console.error("Salary is not a valid number");
+          // console.error("Salary is not a valid number");
           return null; // Early exit if salary is invalid
         } else {
           return saving * salary;
@@ -359,7 +419,7 @@ const Dashboard = () => {
         let saving = 14 * (11.85 / 100);
         let salary = parseFloat(formData.salary);
         if (isNaN(salary)) {
-          console.error("Salary is not a valid number");
+          // console.error("Salary is not a valid number");
           return null; // Early exit if salary is invalid
         } else {
           return saving * salary;
@@ -427,7 +487,7 @@ const Dashboard = () => {
         };
         existingData.push(data);
         sessionStorage.setItem("hrData", JSON.stringify(existingData));
-        console.log(existingData, "Updated hrData");
+        // console.log(existingData, "Updated hrData");
         navigate("/list-hr");
       } else if (employeeType === "companystaff") {
         if (
@@ -514,7 +574,7 @@ const Dashboard = () => {
         existingData2.push(data);
         sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
         navigate("/list-hr");
-        console.log(existingData2, "Updated hrData");
+        // console.log(existingData2, "Updated hrData");
       }
     }
   };
@@ -558,7 +618,7 @@ const Dashboard = () => {
   useEffect(() => {
     handleParamsData();
   }, []);
-  console.log(editData, "editData")
+  // console.log(editData, "editData")
   return (
     <div>
       <>
@@ -609,6 +669,7 @@ const Dashboard = () => {
                         </select>
                       </div>
                     </Tooltip>
+
                   </div>
                   <div className="my-4 d-flex flex-column  align-items-baseline flex-wrap">
                     <label className="form-label cursor-pointer manrope_semibold">
@@ -629,6 +690,8 @@ const Dashboard = () => {
                         />
                       </div>
                     </Tooltip>
+                    {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
+
                   </div>
                 </div>
               </div>
@@ -655,6 +718,7 @@ const Dashboard = () => {
                         <option value="yes">Yes</option>
                         <option value="no">No</option>
                       </select>
+
                     </div>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
@@ -673,9 +737,11 @@ const Dashboard = () => {
                           scrollableYearDropdown
                         />
                       </div>
+                      {errors.iefpDate && <div className="fs-small" style={{ color: "red" }}>{errors.iefpDate}</div>}
                     </Tooltip>
                   )}
                 </div>
+
                 {/* {formData?.iefp === "yes" && ( */}
                 <div className="my-2">
                   <label className="form-label cursor-pointer manrope_semibold">
@@ -710,19 +776,25 @@ const Dashboard = () => {
                             {/* <h5 className="">
                           Predicted Start Date
                           </h5> */}
+                            <div>
+
+                              <DatePicker
+                                selected={formData.startDate}
+                                onChange={(date) =>
+                                  handleDateChange(date, "startDate")
+                                }
+                                className="form-control input_1 cursor-pointer custom_radius text-center mr-2 "
+                                placeholderText="Predicted start date"
+                                dateFormat="dd/MM/yyyy"
+                                minDate={new Date()}
+                                showYearDropdown
+                                scrollableYearDropdown
+                              />
+                              {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
+
+                            </div>
                           </Tooltip>
-                          <DatePicker
-                            selected={formData.startDate}
-                            onChange={(date) =>
-                              handleDateChange(date, "startDate")
-                            }
-                            className="form-control input_1 cursor-pointer custom_radius text-center mr-2 mb-2"
-                            placeholderText="Predicted start date"
-                            dateFormat="dd/MM/yyyy"
-                            minDate={new Date()}
-                            showYearDropdown
-                            scrollableYearDropdown
-                          />
+
                           <Tooltip title="Indicate the expected gross monthly salary for the HR">
                             <div className="">
                               <input
@@ -734,7 +806,10 @@ const Dashboard = () => {
                                 onChange={handleInputChange}
                               />
                             </div>
+                            {errors.salary && <div className="fs-small" style={{ color: "red" }}>{errors.salary}</div>}
+
                           </Tooltip>
+
 
                           <div className="  my-2 col-md-6 col-12">
                             <label className="form-label cursor-pointer w-fit manrope_semibold">
@@ -754,6 +829,8 @@ const Dashboard = () => {
                                   <option value="23.75%">23.75%</option>
                                   <option value="Other">Other</option>
                                 </select>
+                                {errors.currentSSCRate && <div className="fs-small" style={{ color: "red" }}>{errors.currentSSCRate}</div>}
+
                               </div>
                             </Tooltip>
                           </div>
@@ -767,7 +844,7 @@ const Dashboard = () => {
                                 <Tooltip title="Indicate whether the employment contract to be signed will be the first permanent employment contract ever entered into by the new HR">
                                   <div className="">
                                     <select
-                                      className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
+                                      className="form-select cursor-pointer custom_radius text-center w-100 mr-2 "
                                       name="workHistory"
                                       value={formData.workHistory}
                                       onChange={handleInputChange}
@@ -781,6 +858,8 @@ const Dashboard = () => {
 
                                       <option value="yes">yes</option>
                                     </select>
+                                    {errors.workHistory && <div className="fs-small" style={{ color: "red" }}>{errors.workHistory}</div>}
+
                                   </div>
                                 </Tooltip>
                                 {/* <input
@@ -822,6 +901,7 @@ const Dashboard = () => {
                       </select>
                     </div>
                   </Tooltip>
+
                 </div>
               </div>
 
@@ -843,10 +923,12 @@ const Dashboard = () => {
                         placeholder="Unique identifier"
                         value={formData.identifier}
                         onChange={handleIdentifierChange}
-                        className="form-control cursor-pointer input_1 custom_radius text-center mr-2 mb-2"
+                        className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
 
                       // className="form-control"
                       />
+                      {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
+
                     </div>
                   </Tooltip>
                   {error && <p style={{ color: "red" }}>{error}</p>}
@@ -862,6 +944,8 @@ const Dashboard = () => {
                         showYearDropdown
                         scrollableYearDropdown
                       />
+                      {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
+
                     </div>
                   </Tooltip>
                   <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
@@ -877,6 +961,8 @@ const Dashboard = () => {
                         scrollableYearDropdown
                       />
                     </div>
+                    {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
+
                   </Tooltip>
                 </div>
               </div>
@@ -916,10 +1002,14 @@ const Dashboard = () => {
                           scrollableYearDropdown
                         />
                       </div>
+                      {errors.iefpDate && <div className="fs-small" style={{ color: "red" }}>{errors.iefpDate}</div>}
+
                     </Tooltip>
                   )}
                 </div>
                 {/* {formData?.iefp === "yes" && ( */}
+                {/* {errors.iefpDate && <div className="fs-small" style={{ color: "red" }}>{errors.iefpDate}</div>} */}
+
 
                 {/* )} */}
               </div>
@@ -969,13 +1059,15 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               onChange={(date) =>
                                 handleDateChange(date, "startDate")
                               }
-                              className="form-control input_1 cursor-pointer custom_radius  text-center mr-2 mb-2"
+                              className="form-control input_1 cursor-pointer custom_radius  text-center  "
                               placeholderText="contract start date"
                               dateFormat="dd/MM/yyyy"
                               maxDate={new Date()}
                               showYearDropdown
                               scrollableYearDropdown
                             />
+                            {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
+
                           </div>
                         </Tooltip>
                         <Tooltip title="Indicate the current gross monthly salary of the HR">
@@ -988,6 +1080,8 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               value={formData.salary}
                               onChange={handleInputChange}
                             />
+                            {errors.salary && <div className="fs-small" style={{ color: "red" }}>{errors.salary}</div>}
+
                           </div>
                         </Tooltip>
                         <div className="  my-2 col-md-6 col-12">
@@ -1036,6 +1130,8 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                                     <option value="yes">yes</option>
                                     <option value="no">No</option>
                                   </select>
+                                  {errors.workHistory && <div className="fs-small" style={{ color: "red" }}>{errors.workHistory}</div>}
+
                                 </div>
                               </Tooltip>
                               {/* <input
@@ -1089,7 +1185,7 @@ Company's staff - HR already in the company"
               <img className="h-10" src={plane} alt="email" />
             </div> */}
             <div className="my-4">
-              <button className="btn_" type="button" onClick={handleSubmit}>
+              <button disabled={loading} className="btn_" type="button" onClick={handleSubmit}>
                 {loading && login ? (
                   <div className="d-flex justify-content-center align-items-center">
                     <CircularProgress style={{ color: "white" }} size={20} />

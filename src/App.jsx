@@ -108,7 +108,7 @@ function App() {
         )} */}
         <Suspense
           fallback={
-            <main className="h-screen flex flex-col justify-center items-center">
+            <main className="vh-100 d-flex flex-column justify-content-center align-items-center">
               <CircularProgress
                 className="text_darkprimary"
                 size={40}

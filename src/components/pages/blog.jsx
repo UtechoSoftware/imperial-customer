@@ -9,7 +9,9 @@ import { updateUsers } from "../api/users";
 import { changePassword } from "../api/auth";
 import { useDispatch, useSelector } from "react-redux";
 import { setUserData } from "../store/reducer/imperialAuth";
+import { useTranslation } from "react-i18next";
 const Blog = () => {
+  const { t, i18n } = useTranslation();
   const dispatch = useDispatch()
   const user = useSelector(state => state.data.data.user)
   console.log(user, 'user')
@@ -134,19 +136,19 @@ const Blog = () => {
                 className="plusJakara_bold text_black text-md "
                 style={{ fontWeight: "bold" }}
               >
-                Imperial Age
+                {t('logo_name')}
               </h6>
               <h6
                 className="text_para plusJakara_regular"
                 style={{ fontSize: "14px" }}
               >
-                Profile
+                {t('profile')}
               </h6>
             </div>
           </div>
           <div className="mt-4 d-flex gap-2 flex-md-row flex-column  justify-content-between align-items-baseline">
             <h5 className="text_primary" style={{ fontWeight: "bolder" }}>
-              Edit Profile
+              {t('profile_h1')}
             </h5>
             <div className="change-password">
               <Button
@@ -161,7 +163,7 @@ const Blog = () => {
                     color="grey"
                     size={16}
                   />
-                  <p className="m-0">Change Password</p>
+                  <p className="m-0">{t('change_pass')}</p>
                 </div>
               </Button>
             </div>
@@ -178,7 +180,7 @@ const Blog = () => {
                   style={{ width: "4.5rem", height: "4.5rem" }}
                 >
                   <CircularProgress
-                    style={{ color: "white" }}
+                    style={{ color: "black" }}
                     size={20}
                   />
                 </div>
@@ -221,14 +223,14 @@ const Blog = () => {
               onClick={handleButtonClick}
               className="fw-bold text-white bg-dark btn-sm btn-md rounded-lg px-3 px-md-4 py-2"
             >
-              Upload new
+              {t('profile_btn_1')}
             </Button>
             <Button
               onClick={() => setImageUrl(null)}
               variant="outline-dark"
               className="fw-bold text-dark bg-white btn-sm btn-md rounded-lg px-3 px-md-4 py-2"
             >
-              Delete
+              {t('del_btn')}
             </Button>
           </div>
 
@@ -237,7 +239,7 @@ const Blog = () => {
             className="d-flex flex-wrap justify-content-between"
           >
             <Form.Group className="w-100 mb-3">
-              <Form.Label>Name</Form.Label>
+              <Form.Label>{t('Register_h1')}</Form.Label>
               <div className="modal_form">
                 <Form.Control
                   type="text"
@@ -250,7 +252,7 @@ const Blog = () => {
             </Form.Group>
 
             <Form.Group className="w-100 mb-3">
-              <Form.Label>Company Name</Form.Label>
+              <Form.Label>{t('Register_h2')}</Form.Label>
               <div className="modal_form">
                 <Form.Control
                   type="text"
@@ -263,7 +265,7 @@ const Blog = () => {
             </Form.Group>
 
             <Form.Group className="w-100 mb-3">
-              <Form.Label>Position</Form.Label>
+              <Form.Label>{t('Register_h3')}</Form.Label>
               <div className="modal_form">
                 <Form.Control
                   type="text"
@@ -290,7 +292,7 @@ const Blog = () => {
                     />
                   </div>
                 ) : (
-                  "Update Profile"
+                  t('update_profile')
                 )}
               </Button>
             </div>
@@ -302,7 +304,7 @@ const Blog = () => {
             dialogClassName="px-3"
           >
             <Modal.Body>
-              <h6 className="modal-title mb-4">Change Password</h6>
+              <h6 className="modal-title mb-4">{t('change_pass')}</h6>
               <Form onSubmit={handleChangePassword}>
                 {/* <Form.Group className="mb-2" controlId="formName">
                   <Form.Label className="m-0">Old Password</Form.Label>
@@ -322,7 +324,7 @@ const Blog = () => {
                 </Form.Group> */}
 
                 <Form.Group className="mb-2" controlId="oldPassword">
-                  <Form.Label className="m-0">Old Password</Form.Label>
+                  <Form.Label className="m-0">{t('profile_m_h1')}</Form.Label>
                   <div className="modal_form" style={{ position: "relative" }}>
                     <Form.Control
                       required
@@ -351,7 +353,7 @@ const Blog = () => {
                 </Form.Group>
 
                 <Form.Group className="mb-2" controlId="newPassword">
-                  <Form.Label className="m-0">New Password</Form.Label>
+                  <Form.Label className="m-0">{t('profile_m_h2')}</Form.Label>
                   <div className="modal_form" style={{ position: "relative" }}>
                     <Form.Control
                       required
@@ -393,7 +395,7 @@ const Blog = () => {
                         />
                       </div>
                     ) : (
-                      "Done"
+                      t('done_btn')
                     )}
                   </button>
                 </div>

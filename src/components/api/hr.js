@@ -56,6 +56,19 @@ export const del_hr = async (type) => {
     console.log(error, "error");
   }
 };
+export const del_hr_by_id = async (id) => {
+  try {
+    const res = await axios.delete(global.BASEURL + `api/hr/${id}/`, {
+      headers: {
+        "Content-Type": "application/json",
+        "x-auth-token": global.TOKEN,
+      },
+    });
+    return res;
+  } catch (error) {
+    console.log(error, "error");
+  }
+};
 // api/hr/all/type ----> delete req
 // calculate potential saving against type-----------
 export const getPotential = async (type) => {
