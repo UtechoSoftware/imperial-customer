@@ -22,7 +22,7 @@ import {
   questionMark,
   rightarrow
 } from "../icons/icon";
-import { setIsLogin_ } from "../store/reducer/imperialAuth";
+import { setIsLogin_, setUserData } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
@@ -50,6 +50,8 @@ const DynomoLogin1 = () => {
             window.localStorage.setItem('imperial_token', res?.data?.token);
             dispatch(setIsLogin_(true));
             message.success("login successfully");
+            dispatch(setUserData(res?.data?.user))
+
             setIsProcessing(false);
           }
         })

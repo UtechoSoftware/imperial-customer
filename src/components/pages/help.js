@@ -7,8 +7,11 @@ import { message } from "antd";
 import avatar from "../assets/png/avatar1.png";
 import email from "../assets/png/email.png";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 const Help = () => {
   const { t, i18n } = useTranslation();
+  const login = useSelector((state) => state.data.data.isLogin_);
+  const user = useSelector(state => state.data.data.user)
 
   const [faqTitle, setFaqTitle] = useState("");
   const [description, setDescription] = useState("");
@@ -67,22 +70,27 @@ const Help = () => {
     <div>
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
-          <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
-            <div className="flex flex-md-row flex-column">
-              <img
-                className="avatar_img"
-                width="60px"
-                src={avatar}
-                alt="avatar"
-              />
-              <div className="flex flex-col">
-                <h4 className="manrope_bold max-md:text-xl text_black">
-                  John Doe
-                </h4>
-                <p>Hr Director - Tesla Corp.</p>
+          {
+            login && (
+
+              <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
+                <div className="flex flex-md-row flex-column">
+                  <img
+                    className="avatar_img"
+                    width="60px"
+                    src={user?.profilePicture || avatar}
+                    alt="avatar"
+                  />
+                  <div className="flex flex-col">
+                    <h4 className="manrope_bold max-md:text-xl text_black">
+                      {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1).toLowerCase()}
+                    </h4>
+                    <p>{user?.position.charAt(0).toUpperCase() + user?.position?.slice(1).toLowerCase()}- {user?.comp_name.charAt(0).toUpperCase() + user?.comp_name?.slice(1).toLowerCase()}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
+            )
+          }
           {/* <h4 className="manrope_bold max-md:text-xl text_black">Help</h4> */}
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             {t('faq_h1')}

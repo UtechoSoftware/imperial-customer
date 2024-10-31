@@ -6,26 +6,38 @@ import img2 from "../assets/png/long_term_unemployed.png";
 import img3 from '../assets/png/very_long_term_unemployed.png'
 import { useNavigate } from "react-router-dom";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
 const Users = () => {
   const navigate = useNavigate()
   const { t, i18n } = useTranslation();
+  const login = useSelector((state) => state.data.data.isLogin_);
+  const user = useSelector(state => state.data.data.user)
 
   return (
     <div>
       <>
         <main className="min-h-screen lg:container py-5 px-10 ">
-          <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
-            <div className="flex flex-md-row flex-column">
-              <img className="avatar_img" width="60px" src={avatar} alt="avatar" />
-              <div className="flex flex-col">
-                <h4 className="manrope_bold max-md:text-xl text_black">
-                  John Doe
-                </h4>
-                <p>Hr Director - Tesla Corp.</p>
+          {
+            login && (
+              <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
+                <div className="flex flex-md-row flex-column">
+                  <img
+                    className="avatar_img"
+                    width="60px"
+                    src={user?.profilePicture || avatar}
+                    alt="avatar"
+                  />
+                  <div className="flex flex-col">
+                    <h4 className="manrope_bold max-md:text-xl text_black">
+                      {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1).toLowerCase()}
+                    </h4>
+                    <p>{user?.position.charAt(0).toUpperCase() + user?.position?.slice(1).toLowerCase()}- {user?.comp_name.charAt(0).toUpperCase() + user?.comp_name?.slice(1).toLowerCase()}</p>
+                  </div>
+                </div>
               </div>
-            </div>
-          </div>
-          <h4 className="manrope_bold max-md:text-xl text_black w-auto">
+            )
+          }
+          <h4 className="manrope_bold max-md:text-xl  text_black w-auto">
             {t('calculator_h1')}
             {/* Social Security contributions partial or total exemption */}
           </h4>
@@ -62,7 +74,7 @@ const Users = () => {
             {t('info_p4')}
           </p>
 
-          <div className="flex justify-end pt-3 cursor-pointer " onClick={() => navigate('/list-hr')}>
+          <div style={{ borderRadius: "40px" }} className="flex justify-end pt-3 cursor-pointer " onClick={() => navigate('/list-hr')}>
             <div className="  q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid	border-1 rounded py-3 px-3  bg-white  ">
               <h6>{t('info_btn')}</h6>
               <img className="h-10 d-md-block d-none" src={hand} alt="email" />

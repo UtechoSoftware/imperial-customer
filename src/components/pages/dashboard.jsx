@@ -17,6 +17,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { create_hr, update_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { setSaving } from "../store/reducer/imperialAuth";
+import { SingleDatePicker } from 'react-dates';
 const Dashboard = () => {
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
@@ -686,6 +687,7 @@ const Dashboard = () => {
                           // maxDate={new Date()}
                           required
                           showYearDropdown
+                          isClearable
                           scrollableYearDropdown
                         />
                       </div>
@@ -735,6 +737,7 @@ const Dashboard = () => {
                           maxDate={new Date()}
                           showYearDropdown
                           scrollableYearDropdown
+                          isClearable
                         />
                       </div>
                       {errors.iefpDate && <div className="fs-small" style={{ color: "red" }}>{errors.iefpDate}</div>}
@@ -749,7 +752,12 @@ const Dashboard = () => {
                   </label>
 
                   <div className="d-flex gap-2 flex-wrap">
-                    <Tooltip title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.Permanent employment contract (Article 147 of the Portuguese Labor Code) or indefinite-term, associated with a permanent employee/on-staff employee. This contract does not need to be in writing.">
+                    <Tooltip title="
+                    Please select between:
+- Non-permanent (or fixed term) employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain; or,
+- Open-ended (or permanent/indefinite-term) employment contract (Article 147 of the Portuguese Labor Code).
+If the contract is not written, please consider it “Open-ended”.
+                    ">
                       <div className="">
                         <select
                           className="form-select custom_radius cursor-pointer text-center py-3  input_3 mr-2 mb-2"
@@ -789,6 +797,7 @@ const Dashboard = () => {
                                 minDate={new Date()}
                                 showYearDropdown
                                 scrollableYearDropdown
+                                isClearable
                               />
                               {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
 
@@ -943,7 +952,10 @@ const Dashboard = () => {
                         maxDate={new Date()}
                         showYearDropdown
                         scrollableYearDropdown
+                        yearDropdownItemNumber={100} // Shows 100 years in the dropdown for easier navigation
+                        isClearable // Allows users to clear the date if they need to reselect
                       />
+
                       {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
 
                     </div>
@@ -959,6 +971,7 @@ const Dashboard = () => {
                         maxDate={new Date()}
                         showYearDropdown
                         scrollableYearDropdown
+                        isClearable
                       />
                     </div>
                     {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
@@ -1000,6 +1013,7 @@ const Dashboard = () => {
                           maxDate={new Date()}
                           showYearDropdown
                           scrollableYearDropdown
+                          isClearable
                         />
                       </div>
                       {errors.iefpDate && <div className="fs-small" style={{ color: "red" }}>{errors.iefpDate}</div>}
@@ -1065,6 +1079,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               maxDate={new Date()}
                               showYearDropdown
                               scrollableYearDropdown
+                              isClearable
                             />
                             {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
 
