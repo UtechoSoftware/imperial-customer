@@ -18,7 +18,10 @@ import { create_hr, update_hr } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { setSaving } from "../store/reducer/imperialAuth";
 import { SingleDatePicker } from 'react-dates';
+import { useTranslation } from "react-i18next";
 const Dashboard = () => {
+  const { t, i18n } = useTranslation();
+  const user = useSelector(state => state.data.data.user)
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(false);
   const location = useLocation();
@@ -60,7 +63,6 @@ const Dashboard = () => {
     if (formData.currentSSCRate === "23.75%" && formData.workHistory !== 'yes' && formData.workHistory !== 'no') {
       newErrors.workHistory = "Work History should be selected";
     }
-
     setErrors(newErrors);
     console.log(Object.keys(newErrors), "work")
     console.log("identifier:", formData.identifier);
@@ -104,29 +106,92 @@ const Dashboard = () => {
     const { name, value } = event.target;
     setFormData({ ...formData, [name]: value });
   };
-  // const handleDateChange = (date, name) => {
-  //   setFormData({ ...formData, [name]: date });
+  // -------------------previous code for backup --------------- don't remove this -------------
+  // const handleDateChange = (date, fieldName) => {
+  //   const currentDate = new Date();
+  //   const selectedDate = date;
+  //   const age = differenceInYears(currentDate, selectedDate);
+  //   if (fieldName === "dob") {
+  //     setDob(age);
+  //     setDOB(selectedDate);
+  //   } else if (fieldName === "iefpDate") {
+  //     setIefpDate(age);
+  //     setIefpDate_(selectedDate);
+  //   } else if (fieldName === "startDate") {
+  //     setStartDate(age);
+  //     setbtDate(selectedDate);
+  //   }
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [fieldName]: selectedDate,
+  //   }));
+  //   setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   // };
   const handleDateChange = (date, fieldName) => {
     const currentDate = new Date();
     const selectedDate = date;
     const age = differenceInYears(currentDate, selectedDate);
+
     if (fieldName === "dob") {
       setDob(age);
       setDOB(selectedDate);
     } else if (fieldName === "iefpDate") {
+      if (formData.dob) {
+        const dobDate = new Date(formData.dob);
+        const minIefpDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + 15));
+
+        if (selectedDate < minIefpDate) {
+          setErrors((prevErrors) => ({
+            ...prevErrors,
+            iefpDate: "IEF date must be at least 15 years after Date of Birth.",
+          }));
+          return;
+        }
+      }
       setIefpDate(age);
       setIefpDate_(selectedDate);
     } else if (fieldName === "startDate") {
       setStartDate(age);
       setbtDate(selectedDate);
     }
+
     setFormData((prevData) => ({
       ...prevData,
       [fieldName]: selectedDate,
     }));
     setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   };
+
+  // const handleDateChange = (date, fieldName) => {
+  //   const currentDate = new Date();
+  //   const selectedDate = date;
+  //   const age = differenceInYears(currentDate, selectedDate);
+
+  //   if (fieldName === "dob") {
+  //     setDob(age);
+  //     setFormData((prevData) => ({ ...prevData, dob: selectedDate }));
+  //     setErrors((prevErrors) => ({ ...prevErrors, dob: "" }));
+  //   } else if (fieldName === "iefpDate") {
+  //     if (formData.dob) {
+  //       const dobDate = new Date(formData.dob);
+  //       const minIefpDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + 15));
+  //       if (selectedDate < minIefpDate) {
+  //         setErrors((prevErrors) => ({
+  //           ...prevErrors,
+  //           iefpDate: "IEF date must be at least 15 years after Date of Birth.",
+  //         }));
+  //         return;
+  //       }
+  //     }
+  //     setIefpDate(age);
+  //     setFormData((prevData) => ({ ...prevData, iefpDate: selectedDate }));
+  //     setErrors((prevErrors) => ({ ...prevErrors, iefpDate: "" }));
+  //   } else if (fieldName === "startDate") {
+  //     setStartDate(age);
+  //     setbtDate(selectedDate);
+  //   }
+  // };
+
   const handleSubmit = () => {
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0];
@@ -626,25 +691,30 @@ const Dashboard = () => {
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
           {
             login && (
-
-              <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-4 md:items-center w-full">
-                <div className="flex">
-                  <img className="avatar_img" src={avatar} alt="avatar" />
+              <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
+                <div className="flex flex-md-row flex-column">
+                  <img
+                    className="avatar_img"
+                    width="60px"
+                    src={user?.profilePicture || avatar}
+                    alt="avatar"
+                  />
                   <div className="flex flex-col">
                     <h4 className="manrope_bold max-md:text-xl text_black">
-                      John Doe
+                      {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1).toLowerCase()}
                     </h4>
-                    <p>Hr Director - Tesla Corp.</p>
+                    <p>{user?.position.charAt(0).toUpperCase() + user?.position?.slice(1).toLowerCase()}- {user?.comp_name.charAt(0).toUpperCase() + user?.comp_name?.slice(1).toLowerCase()}</p>
                   </div>
                 </div>
               </div>
             )
           }
           <p className="manrope_bold  fs-5 text_black">
-            Social Security contributions partial or total exemption
+            {t('calculator_h1')}
           </p>
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
-            New Entry
+
+            {t('new_entry')}
           </h4>
           {employeeType === "newhire" ? (
             <div>
@@ -653,7 +723,7 @@ const Dashboard = () => {
 
                   <div className=" col-lg-4 col-md-6  col-12">
                     <label className="form-label w-fit manrope_semibold cursor-pointer">
-                      Type of Employee
+                      {t('type_of_employee')}
                     </label>
                     <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
                       <div className="">
@@ -663,18 +733,18 @@ const Dashboard = () => {
                           value={employeeType} // Bind the value to state
                           onChange={handleChange}
                         >
-                          <option value="">Select</option>{" "}
+                          <option value="">{t('select')}</option>{" "}
                           {/* Default placeholder option */}
-                          <option value="newhire">New Hire</option>
-                          <option value="companystaff">Company's Staff</option>
+                          <option value="newhire">{t('NewHire')}</option>
+                          <option value="companystaff">{t('comp_staff')}</option>
                         </select>
                       </div>
                     </Tooltip>
 
                   </div>
-                  <div className="my-4 d-flex flex-column  align-items-baseline flex-wrap">
+                  <div className="my-2 d-flex flex-column  align-items-baseline flex-wrap">
                     <label className="form-label cursor-pointer manrope_semibold">
-                      Personal Data
+                      {t('table_head_1')}
                     </label>
                     <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
                       <div className="">
@@ -682,9 +752,9 @@ const Dashboard = () => {
                           selected={formData.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
                           className="form-control cursor-pointer input_1 custom_radius text-center"
-                          placeholderText="Date of Birth"
+                          placeholderText={t('table_head_8')}
                           dateFormat="dd/MM/yyyy"
-                          // maxDate={new Date()}
+                          maxDate={new Date()}
                           required
                           showYearDropdown
                           isClearable
@@ -700,7 +770,7 @@ const Dashboard = () => {
               {/* </div> */}
               <div className=" ">
                 <label className="form-label cursor-pointer manrope_semibold">
-                  Registration as unemployed
+                  {t('reg_unemployee')}
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
@@ -713,12 +783,11 @@ const Dashboard = () => {
                         onChange={handleInputChange}
                       >
                         <option value="">
-                          Registered on the Portuguese Employment Institut
-                          (IEFP)
+                          {t('reg_inst')}
                         </option>
 
-                        <option value="yes">Yes</option>
-                        <option value="no">No</option>
+                        <option value="yes">{t('yes')}</option>
+                        <option value="no">{t('no')}</option>
                       </select>
 
                     </div>
@@ -732,7 +801,7 @@ const Dashboard = () => {
                             handleDateChange(date, "iefpDate")
                           }
                           className="form-control  input_1 cursor-pointer custom_radius text-center "
-                          placeholderText="IEFP registration date"
+                          placeholderText={t('table_2-head_3')}
                           dateFormat="dd/MM/yyyy"
                           maxDate={new Date()}
                           showYearDropdown
@@ -748,7 +817,7 @@ const Dashboard = () => {
                 {/* {formData?.iefp === "yes" && ( */}
                 <div className="my-2">
                   <label className="form-label cursor-pointer manrope_semibold">
-                    Employment Contract Detail
+                    {t('emp_contract_detail')}
                   </label>
 
                   <div className="d-flex gap-2 flex-wrap">
@@ -766,13 +835,13 @@ If the contract is not written, please consider it “Open-ended”.
                           value={formData.employmentContractType}
                           onChange={handleInputChange}
                         >
-                          <option value="">Type of employment contract</option>
+                          <option value="">{t('t_empl_contract')}</option>
 
                           <option value="open-ended contract">
-                            open-ended contract
+                            {t('table_2-head_16')}
                           </option>
                           <option value="Non-permanent contract">
-                            Non-permanent contract
+                            {t('non_perm_contract')}
                           </option>
                         </select>
                       </div>
@@ -792,7 +861,7 @@ If the contract is not written, please consider it “Open-ended”.
                                   handleDateChange(date, "startDate")
                                 }
                                 className="form-control input_1 cursor-pointer custom_radius text-center mr-2 "
-                                placeholderText="Predicted start date"
+                                placeholderText={t('table_head_10')}
                                 dateFormat="dd/MM/yyyy"
                                 minDate={new Date()}
                                 showYearDropdown
@@ -810,7 +879,7 @@ If the contract is not written, please consider it “Open-ended”.
                                 type="text"
                                 className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
                                 name="salary"
-                                placeholder="Monthly base salary"
+                                placeholder={t('monthly_sallery')}
                                 value={formData.salary}
                                 onChange={handleInputChange}
                               />
@@ -820,33 +889,36 @@ If the contract is not written, please consider it “Open-ended”.
                           </Tooltip>
 
 
-                          <div className="  my-2 col-md-6 col-12">
-                            <label className="form-label cursor-pointer w-fit manrope_semibold">
-                              Company's current Social Security contribution rate
-                            </label>
-                            <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
-                              <div className="">
-                                <select
-                                  className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
-                                  name="currentSSCRate"
-                                  value={formData.currentSSCRate}
-                                  onChange={handleInputChange}
-                                >
-                                  <option value="">
-                                    Current Social Security contributions rate
-                                  </option>
-                                  <option value="23.75%">23.75%</option>
-                                  <option value="Other">Other</option>
-                                </select>
-                                {errors.currentSSCRate && <div className="fs-small" style={{ color: "red" }}>{errors.currentSSCRate}</div>}
+                          <div className=" col-md-12 col-12">
+                            <div className="col-md-5">
 
-                              </div>
-                            </Tooltip>
+                              <label className="form-label cursor-pointer w-fit manrope_semibold">
+                                {t('table_head_4')}
+                              </label>
+                              <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
+                                <div className="">
+                                  <select
+                                    className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
+                                    name="currentSSCRate"
+                                    value={formData.currentSSCRate}
+                                    onChange={handleInputChange}
+                                  >
+                                    <option value="">
+                                      {t('current_rate')}
+                                    </option>
+                                    <option value="23.75%">23.75%</option>
+                                    <option value="Other">Other</option>
+                                  </select>
+                                  {errors.currentSSCRate && <div className="fs-small" style={{ color: "red" }}>{errors.currentSSCRate}</div>}
+
+                                </div>
+                              </Tooltip>
+                            </div>
                           </div>
                           {formData.currentSSCRate === "23.75%" && (
-                            <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+                            <div className=" col-lg-4 col-md-6 col-12 ms-md-2">
                               <label className="form-label cursor-pointer w-fit manrope_semibold">
-                                Employees’s work history
+                                {t('work_history')}
                               </label>
 
                               <div className="col-12">
@@ -859,13 +931,12 @@ If the contract is not written, please consider it “Open-ended”.
                                       onChange={handleInputChange}
                                     >
                                       <option value="">
-                                        Is this the employee's first open-ended
-                                        contract?
+                                        {t('is_this')}
                                       </option>
 
-                                      <option value="no">No</option>
+                                      <option value="no">{t('no')}</option>
 
-                                      <option value="yes">yes</option>
+                                      <option value="yes">{t('yes')}</option>
                                     </select>
                                     {errors.workHistory && <div className="fs-small" style={{ color: "red" }}>{errors.workHistory}</div>}
 
@@ -893,7 +964,7 @@ If the contract is not written, please consider it “Open-ended”.
             <div>
               <div className="my-3  ">
                 <label className="form-label  manrope_semibold">
-                  Type of Employee
+                  {t('type_of_employee')}
                 </label>
                 <div className=" col-lg-4 col-md-6  col-12 ">
                   <Tooltip title="New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
@@ -903,10 +974,10 @@ If the contract is not written, please consider it “Open-ended”.
                         value={employeeType}
                         onChange={handleChange}
                       >
-                        <option value="">Select</option>
+                        <option value="">{t('select')}</option>
 
-                        <option value="newhire">New Hire</option>
-                        <option value="companystaff">Company's Staff</option>
+                        <option value="newhire">{t('NewHire')}</option>
+                        <option value="companystaff">{t('tab_2')}</option>
                       </select>
                     </div>
                   </Tooltip>
@@ -914,9 +985,9 @@ If the contract is not written, please consider it “Open-ended”.
                 </div>
               </div>
 
-              <div className="my-4">
+              <div className="my-2">
                 <label className="form-label  manrope_semibold">
-                  Personal Data
+                  {t('table_head_1')}
                 </label>
 
                 <div className="flex  flex-wrap">
@@ -929,7 +1000,7 @@ If the contract is not written, please consider it “Open-ended”.
                         type="text"
                         id="identifier"
                         name="identifier"
-                        placeholder="Unique identifier"
+                        placeholder={t('unique_identifier')}
                         value={formData.identifier}
                         onChange={handleIdentifierChange}
                         className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
@@ -947,7 +1018,7 @@ If the contract is not written, please consider it “Open-ended”.
                         selected={formData.newHiring}
                         onChange={(date) => handleDateChange(date, "newHiring")}
                         className="form-control input_1 cursor-pointer custom_radius me-md-2 text-center"
-                        placeholderText="Hiring date"
+                        placeholderText={t('hiring_date')}
                         dateFormat="dd/MM/yyyy"
                         maxDate={new Date()}
                         showYearDropdown
@@ -966,7 +1037,7 @@ If the contract is not written, please consider it “Open-ended”.
                         selected={formData.dob}
                         onChange={(date) => handleDateChange(date, "dob")}
                         className="form-control cursor-pointer input_1 custom_radius text-center"
-                        placeholderText="Date of Birth"
+                        placeholderText={t('table_head_8')}
                         dateFormat="dd/MM/yyyy"
                         maxDate={new Date()}
                         showYearDropdown
@@ -981,7 +1052,7 @@ If the contract is not written, please consider it “Open-ended”.
               </div>
               <div className="my-4 ">
                 <label className="form-label cursor-pointer manrope_semibold">
-                  Registration as unemployed
+                  {t('reg_unemployee')}
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
@@ -993,10 +1064,10 @@ If the contract is not written, please consider it “Open-ended”.
                       onChange={handleInputChange}
                     >
                       <option>
-                        Registered on the Portuguese Employment Institut (IEFP)
+                        {t('reg_inst')}
                       </option>
-                      <option value="yes">Yes</option>
-                      <option value="no">No</option>
+                      <option value="yes">{t('yes')}</option>
+                      <option value="no">{t('no')}</option>
                     </select>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
@@ -1008,7 +1079,7 @@ If the contract is not written, please consider it “Open-ended”.
                             handleDateChange(date, "iefpDate")
                           }
                           className="form-control input_1 cursor-pointer custom_radius text-center "
-                          placeholderText="IEFP registration date"
+                          placeholderText={t('IEFP_reg_date')}
                           dateFormat="dd/MM/yyyy"
                           maxDate={new Date()}
                           showYearDropdown
@@ -1029,7 +1100,7 @@ If the contract is not written, please consider it “Open-ended”.
               </div>
               <div className="my-2 ">
                 <label className="form-label cursor-pointer manrope_semibold">
-                  Employment Contract Detail
+                  {t('emp_contract_detail')}
                 </label>
                 {/* <button
                   className="btn ms-3 my-3 px-2 py-1 btn-sm bg-success  rounded-4 text-white "
@@ -1051,13 +1122,13 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                         onChange={handleInputChange}
                       >
                         <option value="">
-                          Type of the last employment contract signed
+                          {t('sign_last')}
                         </option>
                         <option value="Non-permanent contract">
-                          Non-permanent contract
+                          {t('non_perm_contract')}
                         </option>
                         <option value="open-ended contract">
-                          open-ended contract
+                          {t('table_2-head_16')}
                         </option>
                       </select>
                     </div>
@@ -1074,7 +1145,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                                 handleDateChange(date, "startDate")
                               }
                               className="form-control input_1 cursor-pointer custom_radius  text-center  "
-                              placeholderText="contract start date"
+                              placeholderText={t('contract_start_date')}
                               dateFormat="dd/MM/yyyy"
                               maxDate={new Date()}
                               showYearDropdown
@@ -1091,7 +1162,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               type="text"
                               className="form-control cursor-pointer input_1 custom_radius text-center mr-2"
                               name="salary"
-                              placeholder="Monthly base salary"
+                              placeholder={t('monthly_sallery')}
                               value={formData.salary}
                               onChange={handleInputChange}
                             />
@@ -1101,7 +1172,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                         </Tooltip>
                         <div className="  my-2 col-md-6 col-12">
                           <label className="form-label cursor-pointer w-fit manrope_semibold">
-                            Company's current Social Security contribution rate
+                            {t('table_head_4')}
                           </label>
                           <Tooltip
                             title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
@@ -1115,7 +1186,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                                 onChange={handleInputChange}
                               >
                                 <option value="">
-                                  Current Social Security contributions rate
+                                  {t('current_rate')}
                                 </option>
                                 <option value="23.75%">23.75%</option>
                                 {/* <option value="Other">Other</option> */}
@@ -1124,9 +1195,9 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                           </Tooltip>
                         </div>
                         {formData.currentSSCRate === "23.75%" && (
-                          <div className="my-2 col-lg-4 col-md-6 col-12 ms-md-2">
+                          <div className="my-1 col-lg-4 col-md-6 col-12 ms-md-2">
                             <label className="form-label cursor-pointer w-fit manrope_semibold">
-                              Employees’s work history
+                              {t('work_history')}
                             </label>
 
                             <div className="col-12">
@@ -1139,11 +1210,10 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                                     onChange={handleInputChange}
                                   >
                                     <option value="">
-                                      Is this the employee's first open-ended
-                                      contract?
+                                      {t('is_this')}
                                     </option>
-                                    <option value="yes">yes</option>
-                                    <option value="no">No</option>
+                                    <option value="yes">{t('yes')}</option>
+                                    <option value="no">{t('no')}</option>
                                   </select>
                                   {errors.workHistory && <div className="fs-small" style={{ color: "red" }}>{errors.workHistory}</div>}
 
@@ -1166,9 +1236,9 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
               </div>
             </div>
           ) : (
-            <div className="my-3">
+            <div className="my-2">
               <label className="form-label w-fit manrope_semibold cursor-pointer">
-                Type of Employee
+                {t('type_of_employee')}
               </label>
 
               <div className=" col-lg-4 col-md-6  col-12">
@@ -1183,10 +1253,10 @@ Company's staff - HR already in the company"
                       value={employeeType} // Bind the value to state
                       onChange={handleChange}
                     >
-                      <option value="">Select</option>{" "}
+                      <option value="">{t('select')}</option>{" "}
                       {/* Default placeholder option */}
-                      <option value="newhire">New Hire</option>
-                      <option value="companystaff">Company's Staff</option>
+                      <option value="newhire">{t('NewHire')}</option>
+                      <option value="companystaff">{t('tab_2')}</option>
                     </select>
                   </div>
                 </Tooltip>

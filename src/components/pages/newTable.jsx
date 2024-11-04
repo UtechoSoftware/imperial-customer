@@ -54,7 +54,6 @@ const NewTable = ({ updating }) => {
     setRowData(data?._id)
     setShowModal2(true)
   };
-  console.log(tableData, "ttt")
   return (
     <div className="table-responsive">
       {loading && login ? (

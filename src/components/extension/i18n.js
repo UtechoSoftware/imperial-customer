@@ -1,7 +1,7 @@
 // i18n.js
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
-import dutch from './dutch'
+import pt from './pt.json'
 import eng from './eng.json';
 
 i18n
@@ -11,8 +11,8 @@ i18n
             en: {
                 translation: eng,
             },
-            dut: {
-                translation: dutch,
+            pt: {
+                translation: pt,
             },
         },
         lng: 'en', // Set the default language

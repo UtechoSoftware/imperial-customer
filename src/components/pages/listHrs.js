@@ -154,7 +154,7 @@ const ListHrs = () => {
                 >
                   <div className="d-flex gap-2 align-items-center justify-content-center">
                     <img src={pdf} width="20px" alt="pdf" />
-                    <p className="m-0 text-white " style={{ fontSize: "14px" }}>
+                    <p className="m-0 text-white  text-nowrap " style={{ fontSize: "14px" }}>
                       {/* Import Excel */}
                       {t('imp_excel')}
                     </p>
@@ -164,11 +164,11 @@ const ListHrs = () => {
               <button
                 className="btn2 px-3 py-1  border-black"
                 onClick={() => navigate("/add-hr")}
-                style={{ width: "9rem" }}
+                style={{ width: "10rem" }}
               >
-                <div className="d-flex gap-3 align-items-center justify-content-center">
+                <div className="d-flex gap-3 align-items-center justify-content-center  text-nowrap">
                   <p className="fs-4 m-0 text-white">+</p>
-                  <p className="m-0 text-white">{t('add_hr')}</p>
+                  <p className="m-0 text-white  text-nowrap">{t('add_hr')}</p>
                 </div>
               </button>
             </div>

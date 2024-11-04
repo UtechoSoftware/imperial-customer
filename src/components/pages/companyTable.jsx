@@ -71,7 +71,7 @@ const CompanyTable = ({ updating }) => {
       ) : (
         <Table bordered hover style={{ width: "900px" }}>
           <thead>
-            <tr>
+            <tr className="text-nowrap">
               <th colSpan="1" style={{ width: "175px" }}>
                 {t('table_head_1')}
               </th>
@@ -100,7 +100,7 @@ const CompanyTable = ({ updating }) => {
                 )
               }
             </tr>
-            <tr>
+            <tr className="text-nowrap">
               <th style={{ width: "175px" }}>{t('table_head_8')}</th>
               <th style={{ width: "175px" }}>{t('table_head_9')}</th>
               <th style={{ width: "125px" }}>{t('table_head_10')}</th>

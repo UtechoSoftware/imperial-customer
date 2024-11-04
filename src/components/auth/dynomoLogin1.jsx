@@ -6,10 +6,10 @@ import {
   TextField
 } from "@mui/material";
 import { Form, message } from "antd";
-import { useLinkedIn } from 'react-linkedin-login-oauth2';
+import { LinkedIn, useLinkedIn } from 'react-linkedin-login-oauth2';
 import React, { useState } from "react";
 import { } from "react-bootstrap";
-import { Eye, EyeOff } from "react-feather";
+import { Eye, EyeOff, Linkedin } from "react-feather";
 import "react-phone-input-2/lib/style.css";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
@@ -26,6 +26,34 @@ import { setIsLogin_, setUserData } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
+  const data = [
+    {
+      title: 'Did you know that...',
+      content:
+        'Fixed-term contracts in certain circumstances automatically convert to open-ended contracts, even without a formal written contract, making them potentially eligible for this benefit.',
+    },
+    {
+      title: 'Another fact...',
+      content:
+        'Part-time contracts can sometimes lead to full-time status under certain conditions, increasing eligibility for certain benefits.',
+    },
+    {
+      title: 'Important reminder...',
+      content:
+        'Employees on a fixed-term contract are also entitled to annual leave and other benefits as per labor law.',
+    },
+  ]
+
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
+  };
+
   const { t, i18n } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [isProcessing, setIsProcessing] = useState(false);
@@ -99,31 +127,58 @@ const DynomoLogin1 = () => {
             <div className="d-flex flex-column gap-3 mt-4">
               <h5 className="text-secondary">{t('login_h1')}</h5>
               <p className="text_para">
-                {/* This is the first free digital tool to simulate the application
+                This is the first free digital tool to simulate the application
                 of the Social Security contributions partial or total exemption,
-                available to Portuguese entities */}
-                {t('login_p3')}
+                available to Portuguese entities
+                {/* {t('login_p3')} */}
               </p>
             </div>
             <div className="d-flex flex-column gap-3 mt-4">
-              {/* <h5 className="text-secondary">Did you know that...</h5> */}
+              <h5 className="text-secondary">{data[currentIndex].title}</h5>
               <p className="text_para">
-                {/* Fixed-term contracts in certain circumstances automatically
-                convert to open-ended contracts, even without a formal written
-                contract, making them potentially eligible for this benefit. */}
-                {t('login_p4')}
-
+                {data[currentIndex].content}
+                {/* {t('login_p4')} */}
               </p>
             </div>
-            {/* <div className="d-flex gap-2">
-              <img src={left} width="20px" alt="left" />
-              <img src={rightarrow} width="20px" alt="right" />
-            </div> */}
+            <div className="d-flex gap-2 mb-3">
+              <img src={left} width="10px" alt="left" onClick={handlePrev} style={{ cursor: 'pointer' }} />
+              <img src={rightarrow} width="10px" alt="right" onClick={handleNext} style={{ cursor: 'pointer' }} />
+            </div>
             <div className="d-flex align-items-center gap-3">
               <img src={questionMark} width="20px" alt="question" />
               <p className="m-0 text-white">{t('help')}</p>
             </div>
           </div>
+          {/* <div className="d-flex flex-column gap-2 pt-3 ">
+            <img src={finabeelight} width="50px" alt="logo_" />
+            <div className="d-flex flex-column gap-3 mt-4">
+              <h5 className="text-secondary">{t('login_h1')}</h5>
+              <p className="text_para">
+                This is the first free digital tool to simulate the application
+                of the Social Security contributions partial or total exemption,
+                available to Portuguese entities
+                {t('login_p3')}
+              </p>
+            </div>
+            <div className="d-flex flex-column gap-3 mt-4">
+              <h5 className="text-secondary">Did you know that...</h5>
+              <p className="text_para">
+                Fixed-term contracts in certain circumstances automatically
+                convert to open-ended contracts, even without a formal written
+                contract, making them potentially eligible for this benefit.
+                {t('login_p4')}
+
+              </p>
+            </div>
+            <div className="d-flex gap-2">
+              <img src={left} width="20px" alt="left" />
+              <img src={rightarrow} width="20px" alt="right" />
+            </div>
+            <div className="d-flex align-items-center gap-3">
+              <img src={questionMark} width="20px" alt="question" />
+              <p className="m-0 text-white">{t('help')}</p>
+            </div>
+          </div> */}
         </div>
         <div className="col-md-6 col-sm-12 justify-content-center p-4 d-flex flex-column ">
           <div className="border border-white p-4">
@@ -137,7 +192,7 @@ const DynomoLogin1 = () => {
                 {t('Login_p2')}
 
                 { }
-                <span className="text_darkprimary">
+                <span className="text_darkprimary ms-2">
                   <Link
                     className="text_darkprimary poppins_semibold text-decoration-none"
                     to="/register"
@@ -148,15 +203,16 @@ const DynomoLogin1 = () => {
                 </span>
               </p>
             </div>
-            <div className="d-flex flex-column gap-0">
-              <p className="poppins_semibold m-0 text_darkprimary">
+            <div className=" py-2">
+              <p className="poppins_semibold m-0 text_darkprimary p-0 pb-1">
                 {/* Login with Linkedin */}
                 {t('Login_p1')}
               </p>
-              <div className="cursor-pointer" onClick={handleLinkedInLogin}>
+              <img className="cursor-pointer" onClick={handleLinkedInLogin} width="25px" src={linkedin_} alt="linkdin" />
 
-                <img width="70px" src={linkedin_} alt="linkdin" />
-              </div>
+              {/* <Linkedin /> */}
+
+
             </div>
             <div className="d-flex flex-row align-items-center gap-2">
               <div className="border_div"></div>

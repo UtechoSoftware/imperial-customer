@@ -1,18 +1,21 @@
-import React, { useState } from "react";
-import { Form, Modal, Spinner } from "react-bootstrap";
-import { post_help, updateHelp } from "../api/help";
-
+import React, { useEffect, useState } from "react";
+import { Form, Modal } from "react-bootstrap";
+import { post_help } from "../api/help";
 import { CircularProgress } from "@mui/material";
 import { message } from "antd";
-import avatar from "../assets/png/avatar1.png";
-import email from "../assets/png/email.png";
 import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
+import avatar from "../assets/png/avatar1.png";
+import email from "../assets/png/email.png";
+import { axiosInstance } from "../api/axiosIntance";
+import { Pagination } from 'antd';
 const Help = () => {
+  const [lastId, setLastId] = useState(1);
   const { t, i18n } = useTranslation();
   const login = useSelector((state) => state.data.data.isLogin_);
+  const [data, setData] = useState([]);
   const user = useSelector(state => state.data.data.user)
-
+  const [count, setcount] = useState(0);
   const [faqTitle, setFaqTitle] = useState("");
   const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
@@ -38,33 +41,29 @@ const Help = () => {
         setLoading(false);
       });
   };
+  const fetchData = async (lastId) => {
+    setLoading(true);
+    axiosInstance.get(`api/users/faqs/all/${lastId}`).then((res) => {
+      if (res?.data) {
+        setData(res?.data?.faqs);
+        setcount(res?.data?.count?.totalPage);
+        setLoading(false);
+      }
+    })
+      .catch((er) => {
+        setLoading(false);
+      });
 
-  const [Id, setId] = useState("");
-  const [data, setData] = useState([]);
-  const [statusloading, setStatusloading] = useState(false);
-  const [search, setSearch] = useState("");
-  let dummy = [
-    {
-      faq: "FAQ 1 - Question",
-      question: "Question",
-      ans: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin blandit velit sit amet neque tempus, pulvinar faucibus nulla facilisis. Suspendisse at ex vel justo commodo molestie. Donec ut sodales odio,tincidunt porta tortor. Fusce aliquet urna",
-    },
-    {
-      faq: "FAQ 2 - Question",
-      question: "Question",
-      ans: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin blandit velit sit amet neque tempus, pulvinar faucibus nulla facilisis. Suspendisse at ex vel justo commodo molestie. Donec ut sodales odio,tincidunt porta tortor. Fusce aliquet urna",
-    },
-    {
-      faq: "FAQ 3 - Question",
-      question: "Question",
-      ans: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin blandit velit sit amet neque tempus, pulvinar faucibus nulla facilisis. Suspendisse at ex vel justo commodo molestie. Donec ut sodales odio,tincidunt porta tortor. Fusce aliquet urna",
-    },
-    {
-      faq: "FAQ 4 - Question",
-      question: "Question",
-      ans: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin blandit velit sit amet neque tempus, pulvinar faucibus nulla facilisis. Suspendisse at ex vel justo commodo molestie. Donec ut sodales odio,tincidunt porta tortor. Fusce aliquet urna",
-    },
-  ];
+  };
+  useEffect(() => {
+    fetchData(lastId);
+  }, [lastId]);
+
+  const handlePageChange = (page) => {
+    setLoading(true);
+    setLastId(page);
+  };
+
 
   return (
     <div>
@@ -95,21 +94,55 @@ const Help = () => {
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
             {t('faq_h1')}
           </h4>
-          <div className="felx flex-col py-2">
-            {dummy.map((item, index) => (
-              <div key={index} className="flex flex-col py-2">
-                <h6 className="manrope_bold max-md:text-xl text_black">
-                  {item.faq}
-                </h6>
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin
-                  blandit velit sit amet neque tempus, pulvinar faucibus nulla
-                  facilisis. Suspendisse at ex vel justo commodo molestie. Donec
-                  ut sodales odio, tincidunt porta tortor. Fusce aliquet urna
-                </p>
-              </div>
-            ))}
+          <div className="felx flex-col py-2 " style={{ minHeight: "500px" }}>
+            {
+              loading ? (
+                <>
+                  <div className="d-flex justify-content-center">
+                    <CircularProgress
+                      size={24}
+                      style={{ color: "black" }}
+                    />
+                  </div>
+                </>
+              ) :
+                data?.map((item, index) => (
+                  <>
+                    <div key={index} className="flex flex-col py-2">
+                      <div className="d-flex gap-3 align-items-center ">
+                        <p className="m-0 p-0">
+                          {`${index + 1} -`}
+                        </p>
+                        <h6 className="manrope_bold max-md:text-xl text_black">
+                          {item.title}
+                        </h6>
+                      </div>
+                      <div style={{ paddingLeft: "36px" }} className="">
+                        <p className="">
+                          {item?.subtitle}
+                        </p>
+                      </div>
+                    </div>
+
+                  </>
+                ))
+
+            }
           </div>
+          {
+            data?.length > 1 && (
+
+              <div className="d-flex justify-content-center">
+                <Pagination
+                  current={lastId}
+                  total={count * 10}
+                  onChange={handlePageChange}
+                  defaultPageSize={10}
+
+                />
+              </div>
+            )
+          }
           <div className="flex justify-end ">
             <div
               onClick={() => handleShow()}
@@ -195,7 +228,7 @@ const Help = () => {
           </Modal>
         </main>
       </>
-    </div>
+    </div >
   );
 };
 

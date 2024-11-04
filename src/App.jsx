@@ -66,6 +66,7 @@ import Register from "./components/auth/register.js";
 import ListHrs from "./components/pages/listHrs.js";
 import ListHr2 from "./components/pages/listHr2.js";
 import LinkedInPage from "./components/auth/linkedinPage.js";
+import Language from "./components/extension/language.js";
 const NavHeader = lazy(() => import("./components/header/navHeader"));
 const SidebarMenu = lazy(() => import("./components/pages/sidebar"));
 const LoginPage1 = lazy(() => import("./components/auth/dynomoLogin1"));
@@ -118,110 +119,116 @@ function App() {
             </main>
           }
         >
-          <Routes>
-            <Route path="/" element={<Navigate to="/list-hr" />}></Route>
-            {/* <Route element={<PublicRoutes />}> */}
-            {/* <Route index element={<LoginPage1 />}></Route> */}
-            <Route path="/login" element={<LoginPage1 />}></Route>
-            <Route path="/linkedinPage" element={<LinkedInPage />}></Route>
+          <div className="parent">
+            <div className="child">
+              <Language />
+            </div>
 
-            <Route path="/register" element={<Register />}></Route>
-            {/* </Route> */}
-            {/* <Route element={<PrivateRoutes />}> */}
-            <Route path="/help" element={<Help />} />
-            <Route path="/add-hr" element={<Dashboard />}></Route>
-            <Route path="/list-hr" element={<ListHrs />}></Route>
-            <Route path="/list-hr2" element={<ListHr2 />}></Route>
+            <Routes>
+              <Route path="/" element={<Navigate to="/list-hr" />}></Route>
+              {/* <Route element={<PublicRoutes />}> */}
+              {/* <Route index element={<LoginPage1 />}></Route> */}
+              <Route path="/login" element={<LoginPage1 />}></Route>
+              <Route path="/linkedinPage" element={<LinkedInPage />}></Route>
 
-            <Route path="/exam" element={<Exam />} />
-            <Route
-              path="/preview-questions/:id"
-              element={<PreviewQuestions />}
-            />
-            <Route path="/question" element={<Question />} />
-            <Route path="/info" element={<Users />} />
-            <Route path="/role" element={<Role />} />
-            <Route path="/add-role" element={<AddRole />} />
-            <Route path="/general-exams" element={<GeneralExam />} />
-            <Route path="/create-exam" element={<CreateExam />} />
-            <Route path="/create-Question" element={<CreateQuestion />} />
-            <Route path="/help" element={<Help />} />
-            <Route path="/parents" element={<Parents />} />
-            <Route path="/parents/:id" element={<ParentsChild />} />
-            <Route path="/course-category" element={<Courses />} />
-            <Route path="/course-category/add-course" element={<AddCourse />} />
-            <Route path="/course-content" element={<CourseContent />} />
-            <Route
-              path="/course-content/add-content"
-              element={<AddCourseContent />}
-            />
-            <Route path="/course-content/:id" element={<PreviewCourse />} />
-            <Route
-              path="/course-content/update-course/:id"
-              element={<UpdateCourse />}
-            />
-            <Route path="/profile" element={<Blog />} />
-            <Route path="/blog-categories" element={<BlogCategories />} />
-            <Route path="/digital-categories" element={<DigitalCategory />} />
-            <Route path="/faq-categories" element={<VoucherCategories />} />
-            <Route path="/faqs" element={<Voucher />} />
+              <Route path="/register" element={<Register />}></Route>
+              {/* </Route> */}
+              {/* <Route element={<PrivateRoutes />}> */}
+              <Route path="/help" element={<Help />} />
+              <Route path="/add-hr" element={<Dashboard />}></Route>
+              <Route path="/list-hr" element={<ListHrs />}></Route>
+              <Route path="/list-hr2" element={<ListHr2 />}></Route>
 
-            <Route
-              path="/digital-categories/add-category"
-              element={<AddDigitalCategory />}
-            />
-            <Route
-              path="/faq-categories/add-category"
-              element={<AddVoucherCat />}
-            />
+              <Route path="/exam" element={<Exam />} />
+              <Route
+                path="/preview-questions/:id"
+                element={<PreviewQuestions />}
+              />
+              <Route path="/question" element={<Question />} />
+              <Route path="/info" element={<Users />} />
+              <Route path="/role" element={<Role />} />
+              <Route path="/add-role" element={<AddRole />} />
+              <Route path="/general-exams" element={<GeneralExam />} />
+              <Route path="/create-exam" element={<CreateExam />} />
+              <Route path="/create-Question" element={<CreateQuestion />} />
+              <Route path="/help" element={<Help />} />
+              <Route path="/parents" element={<Parents />} />
+              <Route path="/parents/:id" element={<ParentsChild />} />
+              <Route path="/course-category" element={<Courses />} />
+              <Route path="/course-category/add-course" element={<AddCourse />} />
+              <Route path="/course-content" element={<CourseContent />} />
+              <Route
+                path="/course-content/add-content"
+                element={<AddCourseContent />}
+              />
+              <Route path="/course-content/:id" element={<PreviewCourse />} />
+              <Route
+                path="/course-content/update-course/:id"
+                element={<UpdateCourse />}
+              />
+              <Route path="/profile" element={<Blog />} />
+              <Route path="/blog-categories" element={<BlogCategories />} />
+              <Route path="/digital-categories" element={<DigitalCategory />} />
+              <Route path="/faq-categories" element={<VoucherCategories />} />
+              <Route path="/faqs" element={<Voucher />} />
 
-            <Route
-              path="/blog-categories/add-category"
-              element={<AddBlogCategory />}
-            />
+              <Route
+                path="/digital-categories/add-category"
+                element={<AddDigitalCategory />}
+              />
+              <Route
+                path="/faq-categories/add-category"
+                element={<AddVoucherCat />}
+              />
 
-            <Route path="/blogs/add-blog" element={<AddBlog />} />
-            <Route path="/blogs/blog-detail" element={<PreviewBlog />} />
-            <Route path="/blogs/update-blog/:id" element={<UpdateBlog />} />
-            <Route path="/blog-setting" element={<BlogSetting />} />
-            <Route path="/faq" element={<Faq />} />
-            <Route path="/faq/add-faq" element={<AddVoucher />} />
-            <Route path="/ck" element={<RichTextEditor />} />
-            <Route path="/customer-support" element={<CustomerSupport />} />
-            <Route
-              path="/blog-setting/add-blogs-honeypots"
-              element={<AddBlogHoneypots />}
-            />
-            <Route
-              path="/digital-products-parent"
-              element={<DigitalProducts />}
-            />
-            <Route
-              path="/digital-products-parent/add-product"
-              element={<AddProduct />}
-            />
-            <Route path="/add-faq" element={<addFaq />} />
+              <Route
+                path="/blog-categories/add-category"
+                element={<AddBlogCategory />}
+              />
 
-            <Route
-              path="/digital-products-child"
-              element={<DigitalProductsChild />}
-            />
-            <Route
-              path="/digital-products-child/add-product"
-              element={<AddProductChild />}
-            />
-            <Route path="/quiz" element={<Quiz />} />
+              <Route path="/blogs/add-blog" element={<AddBlog />} />
+              <Route path="/blogs/blog-detail" element={<PreviewBlog />} />
+              <Route path="/blogs/update-blog/:id" element={<UpdateBlog />} />
+              <Route path="/blog-setting" element={<BlogSetting />} />
+              <Route path="/faq" element={<Faq />} />
+              <Route path="/faq/add-faq" element={<AddVoucher />} />
+              <Route path="/ck" element={<RichTextEditor />} />
+              <Route path="/customer-support" element={<CustomerSupport />} />
+              <Route
+                path="/blog-setting/add-blogs-honeypots"
+                element={<AddBlogHoneypots />}
+              />
+              <Route
+                path="/digital-products-parent"
+                element={<DigitalProducts />}
+              />
+              <Route
+                path="/digital-products-parent/add-product"
+                element={<AddProduct />}
+              />
+              <Route path="/add-faq" element={<addFaq />} />
 
-            <Route path="/alot-questions/:id" element={<AlotQuestions />} />
-            <Route path="/edit-questions/:id" element={<EditQuestion />} />
+              <Route
+                path="/digital-products-child"
+                element={<DigitalProductsChild />}
+              />
+              <Route
+                path="/digital-products-child/add-product"
+                element={<AddProductChild />}
+              />
+              <Route path="/quiz" element={<Quiz />} />
 
-            <Route path="/quiz/quiz-detail" element={<QuizDetail />} />
-            <Route
-              path="/quiz/create-quiz/add-question"
-              element={<AddQuestion />}
-            />
-            {/* </Route> */}
-          </Routes>
+              <Route path="/alot-questions/:id" element={<AlotQuestions />} />
+              <Route path="/edit-questions/:id" element={<EditQuestion />} />
+
+              <Route path="/quiz/quiz-detail" element={<QuizDetail />} />
+              <Route
+                path="/quiz/create-quiz/add-question"
+                element={<AddQuestion />}
+              />
+              {/* </Route> */}
+            </Routes>
+          </div>
         </Suspense>
       </SidebarMenu>
     </>

@@ -29,28 +29,33 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
     (state) => state?.adminData?.adminData?.user?.roles
   );
   const LanguageSwitcher = () => {
-    const [isPortuguese, setIsPortuguese] = useState(true);  // Default is Portuguese
-
-    const handleLanguageToggle = () => {
-      const newLanguage = isPortuguese ? 'english' : 'portuguese';
-      // axiosInstanceApi.put(`/users/update-language/${newLanguage}`);
-      setIsPortuguese(!isPortuguese);
+    const { i18n } = useTranslation();
+    const initialLanguage = JSON.parse(window.localStorage.getItem('imperial_language')) || 'pt';
+    const [language, setLanguage] = useState(initialLanguage);
+    const handleChangeLanguage = (lang) => {
+      console.log(lang)
+      i18n.changeLanguage(lang);
+      window.localStorage.setItem('imperial_language', JSON.stringify(lang));
+      setLanguage(lang);  // Update state with the selected language
     };
+    // Ensure language is set on initial render based on localStorage
+    useEffect(() => {
+      handleChangeLanguage(initialLanguage);
+    }, [initialLanguage]);
+
 
     return (
-      <div style={{ display: 'flex', alignItems: 'center', minWidth: '220px' }}>
-        <Switch
-          onChange={handleLanguageToggle}
-          checked={isPortuguese}
-          offColor="#888"
-          height={18}
-          width={36}
-          onColor="#AA8555"  // Green color when Portuguese
-          uncheckedIcon={false}
-          checkedIcon={false}
-        />
-        <span style={{ marginLeft: '10px', color: isPortuguese ? '#AA8555' : 'grey' }}>
-          {isPortuguese ? 'Português' : 'English'}
+      <div >
+        <select
+          value={language}
+          onChange={(e) => handleChangeLanguage(e.target.value)}
+          style={{ padding: '5px', fontSize: '14px' }}
+        >
+          <option value="en">English</option>
+          <option value="pt">Português</option>
+        </select>
+        <span style={{ marginLeft: '10px', color: language === 'pt' ? '#AA8555' : 'grey' }}>
+          {language === 'pt' ? 'Português' : 'English'}
         </span>
       </div>
     );
@@ -174,12 +179,12 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
         items: t('help'),
         path: "/help",
       },
-      {
-        icon: <LanguageSwitcher />,
-        iconActive: <LanguageSwitcher />,
-        items: "Language",  // Optional label, can also be omitted
-        path: "#",  // Or an empty path if it doesn’t link to a new page
-      },
+      // {
+      //   icon: <LanguageSwitcher />,
+      //   iconActive: <LanguageSwitcher />,
+      //   items: "Language",  // Optional label, can also be omitted
+      //   path: "#",  // Or an empty path if it doesn’t link to a new page
+      // },
       login
         ? {
           icon: <LogOut />,
@@ -216,12 +221,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
         items: t('help'),
         path: "/help",
       },
-      {
-        icon: <LanguageSwitcher />,
-        iconActive: <LanguageSwitcher />,
-        items: "Language",  // Optional label, can also be omitted
-        path: "#",  // Or an empty path if it doesn’t link to a new page
-      },
+
       login
         ? {
           icon: <LogOut />,
@@ -408,21 +408,21 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                 : item.icon}
                               {!collapsed && (
                                 <>
-                                  {item.items === "Calculator" && (
+                                  {item.items === t('Calculator') && (
                                     <Tooltip title="Calculate the annual potential savings for your company">
                                       <div className="plusJakara_semibold">
                                         {item.items}
                                       </div>
                                     </Tooltip>
                                   )}
-                                  {item.items === "Information" && (
+                                  {item.items === t('Information') && (
                                     <Tooltip title="Get to know how the Social Security exemption works">
                                       <div className="plusJakara_semibold">
                                         {item.items}
                                       </div>
                                     </Tooltip>
                                   )}
-                                  {item.items === "Profile" && (
+                                  {item.items === t('profile') && (
                                     <Tooltip title="Review your profile and check your previous simulations">
                                       <div className="plusJakara_semibold">
                                         {item.items}
@@ -647,7 +647,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                       </div>
                                     </Tooltip>
                                   )}
-                                  {item.items === "Information" && (
+                                  {item.items === t('Information') && (
                                     <Tooltip title="Get to know how the Social Security exemption works">
                                       <div className="plusJakara_semibold">
                                         {item.items}
