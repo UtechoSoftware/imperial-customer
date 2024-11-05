@@ -18,6 +18,7 @@ import { del_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
 const ListHrs = () => {
+  const [tableData, setTableData] = useState([]);
   const { t, i18n } = useTranslation();
   const [tableloading, setTableLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -91,6 +92,8 @@ const ListHrs = () => {
       children: (
         <CompanyTable
           updating={updating}
+          setTableData={setTableData}
+          tableData={tableData}
           tableloading={tableloading}
           setTableLoading={setTableLoading}
         />
@@ -102,7 +105,8 @@ const ListHrs = () => {
       children: (
         <NewTable
           updating={updating}
-
+          setTableData={setTableData}
+          tableData={tableData}
           tableloading={tableloading}
           setTableLoading={setTableLoading}
         />
@@ -127,7 +131,7 @@ const ListHrs = () => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-
+  console.log(items?.key)
   return (
     <div>
       <>
@@ -185,15 +189,15 @@ const ListHrs = () => {
               </div>
             </button> */}
 
-          {login && (
-            <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
-              <button
-                onClick={handleDelete}
-                type="button"
-                className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
-              >
-                {"Delete all rows"}
-              </button>
+          <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
+            <button
+              onClick={handleDelete}
+              type="button"
+              className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
+            >
+              {"Delete all rows"}
+            </button>
+            {login && (
               <button
                 onClick={handleShow}
                 type="button"
@@ -202,8 +206,9 @@ const ListHrs = () => {
                 {/* Calculate Savings */}
                 {t('calculate_saving')}
               </button>
-            </div>
-          )}
+            )}
+          </div>
+
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
             {!login && (
               <>
@@ -409,7 +414,7 @@ fraction of the savings"
                 className="mt-3"
                 onClick={() => message.success("user can download file soon")}
               >
-                <a href="#" className="download-link ">
+                <a href="#" className="download-link " >
                   {t('download')}
                 </a>
               </div>
@@ -442,24 +447,35 @@ fraction of the savings"
                   style={{ backgroundColor: "#161920" }}
                   className="me-2"
                   onClick={() => {
-                    setDelLoader(true);
-                    del_hr(newHire === true ? "newhire" : "companystaff")
-                      .then((res) => {
-                        if (res) {
-                          setUpdating(true);
+                    if (login) {
+                      setDelLoader(true);
+                      del_hr(newHire === true ? "newhire" : "companystaff")
+                        .then((res) => {
+                          if (res) {
+                            setUpdating(true);
+                            setDelLoader(false);
+                            message.success("Data deleted successfully");
+                            // fetchData()
+
+                            setShowModal2(false);
+                          }
+                        })
+                        .catch(() => {
                           setDelLoader(false);
-                          message.success("Data deleted successfully");
-                          // fetchData()
+                          setUpdating(false);
 
                           setShowModal2(false);
-                        }
-                      })
-                      .catch(() => {
-                        setDelLoader(false);
-                        setUpdating(false);
+                        });
+                    } else {
+                      newHire === true ? sessionStorage.removeItem("hrData") : sessionStorage.removeItem("hrData_company")
+                      message.success("Data deleted successfully");
+                      setShowModal2(false);
 
-                        setShowModal2(false);
-                      });
+                      setTableData([]);
+
+
+
+                    }
                   }}
                 >
                   {delLoader ? <Spinner size="sm" /> : t('del_btn')}

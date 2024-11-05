@@ -139,7 +139,7 @@ const Dashboard = () => {
       if (formData.dob) {
         const dobDate = new Date(formData.dob);
         const minIefpDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + 15));
-
+        console.log(selectedDate < minIefpDate, "hello")
         if (selectedDate < minIefpDate) {
           setErrors((prevErrors) => ({
             ...prevErrors,

@@ -8,22 +8,25 @@ import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
 
-const NewTable = ({ updating }) => {
+const NewTable = ({ updating, setTableData, tableData }) => {
   const { t, i18n } = useTranslation();
   const [loading, setLoading] = useState(false)
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
   const [delLoading, setDelLoading] = useState(false);
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
   const login = useSelector((state) => state.data.data.isLogin_);
   useEffect(() => {
     if (!login) {
       setLoading(false)
-      const storedData =
-        JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      setTableData(storedData);
+      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      if (storedData?.length > 0) {
+        setTableData(storedData);
+      } else {
+        setTableData([]);
+      }
     }
   }, [!login]);
   useEffect(() => {
@@ -197,19 +200,19 @@ const NewTable = ({ updating }) => {
                   {employee.saving !== null && employee.saving !== undefined ? employee?.saving.toFixed(2) : "N/A"}
 
                 </td>
-                <td>
-                  {
-                    login && (
+                {
+                  login && (
+                    <td>
 
                       <div className="d-flex flex-row  justify-content-center">
 
                         <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
                         <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
                       </div>
-                    )
-                  }
-                  {/* hello are */}
-                </td>
+                      {/* hello are */}
+                    </td>
+                  )
+                }
               </tr>
             ))}
           </tbody>

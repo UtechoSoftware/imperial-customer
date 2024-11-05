@@ -8,10 +8,10 @@ import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-const CompanyTable = ({ updating }) => {
+const CompanyTable = ({ updating, setTableData, tableData }) => {
   const { t, i18n } = useTranslation();
 
-  const [tableData, setTableData] = useState([]);
+  // const [tableData, setTableData] = useState([]);
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
@@ -35,7 +35,11 @@ const CompanyTable = ({ updating }) => {
     if (!login) {
       setLoading(false);
       const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      setTableData(storedData);
+      if (storedData?.length > 0) {
+        setTableData(storedData);
+      } else {
+        setTableData([]);
+      }
     }
   }, [!login]);
   useEffect(() => {
@@ -153,18 +157,18 @@ const CompanyTable = ({ updating }) => {
                   <td>{data.currentSSCRate || "N/A"}</td>
                   <td>{data.workHistory || "N/A"}</td>
                   <td> {data.saving !== null && data.saving !== undefined ? data?.saving.toFixed(2) : "N/A"}</td>
-                  <td>
-                    {/* hello are */}
-                    {
-                      login && (
+                  {
+                    login && (
+                      <td>
+                        {/* hello are */}
                         <div className="d-flex flex-row  justify-content-center">
 
                           <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(data, index)} />
                           <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(data, index)} />
                         </div>
-                      )
-                    }
-                  </td>
+                      </td>
+                    )
+                  }
                 </tr>
               ))
             ) : (
