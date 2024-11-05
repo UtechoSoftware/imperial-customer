@@ -120,5 +120,6 @@
   "monthly_sallery": "Monthly base salary",
   "unique_identifier": "Unique identifier",
   "contract_start_date": "contract start date",
-  "hiring_date": "Hiring date"
+  "hiring_date": "Hiring date",
+  "modal_title": "Fill in your details to receive the calculation"
 }

@@ -347,7 +347,6 @@ const Dashboard = () => {
               !formData.currentSSCRate))
         ) {
           setLoading(false)
-          // message.error("Form data must be filled first");
         } else {
           if (
             dob >= 45 &&
@@ -469,7 +468,6 @@ const Dashboard = () => {
         // navigate("/list-hr");
       }
     }
-    // console.log(typeof formData, "formData");
     if (!login) {
       const calculateSaving = (formData) => {
         let saving = 14 * (23.75 / 100);
@@ -551,10 +549,13 @@ const Dashboard = () => {
           identifier: formData.identifier,
           saving: saving, // Store the calculated saving
         };
-        existingData.push(data);
-        sessionStorage.setItem("hrData", JSON.stringify(existingData));
-        // console.log(existingData, "Updated hrData");
-        navigate("/list-hr");
+        if (validateForm()) {
+          existingData.push(data);
+          sessionStorage.setItem("hrData", JSON.stringify(existingData));
+          // console.log(existingData, "Updated hrData");
+          navigate("/list-hr");
+        }
+
       } else if (employeeType === "companystaff") {
         if (
           dob >= 45 &&
@@ -635,12 +636,13 @@ const Dashboard = () => {
           newHiring: formData.newHiring,
           dob: formData.dob,
           identifier: formData.identifier,
-          saving: saving, // Store the calculated saving
+          saving: saving,
         };
-        existingData2.push(data);
-        sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
-        navigate("/list-hr");
-        // console.log(existingData2, "Updated hrData");
+        if (validateForm2()) {
+          existingData2.push(data);
+          sessionStorage.setItem("hrData_company", JSON.stringify(existingData2));
+          navigate("/list-hr");
+        }
       }
     }
   };
@@ -649,7 +651,7 @@ const Dashboard = () => {
     const value = e.target.value;
     if (identifiers.includes(value)) {
       setError(
-        "This identifier has already been used. Please enter a unique identifier."
+        "This identifier has already been used.Please enter a unique identifier."
       );
     } else {
       setError("");

@@ -318,7 +318,6 @@ fraction of the savings"
 
             >
               <div className="d-flex justify-content-between ">
-
                 <div className="modal-title mb-3 ">
                   {t('fill_in')}
                   <br />
@@ -343,7 +342,6 @@ fraction of the savings"
               <Form>
                 <Form.Group className="mb-2" controlId="formName">
                   <Form.Label className="m-0">{t('Register_h1')}</Form.Label>
-
                   <div className="modal_form">
                     <Form.Control type="text" placeholder="insert your name" />
                   </div>

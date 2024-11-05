@@ -106,5 +106,9 @@
   "monthly_sallery": "Salário base mensal",
   "unique_identifier": "Identificador exclusivo",
   "contract_start_date": "data de início do contrato",
+  "modal_title": "Preencha seus dados para receber cálculo",
+  "Information": "Informação",
+  "calculation": "Simulação",
+  "fill_in": " Preencha os dados para receber a ",
   "hiring_date": "Data de contratação"
 }

@@ -12,7 +12,9 @@ import hand from "../assets/png/select.png";
 import { fileavatar, pdf } from "../icons/icon";
 import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
+import { useTranslation } from "react-i18next";
 const ListHr2 = () => {
+  const { t, i18n } = useTranslation();
   const location = useLocation();
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
@@ -140,7 +142,7 @@ fraction of the savings"
                   className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                   style={{ borderRadius: "60px" }}
                 >
-                  <h6>I want support with the application</h6>
+                  <h6>{t('modal_title')}</h6>
                   <img
                     className="h-10 d-md-block d-none"
                     src={hand}
@@ -169,7 +171,8 @@ fraction of the savings"
 
             >
               <h6 className="modal-title">
-                Fill in your details to receive the calculation
+                {/* Fill in your details to receive the calculation */}
+                {t('modal_title')}
               </h6>
               <button
                 style={{

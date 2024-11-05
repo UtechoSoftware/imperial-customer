@@ -81,6 +81,8 @@ const DynomoLogin1 = () => {
             dispatch(setUserData(res?.data?.user))
 
             setIsProcessing(false);
+          } else {
+            setIsProcessing(false);
           }
         })
         .catch((err) => {
