@@ -137,7 +137,7 @@ const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
                 {t('table_2-head_7')}
               </th>
               <th>{t('yes')}/{t('no')}</th>
-              <th>____</th>
+              <th>{t('yes')}/{t('no')}</th>
               {
                 login && (
 
