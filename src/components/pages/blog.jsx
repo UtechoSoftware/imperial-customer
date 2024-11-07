@@ -131,7 +131,7 @@ const Blog = () => {
             <div>
               <img
                 style={{ borderRadius: "30px" }}
-                src={user?.profilePicture || finabeelight}
+                src={finabeelight}
                 width="50px" height="50px" alt="logo" />
             </div>
             <div className="flex flex-col mb-2 w-full">

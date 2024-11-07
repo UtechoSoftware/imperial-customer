@@ -1,16 +1,16 @@
+import { Tooltip } from "antd";
 import React from "react";
-import hand from "../assets/png/select.png";
+import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
 import avatar from "../assets//png/avatar1.png";
 import img1 from "../assets/png/EN-1.png";
 import img2 from "../assets/png/EN-2.png";
-import img3 from '../assets/png/EN-3.png'
+import img3 from '../assets/png/EN-3.png';
 import pt1 from "../assets/png/PT-1.png";
 import pt2 from "../assets/png/PT-2.png";
-import pt3 from '../assets/png/PT-3.png'
-import { useNavigate } from "react-router-dom";
-import { useTranslation } from "react-i18next";
-import { useSelector } from "react-redux";
-import { language } from "../icons/icon";
+import pt3 from '../assets/png/PT-3.png';
+import hand from "../assets/png/select.png";
 const Users = () => {
   const navigate = useNavigate()
   const { t, i18n } = useTranslation();
@@ -88,12 +88,19 @@ const Users = () => {
           <p className="m-0 font-bold text-lg">
             {t('info_p4')}
           </p>
-          <div style={{ borderRadius: "40px" }} className="flex justify-end pt-3 cursor-pointer" onClick={() => navigate('/list-hr')}>
-            <div className="q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
-              <h6>{t('info_btn')}</h6>
-              <img className="h-10 d-md-block d-none" src={hand} alt="email" />
+          <Tooltip
+            style={{ backgroundColor: "yellow" }}
+            title={t('popup_missing_4')}
+            className="cursor-pointer "
+          >
+
+            <div style={{ borderRadius: "40px" }} className="flex justify-end pt-3 cursor-pointer" onClick={() => navigate('/list-hr')}>
+              <div className="q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
+                <h6>{t('info_btn')}</h6>
+                <img className="h-10 d-md-block d-none" src={hand} alt="email" />
+              </div>
             </div>
-          </div>
+          </Tooltip>
         </main>
       </>
     </div>

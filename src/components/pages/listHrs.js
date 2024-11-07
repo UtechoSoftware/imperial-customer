@@ -185,10 +185,16 @@ const ListHrs = () => {
                 onClick={() => navigate("/add-hr")}
                 style={{ width: "10rem" }}
               >
-                <div className="d-flex gap-3 align-items-center justify-content-center  text-nowrap">
-                  <p className="fs-4 m-0 text-white">+</p>
-                  <p className="m-0 text-white  text-nowrap">{t('add_hr')}</p>
-                </div>
+                <Tooltip
+                  style={{ backgroundColor: "yellow" }}
+                  title={t('popup_missing_1')}
+                  className="cursor-pointer "
+                >
+                  <div className="d-flex gap-3 align-items-center justify-content-center  text-nowrap">
+                    <p className="fs-4 m-0 text-white">+</p>
+                    <p className="m-0 text-white  text-nowrap">{t('add_hr')}</p>
+                  </div>
+                </Tooltip>
               </button>
             </div>
           </div>
@@ -207,15 +213,22 @@ const ListHrs = () => {
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
             {!login && (
               <>
-                <button
-                  onClick={handleShow}
-                  type="button"
-                  className="btn2 px-3 py-3  border-black "
+                <Tooltip
+                  style={{ backgroundColor: "yellow" }}
+                  title={t('popup_missing_2')}
+                  className="cursor-pointer "
                 >
-                  {/* Calculate Savings
+
+                  <button
+                    onClick={handleShow}
+                    type="button"
+                    className="btn2 px-3 py-3  border-black "
+                  >
+                    {/* Calculate Savings
                    */}
-                  {t('calculate_saving')}
-                </button>
+                    {t('calculate_saving')}
+                  </button>
+                </Tooltip>
               </>
             )}
             <div className="flex justify-content-center w-full">
@@ -264,9 +277,7 @@ const ListHrs = () => {
                 )}
                 <Tooltip
                   style={{ backgroundColor: "yellow" }}
-                  title="We only charge in the scenario of
-application approval and only a small
-fraction of the savings"
+                  title={t('popup_missing_3')}
                   className="cursor-pointer "
                 >
                   {!login ? (
@@ -311,14 +322,23 @@ fraction of the savings"
               {"Delete all rows"}
             </button>
             {login && (
-              <button
-                onClick={handleShow}
-                type="button"
-                className="btn2 px-3 py-3 text-nowrap   border-black "
-              >
-                {/* Calculate Savings */}
-                {t('calculate_saving')}
-              </button>
+              <>
+                <Tooltip
+                  style={{ backgroundColor: "yellow" }}
+                  title={t('popup_missing_2')}
+                  className="cursor-pointer "
+                >
+
+                  <button
+                    onClick={handleShow}
+                    type="button"
+                    className="btn2 px-3 py-3 text-nowrap   border-black "
+                  >
+                    {/* Calculate Savings */}
+                    {t('calculate_saving')}
+                  </button>
+                </Tooltip>
+              </>
             )}
           </div>
 

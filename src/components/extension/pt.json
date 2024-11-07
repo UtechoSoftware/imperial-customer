@@ -110,5 +110,10 @@
   "Information": "Informação",
   "calculation": "Simulação",
   "fill_in": " Preencha os dados para receber a ",
-  "hiring_date": "Data de contratação"
+  "hiring_date": "Data de contratação",
+  "popup_missing_1": "Adicione os dados sobre os RH da empresa para simular o potencial de benefício",
+  "popup_missing_2": "Verifique o potencial benefício para a sua empresa com base nos RH introduzidos",
+  "popup_missing_3": "Os nossos serviços são cobrados com base numa taxa de sucesso, ou seja, correspondem a uma fração das poupanças totais obtidas pela empresa e só seriam devidas quando e se a candidatura for aprovada",
+  "popup_missing_4": "Utilize a nossa ferramenta digital gratuita para simular a poupança anual potencial para a sua empresa da aplicação da isenção parcial ou total das contribuições para a Segurança Social",
+  "popup_missing_5": "Indique a data prevista para a contratação do novo RH (dd/mm/aaaa) "
 }

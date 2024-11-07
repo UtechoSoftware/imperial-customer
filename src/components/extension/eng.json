@@ -121,5 +121,10 @@
   "unique_identifier": "Unique identifier",
   "contract_start_date": "contract start date",
   "hiring_date": "Hiring date",
-  "modal_title": "Fill in your details to receive the calculation"
+  "modal_title": "Fill in your details to receive the calculation",
+  "popup_missing_1": "Add information of the company's HR in order to calculate its potential savings",
+  "popup_missing_2": "Check the estimate savings for your company based on the inputted HR",
+  "popup_missing_3": "We charge our clients on a success fee basis, meaning, our fees correspond to a fraction of the total company savings and would only be due when and if the application is approved",
+  "popup_missing_4": "Use our free digital tool to calculate the annual potential savings for your company from the application of the Social Security contributions partial or total exemption",
+  "popup_missing_5": "Indicate the expected hiring date for the new HR (dd/mm/yyyy)"
 }

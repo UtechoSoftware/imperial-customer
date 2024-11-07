@@ -121,8 +121,8 @@ const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
               <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
                 {t('table_2-head_12')}
               </th>
-              <th style={{ minWidth: "100px" }}>{t('table_2-head_2')}</th>
-              <th style={{ minWidth: "180px" }}>  {t('table_2-head_3')} </th>
+              <th style={{ minWidth: "290px" }}>{t('table_2-head_2')}</th>
+              <th style={{ minWidth: "330px" }}>  {t('table_2-head_3')} </th>
               <th style={{ whiteSpace: "nowrap", textAlign: "center", minWidth: "200px" }}>
                 {t('table_2-head_4')}
               </th>

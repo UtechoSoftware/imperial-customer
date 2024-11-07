@@ -293,7 +293,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           borderRadius: "30px",
                           marginBottom: "2rem",
                         }}
-                        src={user?.profilePicture || finabeelight}
+                        src={finabeelight}
                         className=""
                         alt=""
                       />
@@ -335,7 +335,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           width: "auto",
                           marginLeft: "auto",
                         }}
-                        src={user?.profilePicture || finabeelight}
+                        src={finabeelight}
                         className=""
                         alt=""
                       />
@@ -524,7 +524,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           marginLeft: "auto",
                           marginBottom: "2rem",
                         }}
-                        src={user?.profilePicture || finabeelight}
+                        src={ finabeelight}
                         className=""
                         alt=""
                       />
@@ -565,7 +565,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           width: "auto",
                           marginLeft: "auto",
                         }}
-                        src={user?.profilePicture || finabeelight}
+                        src={ finabeelight}
                         className=""
                         alt=""
                       />
