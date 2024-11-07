@@ -108,7 +108,7 @@ const Register = () => {
   };
   return (
     <>
-      <div className="row w-100">
+      <div style={{ backgroundColor: "#f8f8f8 " }} className="row w-100">
         <div
           className="bg_primary d-flex flex-column justify-content-center p-5 col-md-6 col-sm-12   "
           style={{ minHeight: "100vh" }}
@@ -146,8 +146,8 @@ const Register = () => {
             </div>
           </div>
         </div>
-        <div className="col-md-6 col-sm-12  p-4 d-flex flex-column ">
-          <div className="border border-white p-4">
+        <div className="col-md-6 col-sm-12  p-4 d-flex flex-column mt-5">
+          <div className="border-0 p-4">
             <div className="d-flex flex-lg-row flex-column justify-content-between ">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
                 {/* Registration */}
@@ -169,18 +169,17 @@ const Register = () => {
               </p>
             </div>
             <div className="d-flex flex-column gap-0">
-              <p className="poppins_semibold mt-1 text_darkprimary">
-                {/* Continue with Linkedin
-                 */}
+              {/* <p className="poppins_semibold mt-1 text_darkprimary">
+                
                 {t('Login_p1')}
-              </p>
-              <img width="70px" src={linkedin_} alt="linkdin" />
+              </p> */}
+              {/* <img width="70px" src={linkedin_} alt="linkdin" /> */}
             </div>
-            <div className="d-flex flex-row align-items-center gap-2">
+            {/* <div className="d-flex flex-row align-items-center gap-2">
               <div className="border_div"></div>
               <p>{t('or')}</p>
               <div className="border_div"></div>
-            </div>
+            </div> */}
             <Form
               layout="vertical"
               className="flex flex-wrap justify-between"

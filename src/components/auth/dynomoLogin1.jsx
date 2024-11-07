@@ -26,23 +26,84 @@ import { setIsLogin_, setUserData } from "../store/reducer/imperialAuth";
 
 // import { apiRequest } from '../../api/auth_api'
 const DynomoLogin1 = () => {
-  const data = [
-    {
-      title: 'Did you know that...',
-      content:
-        'Fixed-term contracts in certain circumstances automatically convert to open-ended contracts, even without a formal written contract, making them potentially eligible for this benefit.',
-    },
-    {
-      title: 'Another fact...',
-      content:
-        'Part-time contracts can sometimes lead to full-time status under certain conditions, increasing eligibility for certain benefits.',
-    },
-    {
-      title: 'Important reminder...',
-      content:
-        'Employees on a fixed-term contract are also entitled to annual leave and other benefits as per labor law.',
-    },
-  ]
+  const languages = window.localStorage.getItem('imperial_language').replace(/"/g, '');
+
+  const data = languages === 'en'
+    ? [
+      {
+        content:
+          'Entities that hire young people looking for their first job (open-ended contract) can benefit from a 50% reduction in Social Security contributions for five years.',
+      },
+      {
+
+        content:
+          'Entities that hire long-term unemployed individuals can enjoy a temporary 50% reduction in Social Security contributions for a period of three years, and in the case of very long-term unemployed, a total exemption of Social Security contributions (100%).',
+      },
+      {
+
+        content:
+          'Fixed-term contracts, when converted into open-ended contracts, can still benefit from the benefit, depending on the age and situation of the worker at the time of conversion.',
+      },
+      {
+
+        content:
+          'Under certain circumstances, it is possible to transfer the benefit associated with a worker to a new entity.',
+      },
+      {
+
+        content:
+          'The termination of an open-ended contract during the experimental period is not relevant in qualifying for the benefit.',
+      },
+      {
+
+        content:
+          'Termination of an employment contract by mutual agreement between the employer and the worker, or by the decision of the worker, does not require any reimbursement of the benefit obtained up to that date.',
+      },
+      {
+
+        content:
+          'Fixed-term contracts in certain circumstances automatically convert to open-ended contracts, even without a formal written contract, making them potentially eligible for this benefit.',
+      },
+    ]
+    : [
+      {
+
+        content:
+          'As entidades que contratem jovens à procura do primeiro emprego podem beneficiar de uma redução de 50% nas contribuições para a Segurança Social durante cinco anos.',
+      },
+      {
+
+        content:
+          'As entidades que contratem desempregados de longa duração podem usufruir de uma redução temporária de 50% nas contribuições para a Segurança Social por um período de três anos e no caso de desempregados de longa duração, uma isenção total (100%).',
+      },
+      {
+
+        content:
+          'Os contratos de trabalho a termo, convertidos em contratos sem termo, podem ainda beneficiar do benefício, dependendo da idade e situação do trabalhador no momento da conversão.',
+      },
+      {
+
+        content:
+          'É possível a portabilidade do benefício associado a um trabalhador para uma nova entidade, em determinadas circunstâncias.',
+      },
+      {
+
+        content:
+          'A rescisão de um contrato sem termo durante o período experimental não é considerada na qualificação para o benefício.',
+      },
+      {
+
+        content:
+          'A rescisão de contrato de trabalho por acordo entre a entidade empregadora e o trabalhador ou por decisão do trabalhador, não obriga a qualquer reembolso do benefício da dispensa de contribuições usufruído até essa data.',
+      },
+      {
+
+        content:
+          'Os contratos a termo em determinadas circunstâncias convertem-se automaticamente em contratos sem termo, mesmo que não exista contrato formal, tornando-os potencialmente elegíveis para este benefício.',
+      },
+    ];
+
+
 
   const [currentIndex, setCurrentIndex] = useState(0);
 
@@ -119,7 +180,7 @@ const DynomoLogin1 = () => {
   }
   return (
     <>
-      <div className="row w-100 ">
+      <div style={{ backgroundColor: "#f8f8f8 " }} className="row w-100 ">
         <div
           className="bg_primary d-flex flex-column justify-content-center align-items-center  p-5 col-md-6 col-sm-12 h-100  "
           style={{ minHeight: "100vh" }}
@@ -183,13 +244,13 @@ const DynomoLogin1 = () => {
           </div> */}
         </div>
         <div className="col-md-6 col-sm-12 justify-content-center p-4 d-flex flex-column ">
-          <div className="border border-white p-4">
-            <div className="d-flex flex-lg-row flex-column justify-content-between">
+          <div className="border-0 p-4">
+            <div className="d-flex flex-lg-row gap-lg-5 gap-1 align-items-center flex-column justify-content-between mb-md-4">
               <h5 className="poppins_semibold text-xl mb-0 md:mb-auto md:text-2xl lg:text-3xl text_darkprimary">
                 {/* Login */}
                 {t('Login')}
               </h5>
-              <p className="text-sm text_para poppins_regular my-2">
+              <p className="text-sm text_para poppins_regular my-2" style={{ maxWidth: "480px" }}>
                 {/* Do not have an account yet?{" "} */}
                 {t('Login_p2')}
 
@@ -206,21 +267,20 @@ const DynomoLogin1 = () => {
               </p>
             </div>
             <div className=" py-2">
-              <p className="poppins_semibold m-0 text_darkprimary p-0 pb-1">
-                {/* Login with Linkedin */}
+              {/* <p className="poppins_semibold m-0 text_darkprimary p-0 pb-1">
                 {t('Login_p1')}
-              </p>
-              <img className="cursor-pointer" onClick={handleLinkedInLogin} width="25px" src={linkedin_} alt="linkdin" />
+              </p> */}
+              {/* <img className="cursor-pointer" onClick={handleLinkedInLogin} width="25px" src={linkedin_} alt="linkdin" /> */}
 
               {/* <Linkedin /> */}
 
 
             </div>
-            <div className="d-flex flex-row align-items-center gap-2">
+            {/* <div className="d-flex flex-row align-items-center gap-2">
               <div className="border_div"></div>
               <p>or</p>
               <div className="border_div"></div>
-            </div>
+            </div> */}
             <Form
               layout="vertical"
               className="flex flex-wrap justify-between"

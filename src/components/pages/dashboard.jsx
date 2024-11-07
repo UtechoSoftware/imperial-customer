@@ -130,24 +130,22 @@ const Dashboard = () => {
   const handleDateChange = (date, fieldName) => {
     const currentDate = new Date();
     const selectedDate = date;
+    const differenceInYears15 = (currentDate, selectedDate) => {
+      const age = differenceInYears(currentDate, selectedDate);
+      return age >= 15; // Returns true if age is 15 or more, false otherwise
+    };
+    if (fieldName === "dob" && !differenceInYears15(currentDate, selectedDate)) {
+      // Show an error if the DOB is less than 15 years ago
+      setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Age must be 15 years or older." }));
+      return;
+    }
+
     const age = differenceInYears(currentDate, selectedDate);
 
     if (fieldName === "dob") {
       setDob(age);
       setDOB(selectedDate);
     } else if (fieldName === "iefpDate") {
-      if (formData.dob) {
-        const dobDate = new Date(formData.dob);
-        const minIefpDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + 15));
-        console.log(selectedDate < minIefpDate, "hello")
-        if (selectedDate < minIefpDate) {
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            iefpDate: "IEF date must be at least 15 years after Date of Birth.",
-          }));
-          return;
-        }
-      }
       setIefpDate(age);
       setIefpDate_(selectedDate);
     } else if (fieldName === "startDate") {
@@ -161,6 +159,40 @@ const Dashboard = () => {
     }));
     setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   };
+  // const handleDateChange = (date, fieldName) => {
+  //   const currentDate = new Date();
+  //   const selectedDate = date;
+  //   const age = differenceInYears(currentDate, selectedDate);
+
+  //   if (fieldName === "dob") {
+  //     setDob(age);
+  //     setDOB(selectedDate);
+  //   } else if (fieldName === "iefpDate") {
+  //     if (formData.dob) {
+  //       const dobDate = new Date(formData.dob);
+  //       const minIefpDate = new Date(dobDate.setFullYear(dobDate.getFullYear() + 15));
+  //       console.log(selectedDate < minIefpDate, "hello")
+  //       if (selectedDate < minIefpDate) {
+  //         setErrors((prevErrors) => ({
+  //           ...prevErrors,
+  //           iefpDate: "IEF date must be at least 15 years after Date of Birth.",
+  //         }));
+  //         return;
+  //       }
+  //     }
+  //     setIefpDate(age);
+  //     setIefpDate_(selectedDate);
+  //   } else if (fieldName === "startDate") {
+  //     setStartDate(age);
+  //     setbtDate(selectedDate);
+  //   }
+
+  //   setFormData((prevData) => ({
+  //     ...prevData,
+  //     [fieldName]: selectedDate,
+  //   }));
+  //   setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
+  // };
 
   // const handleDateChange = (date, fieldName) => {
   //   const currentDate = new Date();
@@ -1074,13 +1106,16 @@ If the contract is not written, please consider it “Open-ended”.
                   </Tooltip>
                   {formData?.iefp === "yes" && (
                     <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
-                      <div className="">
+                      <div
+                        style={{ width: "300px" }}
+
+                        className="w-full">
                         <DatePicker
                           selected={formData.iefpDate}
                           onChange={(date) =>
                             handleDateChange(date, "iefpDate")
                           }
-                          className="form-control input_1 cursor-pointer custom_radius text-center "
+                          className="form-control input_1 cursor-pointer custom_radius text-center  "
                           placeholderText={t('IEFP_reg_date')}
                           dateFormat="dd/MM/yyyy"
                           maxDate={new Date()}

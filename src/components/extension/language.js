@@ -19,8 +19,8 @@ const Language = () => {
         <div className='d-flex gap-1 align-items-center w-100'>
             {/* Language Select Dropdown */}
             <select
-                className='px-3 py-2 text-white'
-                style={{ minWidth: '5.5rem', cursor: 'pointer', borderRadius: "10px", backgroundColor: "#b39d70" }}
+                className='px-3 py-2  text-white'
+                style={{ minWidth: '5.5rem', cursor: 'pointer', border: "1px solid black", borderRadius: "50px ", backgroundColor: "#b39d70" }}
                 value={userLangauge}
                 onChange={(e) => handleChangeLanguage(e.target.value)}
             >

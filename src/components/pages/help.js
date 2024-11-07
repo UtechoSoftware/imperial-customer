@@ -66,28 +66,38 @@ const Help = () => {
 
 
   return (
-    <div>
+    <div style={{ backgroundColor: "#f8f8f8 " }}>
       <>
         <main className="min-h-screen lg:container py-5 px-10 mx-auto">
           {
             login && (
-
               <div className="flex justify-between max-md:flex-col max-md:gap-3 mb-3 md:items-center w-full">
-                <div className="flex flex-md-row flex-column">
+                <div className="flex flex-md-row  flex-column">
                   <img
                     className="avatar_img"
-                    width="60px"
+                    style={{ width: "70px", height: "70px" }} // Ensures aspect ratio is maintained
                     src={user?.profilePicture || avatar}
                     alt="avatar"
                   />
-                  <div className="flex flex-col">
+                  <div className="flex flex-col mt-2">
                     <h4 className="manrope_bold max-md:text-xl text_black">
-                      {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1).toLowerCase()}
+                      {user?.name
+                        ?.split(" ")
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ")}
                     </h4>
-                    <p>{user?.position.charAt(0).toUpperCase() + user?.position?.slice(1).toLowerCase()}- {user?.comp_name.charAt(0).toUpperCase() + user?.comp_name?.slice(1).toLowerCase()}</p>
+                    <p>
+                      {user?.position?.toUpperCase()} – {" "}
+                      {user?.comp_name
+                        ?.split(" ")
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(" ")}
+                    </p>
+
                   </div>
                 </div>
               </div>
+
             )
           }
           {/* <h4 className="manrope_bold max-md:text-xl text_black">Help</h4> */}
@@ -111,7 +121,7 @@ const Help = () => {
                     <div key={index} className="flex flex-col py-2">
                       <div className="d-flex gap-3 align-items-center ">
                         <p className="m-0 p-0">
-                          {`${index + 1} -`}
+                          {`${(lastId - 1) * 10 + index + 1} -`}
                         </p>
                         <h6 className="manrope_bold max-md:text-xl text_black">
                           {item.title}

@@ -14,7 +14,7 @@ import CompanyTable from "./companyTable";
 import NewTable from "./newTable";
 import { useSelector } from "react-redux";
 import { Button, Form, Modal, Spinner } from "react-bootstrap";
-import { del_hr, getPotential } from "../api/hr";
+import { del_hr, get_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
 const ListHrs = () => {
@@ -51,8 +51,23 @@ const ListHrs = () => {
     } else if (key === "2") {
       value = "companystaff";
       setNewhire(false);
+    }
+    if (global.BASEURL) {
+      get_hr(value)
+        .then((res) => {
+          setLoading(false)
+          setTableData(res?.data?.data);
+          setTableLoading(false);
+
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(true);
 
     }
+
     if (global.BASEURL) {
       getPotential(value)
         .then((res) => {
@@ -133,9 +148,9 @@ const ListHrs = () => {
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
   console.log(items?.key)
   return (
-    <div>
+    <div style={{ backgroundColor: "#f8f8f8 " }} >
       <>
-        <main className="min-h-screen lg:container py-5 px-10 mx-auto">
+        <main style={{ backgroundColor: "#f8f8f8 " }} className="min-h-screen lg:container py-5 px-10 mx-auto">
           <p className="manrope_bold  fs-5 text_black">
             {t('calculator_h1')}
             {/* Social Security contributions partial or total exemption */}
@@ -188,26 +203,6 @@ const ListHrs = () => {
               <p className="m-0 text-white">Export</p>
               </div>
             </button> */}
-
-          <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
-            <button
-              onClick={handleDelete}
-              type="button"
-              className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
-            >
-              {"Delete all rows"}
-            </button>
-            {login && (
-              <button
-                onClick={handleShow}
-                type="button"
-                className="btn2 px-3 py-3 text-nowrap   border-black "
-              >
-                {/* Calculate Savings */}
-                {t('calculate_saving')}
-              </button>
-            )}
-          </div>
 
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
             {!login && (
@@ -303,10 +298,30 @@ fraction of the savings"
                 </Tooltip>
               </div>
             </div>
-            <div className="">
+            <div className="mb-4">
               <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
             </div>
           </div>
+          <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
+            <button
+              onClick={handleDelete}
+              type="button"
+              className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
+            >
+              {"Delete all rows"}
+            </button>
+            {login && (
+              <button
+                onClick={handleShow}
+                type="button"
+                className="btn2 px-3 py-3 text-nowrap   border-black "
+              >
+                {/* Calculate Savings */}
+                {t('calculate_saving')}
+              </button>
+            )}
+          </div>
+
           <Modal
             show={show}
             onHide={handleClose}

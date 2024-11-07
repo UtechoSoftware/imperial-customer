@@ -125,13 +125,16 @@ const Blog = () => {
   }, [user])
   return (
     <>
-      <div className="pt-5">
+      <div style={{ backgroundColor: "#f8f8f8 " }} className="pt-5">
         <main className="min-h-screen lg:container px-5 pt-4 mx-auto">
           <div className="flex gap-2 w-full">
             <div>
-              <img src={finabeelight} width="50px" alt="logo" />
+              <img
+                style={{ borderRadius: "30px" }}
+                src={user?.profilePicture || finabeelight}
+                width="50px" height="50px" alt="logo" />
             </div>
-            <div className="flex flex-col mb-3 w-full">
+            <div className="flex flex-col mb-2 w-full">
               <h6
                 className="plusJakara_bold text_black text-md "
                 style={{ fontWeight: "bold" }}

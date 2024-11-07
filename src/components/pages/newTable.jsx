@@ -7,9 +7,8 @@ import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-
-const NewTable = ({ updating, setTableData, tableData }) => {
-  const { t, i18n } = useTranslation();
+const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
+  const { t } = useTranslation();
   const [loading, setLoading] = useState(false)
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
@@ -59,7 +58,7 @@ const NewTable = ({ updating, setTableData, tableData }) => {
   };
   return (
     <div className="table-responsive">
-      {loading && login ? (
+      {(loading && login) || tableloading ? (
         <div style={{ height: "200px" }} className="d-flex justify-content-center  align-items-center">
           <CircularProgress
             style={{ color: "black" }}
@@ -77,24 +76,20 @@ const NewTable = ({ updating, setTableData, tableData }) => {
               >
                 {t('table_2-head_1')}
               </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_2')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+              <th
+                colSpan="2"
+
+                style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                {/* {t('table_2-head_2')} */}Registration as unemployed</th>
+              {/* <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
                 {t('table_2-head_3')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_4')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_5')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_6')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_7')}
-              </th>
+              </th> */}
+              <th
+                colSpan="4"
+
+                style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                {/* {t('table_2-head_2')} */}Employment contract details</th>
+
               <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
                 {t('table_2-head_8')}
               </th>
@@ -126,13 +121,22 @@ const NewTable = ({ updating, setTableData, tableData }) => {
               <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
                 {t('table_2-head_12')}
               </th>
-              <th>____</th>
-              <th>____</th>
-              <th>____</th>
-              <th>____</th>
-              <th>____</th>
-              <th>____</th>
-              <th>____</th>
+              <th style={{ minWidth: "100px" }}>{t('table_2-head_2')}</th>
+              <th style={{ minWidth: "180px" }}>  {t('table_2-head_3')} </th>
+              <th style={{ whiteSpace: "nowrap", textAlign: "center", minWidth: "200px" }}>
+                {t('table_2-head_4')}
+              </th>
+
+              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                {t('table_2-head_5')}
+              </th>
+              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                {t('table_2-head_6')}
+              </th>
+              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
+                {t('table_2-head_7')}
+              </th>
+              <th>{t('yes')}/{t('no')}</th>
               <th>____</th>
               {
                 login && (

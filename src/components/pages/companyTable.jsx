@@ -8,7 +8,7 @@ import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-const CompanyTable = ({ updating, setTableData, tableData }) => {
+const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading }) => {
   const { t, i18n } = useTranslation();
 
   // const [tableData, setTableData] = useState([]);
@@ -58,10 +58,10 @@ const CompanyTable = ({ updating, setTableData, tableData }) => {
         setLoading(true);
       }
     }
-  }, [login, updating, delLoading]);
+  }, [login, updating, delLoading, newHire]);
   return (
     <div className="table-responsive">
-      {loading && login ? (
+      {(loading && login) || tableloading ? (
         <div
           style={{ height: "200px" }}
           className="d-flex justify-content-center  align-items-center"

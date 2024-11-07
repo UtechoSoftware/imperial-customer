@@ -810,7 +810,10 @@
 }
 .input_1 {
   width: auto;
-  padding: 1rem 3rem;
+  min-width: 300px !important;
+  height: 53px !important;
+  padding: 0rem !important;
+  /* padding: 1rem 3rem; */
 }
 .input_3 {
   max-width: 350px;
@@ -1087,4 +1090,9 @@ th:last-child {
   position: absolute;
   top: 10px !important;
   right: 20px !important;
+}
+:where(.css-dev-only-do-not-override-1gwfwyx).ant-pagination
+  .ant-pagination-item-active {
+  border-color: #b39d70 !important;
+  border: 1px solid #b39d70 !important;
 }

@@ -20,6 +20,7 @@ import { finabeelight } from "../icons/icon";
 import { setIsLogin_ } from "../store/reducer/imperialAuth";
 import { useTranslation } from "react-i18next";
 const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
+  const user = useSelector(state => state.data.data.user)
   const { t, i18n } = useTranslation();
   const dispatch = useDispatch();
   const location = useLocation();
@@ -289,9 +290,10 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           height: "2rem",
                           width: "auto",
                           marginLeft: "auto",
+                          borderRadius: "30px",
                           marginBottom: "2rem",
                         }}
-                        src={finabeelight}
+                        src={user?.profilePicture || finabeelight}
                         className=""
                         alt=""
                       />
@@ -329,10 +331,11 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                       <img
                         style={{
                           height: "3.5rem",
+                          borderRadius: "30px",
                           width: "auto",
                           marginLeft: "auto",
                         }}
-                        src={finabeelight}
+                        src={user?.profilePicture || finabeelight}
                         className=""
                         alt=""
                       />
@@ -521,7 +524,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           marginLeft: "auto",
                           marginBottom: "2rem",
                         }}
-                        src={finabeelight}
+                        src={user?.profilePicture || finabeelight}
                         className=""
                         alt=""
                       />
@@ -562,7 +565,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           width: "auto",
                           marginLeft: "auto",
                         }}
-                        src={finabeelight}
+                        src={user?.profilePicture || finabeelight}
                         className=""
                         alt=""
                       />
