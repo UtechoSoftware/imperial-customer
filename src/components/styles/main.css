@@ -827,6 +827,15 @@
   width: auto;
   border-radius: 20px !important;
 }
+.q_card_2_ {
+  display: flex;
+  justify-content: end;
+  gap: 3rem;
+  align-items: center;
+  border: 1px solid black;
+  width: auto;
+  border-radius: 20px !important;
+}
 
 .q_card_3 {
   display: flex;

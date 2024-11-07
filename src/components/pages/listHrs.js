@@ -213,25 +213,41 @@ const ListHrs = () => {
           <div className="cal_lower d-flex gap-4 flex-column align-items-end justify-content-center">
             {!login && (
               <>
-                <Tooltip
-                  style={{ backgroundColor: "yellow" }}
-                  title={t('popup_missing_2')}
-                  className="cursor-pointer "
-                >
+                <div className="d-flex justify-content-between w-full items-center">
+                  <div>
 
-                  <button
-                    onClick={handleShow}
-                    type="button"
-                    className="btn2 px-3 py-3  border-black "
-                  >
-                    {/* Calculate Savings
+                    <button
+                      onClick={handleDelete}
+                      type="button"
+                      className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
+                    >
+                      {t('del_all')}
+                    </button>
+                  </div>
+                  <div>
+
+                    <Tooltip
+                      style={{ backgroundColor: "yellow" }}
+                      title={t('popup_missing_2')}
+                      className="cursor-pointer "
+                    >
+
+                      <button
+                        onClick={handleShow}
+                        type="button"
+                        className="btn2 px-3 py-3  border-black "
+                      >
+                        {/* Calculate Savings
                    */}
-                    {t('calculate_saving')}
-                  </button>
-                </Tooltip>
+                        {t('calculate_saving')}
+                      </button>
+                    </Tooltip>
+                  </div>
+
+                </div>
               </>
             )}
-            <div className="flex justify-content-center w-full">
+            <div className={login ? 'flex justify-content-center w-full' : 'flex justify-content-end w-full'}>
 
               <div className="d-flex gap-4 flex-wrap justify-content-between">
                 {login && (
@@ -281,18 +297,23 @@ const ListHrs = () => {
                   className="cursor-pointer "
                 >
                   {!login ? (
-                    <div
-                      onClick={handleShow}
-                      className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
-                      style={{ borderRadius: "60px" }}
-                    >
-                      <h6>{t('card_3')}</h6>
-                      <img
-                        className="h-10 d-md-block d-none"
-                        src={hand}
-                        alt="email"
-                      />
-                    </div>
+                    <>
+                      <div className="d-flex justify-content-end w-100">
+
+                        <div
+                          onClick={handleShow}
+                          className="q_card_2_ cursor-pointer d-flex  manrope_bold max-md:text-xl text_black justify-content-end items-center border-solid border-1 rounded py-3 px-3 bg-white"
+                          style={{ borderRadius: "60px" }}
+                        >
+                          <h6>{t('card_3')}</h6>
+                          <img
+                            className="h-10 d-md-block d-none"
+                            src={hand}
+                            alt="email"
+                          />
+                        </div>
+                      </div>
+                    </>
                   ) : (
                     <div
                       className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
@@ -313,14 +334,20 @@ const ListHrs = () => {
               <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
             </div>
           </div>
+
           <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
-            <button
-              onClick={handleDelete}
-              type="button"
-              className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
-            >
-              {"Delete all rows"}
-            </button>
+            {
+              login && (
+
+                <button
+                  onClick={handleDelete}
+                  type="button"
+                  className="btn2 px-4 py-3 text-nowrap  border-black bg-danger "
+                >
+                  {t('del_all')}
+                </button>
+              )
+            }
             {login && (
               <>
                 <Tooltip

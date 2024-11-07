@@ -8,7 +8,7 @@
   "login_h1": "Welcome",
   "login_p3": "This is the first free digital tool to simulate the application of the Social Security contributions partial or total exemption, available to Portuguese entities",
   "login_p4": "Fixed-term contracts in certain circumstances automatically convert to open-ended contracts, even without a formal written contract, making them potentially eligible for this benefit.",
-  "help": "Help",
+  "help": "Report bug",
   "Register": "Register",
   "Register_p1": "Already have an account?",
   "Register_p3": "This is the first free digital tool to simulate the application of the Social Security contributions partial or total exemption, available to Portuguese entities",
@@ -126,5 +126,6 @@
   "popup_missing_2": "Check the estimate savings for your company based on the inputted HR",
   "popup_missing_3": "We charge our clients on a success fee basis, meaning, our fees correspond to a fraction of the total company savings and would only be due when and if the application is approved",
   "popup_missing_4": "Use our free digital tool to calculate the annual potential savings for your company from the application of the Social Security contributions partial or total exemption",
-  "popup_missing_5": "Indicate the expected hiring date for the new HR (dd/mm/yyyy)"
+  "popup_missing_5": "Indicate the expected hiring date for the new HR (dd/mm/yyyy)",
+  "did_you_know": "Did you know that..."
 }

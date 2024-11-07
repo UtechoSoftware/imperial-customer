@@ -39,6 +39,82 @@ import { useTranslation } from "react-i18next";
 
 // import { apiRequest } from '../../api/auth_api'
 const Register = () => {
+  const languages = window.localStorage.getItem('imperial_language').replace(/"/g, '');
+
+  const data = languages === 'en'
+    ? [
+      {
+        content:
+          'Entities that hire young people looking for their first job (open-ended contract) can benefit from a 50% reduction in Social Security contributions for five years.',
+      },
+      {
+
+        content:
+          'Entities that hire long-term unemployed individuals can enjoy a temporary 50% reduction in Social Security contributions for a period of three years, and in the case of very long-term unemployed, a total exemption of Social Security contributions (100%).',
+      },
+      {
+
+        content:
+          'Fixed-term contracts, when converted into open-ended contracts, can still benefit from the benefit, depending on the age and situation of the worker at the time of conversion.',
+      },
+      {
+
+        content:
+          'Under certain circumstances, it is possible to transfer the benefit associated with a worker to a new entity.',
+      },
+      {
+
+        content:
+          'The termination of  an open-ended contract during the experimental period is not relevant in qualifying for the benefit.',
+      },
+      {
+
+        content:
+          'Termination of an employment contract by mutual agreement between the employer and the worker, or by the decision of the worker, does not require any reimbursement of the benefit obtained up to that date.',
+      },
+      {
+
+        content:
+          'Fixed-term contracts in certain circumstances automatically convert to open-ended contracts, even without a formal written contract, making them potentially eligible for this benefit.',
+      },
+    ]
+    : [
+      {
+
+        content:
+          'As entidades que contratem jovens à procura do primeiro emprego podem beneficiar de uma redução de 50% nas contribuições para a Segurança Social durante cinco anos.',
+      },
+      {
+
+        content:
+          'As entidades que contratem desempregados de longa duração podem usufruir de uma redução temporária de 50% nas contribuições para a Segurança Social por um período de três anos e no caso de desempregados de longa duração, uma isenção total (100%).',
+      },
+      {
+
+        content:
+          'Os contratos de trabalho a termo, convertidos em contratos sem termo, podem ainda beneficiar do benefício, dependendo da idade e situação do trabalhador no momento da conversão.',
+      },
+      {
+
+        content:
+          'É possível a portabilidade do benefício associado a um trabalhador para uma nova entidade, em determinadas circunstâncias.',
+      },
+      {
+
+        content:
+          'A rescisão de um contrato sem termo durante o período experimental não é considerada na qualificação para o benefício.',
+      },
+      {
+
+        content:
+          'A rescisão de contrato de trabalho por acordo entre a entidade empregadora e o trabalhador ou por decisão do trabalhador, não obriga a qualquer reembolso do benefício da dispensa de contribuições usufruído até essa data.',
+      },
+      {
+
+        content:
+          'Os contratos a termo em determinadas circunstâncias convertem-se automaticamente em contratos sem termo, mesmo que não exista contrato formal, tornando-os potencialmente elegíveis para este benefício.',
+      },
+    ];
   const { t, i18n } = useTranslation();
   const [showPassword, setShowPassword] = useState(false);
   const [showPassword2, setShowPassword2] = useState(false);
@@ -51,6 +127,14 @@ const Register = () => {
   };
   const togglePasswordVisibility2 = () => {
     setShowPassword2(!showPassword2);
+  }; const [currentIndex, setCurrentIndex] = useState(0);
+
+  const handleNext = () => {
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % data.length);
+  };
+
+  const handlePrev = () => {
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + data.length) % data.length);
   };
   const handleSubmit = async (formData) => {
     setIsProcessing(true);
@@ -137,12 +221,28 @@ const Register = () => {
               <img src={left} width="20px" alt="left" />
               <img src={rightarrow} width="20px" alt="right" />
             </div> */}
+            <div className="d-flex flex-column gap-3 mt-4">
+              <h5 className="text-secondary">{t('did_you_know')}</h5>
+              <p className="text_para">
+                {data[currentIndex].content}
+                {/* {t('login_p4')} */}
+              </p>
+            </div>
+            <div className="d-flex gap-2 mb-3">
+              <img src={left} width="10px" alt="left" onClick={handlePrev} style={{ cursor: 'pointer' }} />
+              <img src={rightarrow} width="10px" alt="right" onClick={handleNext} style={{ cursor: 'pointer' }} />
+            </div>
             <div className="d-flex align-items-center gap-3 pt-3">
               <img src={questionMark} width="20px" alt="question" />
-              <p className="m-0 text-white">
+              <a
+                style={{ textDecoration: 'none', color: 'white' }}
+                className="text_white"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=geral@imperialage.pt"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {t('help')}
-
-              </p>
+              </a>
             </div>
           </div>
         </div>

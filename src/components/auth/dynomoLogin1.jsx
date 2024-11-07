@@ -52,7 +52,7 @@ const DynomoLogin1 = () => {
       {
 
         content:
-          'The termination of an open-ended contract during the experimental period is not relevant in qualifying for the benefit.',
+          'The termination of  an open-ended contract during the experimental period is not relevant in qualifying for the benefit.',
       },
       {
 
@@ -196,8 +196,9 @@ const DynomoLogin1 = () => {
                 {/* {t('login_p3')} */}
               </p>
             </div>
+
             <div className="d-flex flex-column gap-3 mt-4">
-              <h5 className="text-secondary">{data[currentIndex].title}</h5>
+              <h5 className="text-secondary">{t('did_you_know')}</h5>
               <p className="text_para">
                 {data[currentIndex].content}
                 {/* {t('login_p4')} */}
@@ -209,7 +210,16 @@ const DynomoLogin1 = () => {
             </div>
             <div className="d-flex align-items-center gap-3">
               <img src={questionMark} width="20px" alt="question" />
-              <p className="m-0 text-white">{t('help')}</p>
+              <a
+                style={{ textDecoration: 'none', color: 'white' }}
+                className="text_white"
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=geral@imperialage.pt"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {t('help')}
+              </a>
+
             </div>
           </div>
           {/* <div className="d-flex flex-column gap-2 pt-3 ">
@@ -273,7 +283,6 @@ const DynomoLogin1 = () => {
               {/* <img className="cursor-pointer" onClick={handleLinkedInLogin} width="25px" src={linkedin_} alt="linkdin" /> */}
 
               {/* <Linkedin /> */}
-
 
             </div>
             {/* <div className="d-flex flex-row align-items-center gap-2">
@@ -369,7 +378,7 @@ const DynomoLogin1 = () => {
             </Form>
           </div>
         </div>
-      </div>
+      </div >
     </>
   );
 };
