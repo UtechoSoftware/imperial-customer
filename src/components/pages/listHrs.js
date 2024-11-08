@@ -330,12 +330,10 @@ const ListHrs = () => {
                 </Tooltip>
               </div>
             </div>
-            <div className="mb-4">
-              <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
-            </div>
           </div>
 
-          <div className="d-flex gap-2 justify-content-between align-items-center flex-wrap mb-4">
+
+          <div className="d-flex gap-2 mt-4 justify-content-between align-items-center flex-wrap mb-4">
             {
               login && (
 
@@ -368,7 +366,9 @@ const ListHrs = () => {
               </>
             )}
           </div>
-
+          <div className="mb-4">
+            <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
+          </div>
           <Modal
             show={show}
             onHide={handleClose}

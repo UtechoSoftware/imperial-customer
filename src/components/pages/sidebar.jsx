@@ -177,7 +177,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
       {
         icon: <HelpCircle />,
         iconActive: <HelpCircle />,
-        items: t('help'),
+        items: t('faq_h1'),
         path: "/help",
       },
       // {
@@ -219,7 +219,7 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
       {
         icon: <HelpCircle />,
         iconActive: <HelpCircle />,
-        items: t('help'),
+        items: t('faq_h1'),
         path: "/help",
       },
 
