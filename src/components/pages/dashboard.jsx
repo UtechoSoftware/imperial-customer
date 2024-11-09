@@ -783,6 +783,7 @@ const Dashboard = () => {
                     <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
                       <div className="">
                         <DatePicker
+                          yearDropdownItemNumber={200}
                           selected={formData.dob}
                           onChange={(date) => handleDateChange(date, "dob")}
                           className="form-control cursor-pointer input_1 custom_radius text-center"
@@ -794,6 +795,7 @@ const Dashboard = () => {
                           isClearable
                           scrollableYearDropdown
                         />
+
                       </div>
                     </Tooltip>
                     {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
@@ -830,6 +832,7 @@ const Dashboard = () => {
                     <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
                       <div className="">
                         <DatePicker
+                          yearDropdownItemNumber={200}
                           selected={formData.iefpDate}
                           onChange={(date) =>
                             handleDateChange(date, "iefpDate")
@@ -890,6 +893,7 @@ If the contract is not written, please consider it “Open-ended”.
                             <div>
 
                               <DatePicker
+                                yearDropdownItemNumber={200}
                                 selected={formData.startDate}
                                 onChange={(date) =>
                                   handleDateChange(date, "startDate")
@@ -1049,6 +1053,7 @@ If the contract is not written, please consider it “Open-ended”.
                   <Tooltip title="Indicate the date when the HR joined the company (dd/mm/yyyy)">
                     <div className="">
                       <DatePicker
+                        yearDropdownItemNumber={200}
                         selected={formData.newHiring}
                         onChange={(date) => handleDateChange(date, "newHiring")}
                         className="form-control input_1 cursor-pointer custom_radius me-md-2 text-center"
@@ -1057,7 +1062,6 @@ If the contract is not written, please consider it “Open-ended”.
                         maxDate={new Date()}
                         showYearDropdown
                         scrollableYearDropdown
-                        yearDropdownItemNumber={100} // Shows 100 years in the dropdown for easier navigation
                         isClearable // Allows users to clear the date if they need to reselect
                       />
 
@@ -1068,6 +1072,7 @@ If the contract is not written, please consider it “Open-ended”.
                   <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
                     <div>
                       <DatePicker
+                        yearDropdownItemNumber={200}
                         selected={formData.dob}
                         onChange={(date) => handleDateChange(date, "dob")}
                         className="form-control cursor-pointer input_1 custom_radius text-center"
@@ -1111,6 +1116,7 @@ If the contract is not written, please consider it “Open-ended”.
 
                         className="w-full">
                         <DatePicker
+                          yearDropdownItemNumber={200}
                           selected={formData.iefpDate}
                           onChange={(date) =>
                             handleDateChange(date, "iefpDate")
@@ -1177,6 +1183,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                         <Tooltip title="Indicate the date of the (most recent) employment contract with the HR (dd/mm/yyyy)">
                           <div>
                             <DatePicker
+                              yearDropdownItemNumber={200}
                               selected={formData.startDate}
                               onChange={(date) =>
                                 handleDateChange(date, "startDate")
