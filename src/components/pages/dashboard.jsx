@@ -1064,9 +1064,7 @@ If the contract is not written, please consider it “Open-ended”.
                         scrollableYearDropdown
                         isClearable // Allows users to clear the date if they need to reselect
                       />
-
                       {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
-
                     </div>
                   </Tooltip>
                   <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">

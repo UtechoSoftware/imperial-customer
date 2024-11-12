@@ -127,5 +127,10 @@
   "popup_missing_3": "We charge our clients on a success fee basis, meaning, our fees correspond to a fraction of the total company savings and would only be due when and if the application is approved",
   "popup_missing_4": "Use our free digital tool to calculate the annual potential savings for your company from the application of the Social Security contributions partial or total exemption",
   "popup_missing_5": "Indicate the expected hiring date for the new HR (dd/mm/yyyy)",
-  "did_you_know": "Did you know that..."
+  "did_you_know": "Did you know that...",
+  "popup1": "Calculate the annual potential savings for your company",
+  "popup2": "Get to know how the Social Security exemption works",
+  "popup3": "Review your profile and check your previous simulations",
+  "popup4": "Check the most frequently asked questions",
+  "popup5": "I wish to calculate the potential savings for my company"
 }

@@ -9,6 +9,7 @@
   "login_p3": "Esta é a primeira ferramenta digital grátis para simular a aplicação do benefício da Segurança Social de dispensa parcial ou total de contribuições para a segurança social, disponível para as entidades portuguesas",
   "login_p4": "Em determinadas circunstâncias um contrato de trabalho a termo convertem-se automaticamente em contratos de trabalho sem termo, mesmo não estando celebrados por escrito, tornando-os elegíveis para este benefício",
   "help": "Reportar um bug",
+  "login": "entrar",
   "Register": "Criar conta",
   "Register_p1": "Já tem uma conta? Entrar",
   "Register_p3": "Esta é a primeira ferramenta digital grátis para simular a aplicação do benefício da Segurança Social de dispensa parcial ou total de contribuições para a Segurança Social, disponível para as entidades portuguesas",
@@ -116,5 +117,10 @@
   "popup_missing_3": "Os nossos serviços são cobrados com base numa taxa de sucesso, ou seja, correspondem a uma fração das poupanças totais obtidas pela empresa e só seriam devidas quando e se a candidatura for aprovada",
   "popup_missing_4": "Utilize a nossa ferramenta digital gratuita para simular a poupança anual potencial para a sua empresa da aplicação da isenção parcial ou total das contribuições para a Segurança Social",
   "popup_missing_5": "Indique a data prevista para a contratação do novo RH (dd/mm/aaaa) ",
-  "did_you_know": "Sabia que..."
+  "did_you_know": "Sabia que...",
+  "popup1": "Calcule o potencial anual de poupança para a sua empresa",
+  "popup2": "Perceba o funcionamento da isenção de contribuições para a Segurança Social",
+  "popup3": "Reveja o seu perfil e aceda às suas simulações ",
+  "popup4": "Verifique as questões mais frequentes",
+  "popup5": "Botão Quero simular o benefício"
 }

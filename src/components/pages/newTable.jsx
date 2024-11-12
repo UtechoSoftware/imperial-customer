@@ -7,7 +7,9 @@ import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
+const NewTable = ({ updating, tableloading, setTableData2, tableData2 }) => {
+  const hrData_company = window.sessionStorage.getItem('hrData_company')
+  console.log(hrData_company)
   const { t } = useTranslation();
   const [loading, setLoading] = useState(false)
   const [showModal2, setShowModal2] = useState(false);
@@ -21,21 +23,22 @@ const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
     if (!login) {
       setLoading(false)
       const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      if (storedData?.length > 0) {
-        setTableData(storedData);
+      if (storedData?.length > 0 && storedData[0].type === 'companystaff') {
+
+        setTableData2(storedData);
       } else {
-        setTableData([]);
+        setTableData2([]);
       }
     }
-  }, [!login]);
+  }, [!login, tableloading, tableData2]);
   useEffect(() => {
     setLoading(true)
     if (login) {
       get_hr("companystaff")
         .then((res) => {
           setLoading(false)
+          setTableData2(res?.data?.data);
 
-          setTableData(res?.data?.data);
         })
         .catch((er) => {
           setLoading(false)
@@ -149,7 +152,8 @@ const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
           </thead>
 
           <tbody>
-            {tableData?.map((employee, index) => (
+
+            {tableData2?.map((employee, index) => (
               <tr key={index}>
                 <td style={{ textAlign: "center" }}>{employee.identifier}</td>
                 <td>
@@ -219,6 +223,7 @@ const NewTable = ({ updating, setTableData, tableData, tableloading }) => {
                 }
               </tr>
             ))}
+
           </tbody>
         </Table>
       )}

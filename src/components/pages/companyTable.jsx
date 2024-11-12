@@ -10,7 +10,6 @@ import { message } from "antd";
 import { useTranslation } from "react-i18next";
 const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading }) => {
   const { t, i18n } = useTranslation();
-
   // const [tableData, setTableData] = useState([]);
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
@@ -35,13 +34,14 @@ const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading
     if (!login) {
       setLoading(false);
       const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      if (storedData?.length > 0) {
+      if (storedData?.length > 0 && storedData[0].type === "newhire") {
         setTableData(storedData);
       } else {
         setTableData([]);
       }
     }
-  }, [!login]);
+  }, [!login, tableloading]);
+  console.log(tableData, "loading")
   useEffect(() => {
     setLoading(true);
     if (login) {
@@ -58,7 +58,7 @@ const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading
         setLoading(true);
       }
     }
-  }, [login, updating, delLoading, newHire]);
+  }, [login, updating, delLoading,]);
   return (
     <div className="table-responsive">
       {(loading && login) || tableloading ? (
@@ -162,7 +162,6 @@ const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading
                       <td>
                         {/* hello are */}
                         <div className="d-flex flex-row  justify-content-center">
-
                           <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(data, index)} />
                           <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(data, index)} />
                         </div>
@@ -178,6 +177,7 @@ const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading
                 </td>
               </tr>
             )}
+
           </tbody>
         </Table>
       )}

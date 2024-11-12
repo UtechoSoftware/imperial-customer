@@ -100,6 +100,10 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const handleLogout = () => {
     dispatch(setIsLogin_(false));
     window.localStorage.removeItem('imperial_token');
+    window.sessionStorage.removeItem('hrData_company');
+    window.sessionStorage.removeItem('hrData');
+
+
   };
   const getParentPath = (path) => {
     const pathSegments = path.split("/");
@@ -140,11 +144,11 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
           });
 
           break;
-        case "help":
+        case "FAQs":
           allowedItems?.push({
             icon: <HelpCircle />,
             iconActive: <HelpCircle style={{ color: "#B39D70" }} />,
-            items: "Help",
+            items: "FAQs",
             path: "/help",
           });
           break;
@@ -382,11 +386,11 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                   : "text_white"
                                   }`}
                               >
-                                <div className="flex items-center gap-4">
+                                <div className="flex items-center gap-4 text-white">
                                   {isChildPath(subItem.path, location.pathname)
                                     ? item.iconActive
                                     : item.icon}
-                                  <div className="plusJakara_semibold">
+                                  <div className="plusJakara_semibold text-white">
                                     {subItem.label}
                                   </div>
                                 </div>
@@ -405,40 +409,34 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                               : "text-white"
                               }`}
                           >
-                            <div className="flex items-center gap-4">
+                            <div className="flex items-center gap-4 text-white">
                               {isChildPath(item.path, location.pathname)
                                 ? item.iconActive
                                 : item.icon}
                               {!collapsed && (
                                 <>
                                   {item.items === t('Calculator') && (
-                                    <Tooltip title="Calculate the annual potential savings for your company">
+                                    <Tooltip title={t('popup1')}>
                                       <div className="plusJakara_semibold">
                                         {item.items}
                                       </div>
                                     </Tooltip>
                                   )}
                                   {item.items === t('Information') && (
-                                    <Tooltip title="Get to know how the Social Security exemption works">
+                                    <Tooltip title={t('popup2')}>
                                       <div className="plusJakara_semibold">
                                         {item.items}
                                       </div>
                                     </Tooltip>
                                   )}
                                   {item.items === t('profile') && (
-                                    <Tooltip title="Review your profile and check your previous simulations">
+                                    <Tooltip title={(t('popup3'))}>
                                       <div className="plusJakara_semibold">
                                         {item.items}
                                       </div>
                                     </Tooltip>
                                   )}
-                                  {item.items === "Help" && (
-                                    <Tooltip title="Check the most frequently asked questions">
-                                      <div className="plusJakara_semibold">
-                                        {item.items}
-                                      </div>
-                                    </Tooltip>
-                                  )}
+
                                 </>
                               )}
                             </div>
@@ -458,14 +456,36 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                           : "text-white"
                           }`}
                       >
-                        <div className="flex items-center gap-4">
+
+                        <div className="flex items-center gap-4 text-white">
                           {isChildPath(item.path, location.pathname)
                             ? item.iconActive
                             : item.icon}
                           {!collapsed && (
                             <div className="plusJakara_semibold togle1">
-                              {item.items}
+                              {item.items === t('faq_h1') && (
+                                <Tooltip title={t('popup4')}>
+                                  <div className="plusJakara_semibold text-white">
+                                    {item.items}
+                                  </div>
+                                </Tooltip>
+                              )}
+                              {item.items === t('logout') && (
+                                <Tooltip title="Check t">
+                                  <div className="plusJakara_semibold">
+                                    {item.items}
+                                  </div>
+                                </Tooltip>
+                              )}
+                              {item.items === t('login') && (
+                                <Tooltip title="Check t">
+                                  <div className="plusJakara_semibold">
+                                    {item.items}
+                                  </div>
+                                </Tooltip>
+                              )}
                             </div>
+
                           )}
                         </div>
                       </MenuItem>

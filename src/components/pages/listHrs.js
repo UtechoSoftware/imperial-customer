@@ -17,8 +17,12 @@ import { Button, Form, Modal, Spinner } from "react-bootstrap";
 import { del_hr, get_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
+import { axiosInstance } from "../api/axiosIntance";
 const ListHrs = () => {
+  const [loader, setLoader] = useState(false)
   const [tableData, setTableData] = useState([]);
+  const [tableData2, setTableData2] = useState([]);
+
   const { t, i18n } = useTranslation();
   const [tableloading, setTableLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -26,14 +30,20 @@ const ListHrs = () => {
   const [showModal2, setShowModal2] = useState(false);
   const formatDate = (date) => date?.toLocaleDateString();
   const login = useSelector((state) => state.data.data.isLogin_);
+  var user = useSelector(state => state.data.data.user)
+
   const [newHire, setNewhire] = useState(true);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [showsaving, setShowSaving] = useState(false);
+
   const [delLoader, setDelLoader] = useState(false);
   const [show2, setShow2] = useState(false);
   const [files, setFiles] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleShowsaving = () => setShowSaving(true);
+
   const handleClose2 = () => setShow2(false);
   const handleShow2 = () => setShow2(true);
   const [potential, setPotential] = useState("");
@@ -42,9 +52,9 @@ const ListHrs = () => {
   const [employeeType, setEmployeeType] = useState("New Hire");
   const onChange = (key) => {
     setLoading(true);
-    setTableLoading(true);
     console.log(key, "key");
     let value;
+    setTableLoading(true);
     if (key === "1") {
       value = "newhire";
       setNewhire(true);
@@ -53,10 +63,19 @@ const ListHrs = () => {
       setNewhire(false);
     }
     if (global.BASEURL) {
-      get_hr(value)
+      get_hr("newhire")
         .then((res) => {
           setLoading(false)
           setTableData(res?.data?.data);
+          setTableLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+      get_hr("companystaff")
+        .then((res) => {
+          setLoading(false)
+          setTableData2(res?.data?.data);
           setTableLoading(false);
 
         })
@@ -67,7 +86,6 @@ const ListHrs = () => {
       setLoading(true);
 
     }
-
     if (global.BASEURL) {
       getPotential(value)
         .then((res) => {
@@ -99,7 +117,151 @@ const ListHrs = () => {
     }
   }, []);
 
-  console.log(potential, "pp");
+  const handleCalculate = (event) => {
+    // alert('logout scenerio')
+    event.preventDefault();
+    setLoader(true)
+    const formData = new FormData(event.target);
+
+    const name = formData.get('formName');
+    const email = formData.get('formEmail');
+    const companyName = formData.get('formCompanyName');
+    const position = formData.get('formPosition');
+    const payload = {
+      name,
+      email,
+      comp_name: companyName,
+      position,
+      arrayData: tableData,
+      arrayData2: tableData2
+    };
+
+    const validateForm = (payload) => {
+      for (const key in payload) {
+        if (!payload[key]) {
+          setLoader(false)
+          setShow(true)
+
+          return "Please fill out the form first";
+        }
+      }
+      return null;
+    };
+
+    // Usage
+    const errorMessage = validateForm(payload);
+    if (errorMessage) {
+      message.error('please fill the form first')
+    } else {
+      if (payload) {
+        axiosInstance.post('api/users/support', payload).then((response) => {
+          if (response?.data.success) {
+            message.success(response?.data?.message)
+            setLoader(false)
+            setShow(false)
+          }
+        }).catch((error) => {
+          setLoader(false)
+
+        })
+
+      };
+    }
+
+  }
+  const handleCalculate2 = () => {
+    setLoader(true)
+    const { name, comp_name, email, position } = user;
+
+    const payload = {
+      name,
+      comp_name,
+      email,
+      position,
+      arrayData: tableData,
+      arrayData2: tableData2
+
+
+    };
+
+    const validateForm = (payload) => {
+      for (const key in payload) {
+        if (!payload[key]) {
+          setLoader(false)
+          setShow(true)
+
+          return "your submitted data is missing ";
+        }
+      }
+      return null;
+    };
+
+    // Usage
+    const errorMessage = validateForm(payload);
+    if (errorMessage) {
+      message.error('please fill the form first')
+    } else {
+      if (payload) {
+        axiosInstance.post('api/users/support', payload).then((response) => {
+          if (response?.data.success) {
+            message.success(response?.data?.message)
+            setLoader(false)
+            setShow(false)
+          }
+        }).catch((error) => {
+          setLoader(false)
+
+        })
+
+      }
+    }
+  }
+  const handleCalculateSaving = (e) => {
+    e.preventDefault()
+    setLoader(true)
+    const { name, comp_name, email, position } = user;
+    const payload = {
+      name,
+      comp_name,
+      email,
+      position,
+      saving: potential
+
+    };
+
+
+    const validateForm = (payload) => {
+      for (const key in payload) {
+        if (key !== 'saving' && !payload[key]) {
+          return "Please fill out the form first";
+        }
+      }
+      return null;
+    };
+
+    // Usage
+    const errorMessage = validateForm(payload);
+    if (errorMessage) {
+      console.log(errorMessage);
+      // Display error message to the user
+    } else {
+      // Proceed with the submission or next steps
+      if (payload) {
+        axiosInstance.post('api/users/calcSaving', payload).then((response) => {
+          if (response?.data.success) {
+            message.success(response?.data?.message)
+            setLoader(false)
+            setShow(false)
+          }
+        }).catch((error) => {
+          setLoader(false)
+
+        })
+
+      };
+    }
+
+  }
   const items = [
     {
       key: "1",
@@ -120,8 +282,8 @@ const ListHrs = () => {
       children: (
         <NewTable
           updating={updating}
-          setTableData={setTableData}
-          tableData={tableData}
+          setTableData2={setTableData2}
+          tableData2={tableData2}
           tableloading={tableloading}
           setTableLoading={setTableLoading}
         />
@@ -316,6 +478,7 @@ const ListHrs = () => {
                     </>
                   ) : (
                     <div
+                      onClick={handleCalculate2}
                       className="q_card_2 cursor-pointer flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
@@ -355,7 +518,7 @@ const ListHrs = () => {
                 >
 
                   <button
-                    onClick={handleShow}
+                    onClick={handleCalculateSaving}
                     type="button"
                     className="btn2 px-3 py-3 text-nowrap   border-black "
                   >
@@ -401,52 +564,138 @@ const ListHrs = () => {
               >
                 ❌
               </button>
-              <Form>
+              <Form onSubmit={handleCalculate}>
                 <Form.Group className="mb-2" controlId="formName">
                   <Form.Label className="m-0">{t('Register_h1')}</Form.Label>
                   <div className="modal_form">
-                    <Form.Control type="text" placeholder="insert your name" />
+                    <Form.Control type="text" name="formName" placeholder="insert your name" />
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formEmail">
                   <Form.Label className="m-0">{t('email')}</Form.Label>
                   <div className="modal_form">
-                    <Form.Control
-                      type="email"
-                      placeholder="example@email.com"
-                    />
+                    <Form.Control type="email" name="formEmail" placeholder="example@email.com" />
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formCompanyName">
                   <Form.Label className="m-0">{t('Register_h2')}</Form.Label>
                   <div className="modal_form">
-                    <Form.Control
-                      type="text"
-                      placeholder="insert the company's name"
-                    />
+                    <Form.Control type="text" name="formCompanyName" placeholder="insert the company's name" />
                   </div>
                 </Form.Group>
                 <Form.Group className="mb-2" controlId="formPosition">
                   <Form.Label className="m-0">{t('Register_h3')}</Form.Label>
                   <div className="modal_form">
-                    <Form.Control
-                      type="text"
-                      placeholder="insert your position in the company"
-                    />
+                    <Form.Control type="text" name="formPosition" placeholder="insert your position in the company" />
                   </div>
                 </Form.Group>
 
                 <div className="d-flex justify-content-end pt-3">
                   <button
-                    type="button"
-                    className="btn2 px-3 py-2  border-black"
+                    type="submit"
+                    className="btn2 px-3 py-2 border-black"
                     onClick={handleClose}
                     style={{ width: "9rem" }}
                   >
-                    {t('done_btn')}
+                    {
+                      loader ? (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <CircularProgress
+                            style={{ color: "white" }}
+                            size={20}
+                          />
+                        </div>
+                      ) :
+                        t('done_btn')
+                    }
+
                   </button>
                 </div>
               </Form>
+
+            </Modal.Body>
+          </Modal>
+          <Modal
+            show={showsaving}
+            onHide={() => setShowSaving(false)}
+            centered
+            dialogClassName="custom-modal"
+          >
+            <Modal.Body
+              style={{ position: "relative" }}
+
+            >
+              <div className="d-flex justify-content-between ">
+                <div className="modal-title mb-3 ">
+                  {t('fill_in')}
+                  <br />
+                  {t('calculation')}
+                </div>
+              </div>
+              <button
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-3px",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                }}
+                type="button"
+                onClick={() => setShowSaving(false)}
+              >
+                ❌
+              </button>
+              <Form onSubmit={handleCalculateSaving}>
+                <Form.Group className="mb-2" controlId="formName">
+                  <Form.Label className="m-0">{t('Register_h1')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formName" placeholder="insert your name" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formEmail">
+                  <Form.Label className="m-0">{t('email')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="email" name="formEmail" placeholder="example@email.com" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formCompanyName">
+                  <Form.Label className="m-0">{t('Register_h2')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formCompanyName" placeholder="insert the company's name" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formPosition">
+                  <Form.Label className="m-0">{t('Register_h3')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formPosition" placeholder="insert your position in the company" />
+                  </div>
+                </Form.Group>
+
+                <div className="d-flex justify-content-end pt-3">
+                  <button
+                    type="submit"
+                    className="btn2 px-3 py-2 border-black"
+                    onClick={() => setShowSaving(false)}
+                    style={{ width: "9rem" }}
+                  >
+                    {
+                      loader ? (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <CircularProgress
+                            style={{ color: "white" }}
+                            size={20}
+                          />
+                        </div>
+                      ) :
+                        t('done_btn')
+                    }
+
+                  </button>
+                </div>
+              </Form>
+
             </Modal.Body>
           </Modal>
           <Modal
