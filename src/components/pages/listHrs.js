@@ -87,6 +87,7 @@ const ListHrs = () => {
 
     }
     if (global.BASEURL) {
+
       getPotential(value)
         .then((res) => {
           setPotential(res?.data?.totalSums);
@@ -102,14 +103,25 @@ const ListHrs = () => {
   };
   useEffect(() => {
     setLoading(true);
+    setTableLoading(true);
+
+    setUpdating(true)
     if (global.BASEURL) {
       getPotential("newhire")
         .then((res) => {
           setPotential(res?.data?.totalSums);
           setLoading(false);
+          setUpdating(false)
+          setTableLoading(false);
+
+
         })
         .catch((err) => {
           setLoading(false);
+          setUpdating(false)
+          setTableLoading(false);
+
+
         });
     } else {
       setLoading(true);
