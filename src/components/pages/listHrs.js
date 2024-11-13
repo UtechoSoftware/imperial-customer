@@ -22,6 +22,9 @@ const ListHrs = () => {
   const [loader, setLoader] = useState(false)
   const [tableData, setTableData] = useState([]);
   const [tableData2, setTableData2] = useState([]);
+  const [type, setType] = useState('');
+  const [loading3, setLoading3] = useState(false);
+
 
   const { t, i18n } = useTranslation();
   const [tableloading, setTableLoading] = useState(false);
@@ -35,6 +38,8 @@ const ListHrs = () => {
   const [newHire, setNewhire] = useState(true);
   const navigate = useNavigate();
   const [show, setShow] = useState(false);
+  const [show3, setShow3] = useState(false);
+
   const [showsaving, setShowSaving] = useState(false);
 
   const [delLoader, setDelLoader] = useState(false);
@@ -42,6 +47,8 @@ const ListHrs = () => {
   const [files, setFiles] = useState([]);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const handleShow3 = () => setShow3(true);
+
   const handleShowsaving = () => setShowSaving(true);
 
   const handleClose2 = () => setShow2(false);
@@ -51,21 +58,45 @@ const ListHrs = () => {
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
   const onChange = (key) => {
+    setType(key)
     setLoading(true);
-    console.log(key, "key");
+    setLoading3(true)
     let value;
-    setTableLoading(true);
+    // setTableLoading(true);
     if (key === "1") {
       value = "newhire";
-      setNewhire(true);
+      const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+      if (storedData?.length > 0 && storedData[0].type === "newhire") {
+        setLoading(false);
+        setTableData(storedData);
+      } else {
+        setLoading(false);
+        // setTableData([]);\
+      }
+
+
     } else if (key === "2") {
       value = "companystaff";
-      setNewhire(false);
+      // setNewhire(false);
+      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      if (storedData?.length > 0 && storedData[0].type === "companystaff") {
+        setTableData2(storedData);
+        setLoading(false);
+
+      } else {
+        // setTableData([]);
+        setLoading(false);
+
+      }
     }
-    if (global.BASEURL) {
+    if (global.BASEURL && login) {
+      setLoading(true);
+
       get_hr("newhire")
         .then((res) => {
+          console.log(res, "res")
           setLoading(false)
+          setLoading3(false)
           setTableData(res?.data?.data);
           setTableLoading(false);
         })
@@ -75,6 +106,8 @@ const ListHrs = () => {
       get_hr("companystaff")
         .then((res) => {
           setLoading(false)
+          setLoading3(false)
+
           setTableData2(res?.data?.data);
           setTableLoading(false);
 
@@ -83,29 +116,39 @@ const ListHrs = () => {
           setLoading(false);
         });
     } else {
-      setLoading(true);
 
     }
-    if (global.BASEURL) {
+    if (global.BASEURL && login) {
 
       getPotential(value)
         .then((res) => {
           setPotential(res?.data?.totalSums);
-          setLoading(false);
+          setLoading3(false);
         })
         .catch((err) => {
-          setLoading(false);
+          setLoading3(false);
         });
     } else {
-      setTableLoading(true);
-      setLoading(true);
+      // setTableLoading(true);
     }
   };
   useEffect(() => {
     setLoading(true);
-    setTableLoading(true);
+    if (global.BASEURL && login) {
 
-    setUpdating(true)
+      get_hr("newhire")
+        .then((res) => {
+          console.log(res, "res")
+          setLoading(false)
+          setLoading3(false)
+          setTableData(res?.data?.data);
+          setTableLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
+    }
+    // setUpdating(true)
     if (global.BASEURL) {
       getPotential("newhire")
         .then((res) => {
@@ -114,7 +157,6 @@ const ListHrs = () => {
           setUpdating(false)
           setTableLoading(false);
 
-
         })
         .catch((err) => {
           setLoading(false);
@@ -124,10 +166,22 @@ const ListHrs = () => {
 
         });
     } else {
-      setLoading(true);
 
     }
-  }, []);
+  }, [login]);
+  useEffect(() => {
+    setLoading(true);
+
+    const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+    if (storedData?.length > 0 && storedData[0].type === "newhire") {
+      setTableData(storedData);
+      setLoading(false);
+
+    } else {
+      setLoading(false);
+
+    }
+  }, [!login])
 
   const handleCalculate = (event) => {
     // alert('logout scenerio')
@@ -251,13 +305,9 @@ const ListHrs = () => {
       return null;
     };
 
-    // Usage
     const errorMessage = validateForm(payload);
     if (errorMessage) {
-      console.log(errorMessage);
-      // Display error message to the user
     } else {
-      // Proceed with the submission or next steps
       if (payload) {
         axiosInstance.post('api/users/calcSaving', payload).then((response) => {
           if (response?.data.success) {
@@ -274,6 +324,69 @@ const ListHrs = () => {
     }
 
   }
+  const handleCalculateSaving2 = (e) => {
+    e.preventDefault();
+    let roundedTotalSaving;
+    if (type === '1') {
+      const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+      const totalSaving = storedData.reduce((sum, item) => sum + (item.saving || 0), 0);
+      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
+    } else {
+      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      const totalSaving = storedData.reduce((sum, item) => sum + (item.saving || 0), 0);
+      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
+    }
+
+    if (roundedTotalSaving === undefined || isNaN(roundedTotalSaving)) {
+      message.error("Failed to calculate savings. Please try again.");
+      return;
+    }
+
+    setLoader(true);
+
+    const formData = new FormData(e.target);
+    const name = formData.get('formName');
+    const email = formData.get('formEmail');
+    const companyName = formData.get('formCompanyName');
+    const position = formData.get('formPosition');
+
+    const payload = {
+      name,
+      email,
+      comp_name: companyName,
+      position,
+      saving: roundedTotalSaving,
+    };
+
+    const validateForm = (payload) => {
+      for (const key in payload) {
+        if (key !== 'saving' && !payload[key]) {
+          return "Please fill out the form first";
+        }
+      }
+      return null;
+    };
+
+    const errorMessage = validateForm(payload);
+    if (errorMessage) {
+      message.error(errorMessage);
+      setLoader(false);
+    } else {
+      axiosInstance.post('api/users/calcSaving', payload)
+        .then((response) => {
+          if (response?.data.success) {
+            message.success(response?.data?.message);
+            setLoader(false);
+            setShow(false);
+          }
+        })
+        .catch((error) => {
+          setLoader(false);
+          message.error("Failed to submit data. Please try again.");
+        });
+    }
+  };
+
   const items = [
     {
       key: "1",
@@ -283,8 +396,9 @@ const ListHrs = () => {
           updating={updating}
           setTableData={setTableData}
           tableData={tableData}
-          tableloading={tableloading}
-          setTableLoading={setTableLoading}
+          loading={loading}
+        // tableloading={tableloading}
+        // setTableLoading={setTableLoading}
         />
       ),
     },
@@ -296,8 +410,10 @@ const ListHrs = () => {
           updating={updating}
           setTableData2={setTableData2}
           tableData2={tableData2}
-          tableloading={tableloading}
-          setTableLoading={setTableLoading}
+          loading={loading}
+
+        // tableloading={tableloading}
+        // setTableLoading={setTableLoading}
         />
       ),
     },
@@ -320,7 +436,6 @@ const ListHrs = () => {
   };
 
   const { getRootProps, getInputProps } = useDropzone({ onDrop });
-  console.log(items?.key)
   return (
     <div style={{ backgroundColor: "#f8f8f8 " }} >
       <>
@@ -407,7 +522,7 @@ const ListHrs = () => {
                     >
 
                       <button
-                        onClick={handleShow}
+                        onClick={handleShow3}
                         type="button"
                         className="btn2 px-3 py-3  border-black "
                       >
@@ -628,6 +743,89 @@ const ListHrs = () => {
             </Modal.Body>
           </Modal>
           <Modal
+            show={show3}
+            onHide={() => setShow3(false)}
+            centered
+            dialogClassName="custom-modal"
+          >
+            <Modal.Body
+              style={{ position: "relative" }}
+
+            >
+              <div className="d-flex justify-content-between ">
+                <div className="modal-title mb-3 ">
+                  {t('fill_in')}
+                  <br />
+                  {t('calculation')}
+                </div>
+              </div>
+              <button
+                style={{
+                  position: "absolute",
+                  top: "-10px",
+                  right: "-3px",
+                  background: "transparent",
+                  border: "none",
+                  fontSize: "1rem",
+                  cursor: "pointer",
+                }}
+                type="button"
+                onClick={() => setShow3(false)}
+              >
+                ❌
+              </button>
+              <Form onSubmit={handleCalculateSaving2}>
+                <Form.Group className="mb-2" controlId="formName">
+                  <Form.Label className="m-0">{t('Register_h1')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formName" placeholder="insert your name" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formEmail">
+                  <Form.Label className="m-0">{t('email')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="email" name="formEmail" placeholder="example@email.com" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formCompanyName">
+                  <Form.Label className="m-0">{t('Register_h2')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formCompanyName" placeholder="insert the company's name" />
+                  </div>
+                </Form.Group>
+                <Form.Group className="mb-2" controlId="formPosition">
+                  <Form.Label className="m-0">{t('Register_h3')}</Form.Label>
+                  <div className="modal_form">
+                    <Form.Control type="text" name="formPosition" placeholder="insert your position in the company" />
+                  </div>
+                </Form.Group>
+
+                <div className="d-flex justify-content-end pt-3">
+                  <button
+                    type="submit"
+                    className="btn2 px-3 py-2 border-black"
+                    onClick={() => setShow3(false)}
+                    style={{ width: "9rem" }}
+                  >
+                    {
+                      loader ? (
+                        <div className="d-flex justify-content-center align-items-center">
+                          <CircularProgress
+                            style={{ color: "white" }}
+                            size={20}
+                          />
+                        </div>
+                      ) :
+                        t('done_btn')
+                    }
+
+                  </button>
+                </div>
+              </Form>
+
+            </Modal.Body>
+          </Modal>
+          <Modal
             show={showsaving}
             onHide={() => setShowSaving(false)}
             centered
@@ -792,7 +990,7 @@ const ListHrs = () => {
                       message.success("Data deleted successfully");
                       setShowModal2(false);
 
-                      setTableData([]);
+                      // setTableData([]);
 
 
 

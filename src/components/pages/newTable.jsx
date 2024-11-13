@@ -7,11 +7,10 @@ import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-const NewTable = ({ updating, tableloading, setTableData2, tableData2 }) => {
+const NewTable = ({ updating, tableloading, setTableData2, loading, tableData2 }) => {
   const hrData_company = window.sessionStorage.getItem('hrData_company')
   console.log(hrData_company)
   const { t } = useTranslation();
-  const [loading, setLoading] = useState(false)
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
@@ -19,33 +18,41 @@ const NewTable = ({ updating, tableloading, setTableData2, tableData2 }) => {
   // const [tableData, setTableData] = useState([]);
   const navigate = useNavigate();
   const login = useSelector((state) => state.data.data.isLogin_);
-  useEffect(() => {
-    if (!login) {
-      setLoading(false)
-      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      if (storedData?.length > 0 && storedData[0].type === 'companystaff') {
+  // useEffect(() => {
+  //   console.log(tableloading, "starting")
 
-        setTableData2(storedData);
-      } else {
-        setTableData2([]);
-      }
-    }
-  }, [!login, tableloading, tableData2]);
-  useEffect(() => {
-    setLoading(true)
-    if (login) {
-      get_hr("companystaff")
-        .then((res) => {
-          setLoading(false)
-          setTableData2(res?.data?.data);
 
-        })
-        .catch((er) => {
-          setLoading(false)
+  //   // alert('data')
+  //   if (!login) {
 
-        });
-    }
-  }, [login, updating, delLoading]);
+  //     setLoading(false)
+  //     const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+  //     if (storedData?.length > 0 && storedData[0].type === 'companystaff') {
+
+  //       setTableData2(storedData);
+  //     } else {
+  //       setTableData2([]);
+  //     }
+  //   }
+  //   // alert('2')
+  //   console.log('ending')
+
+  // }, [!login, tableloading]);
+  // useEffect(() => {
+  //   setLoading(true)
+  //   if (login) {
+  //     get_hr("companystaff")
+  //       .then((res) => {
+  //         setLoading(false)
+  //         setTableData2(res?.data?.data);
+
+  //       })
+  //       .catch((er) => {
+  //         setLoading(false)
+
+  //       });
+  //   }
+  // }, [login, updating, delLoading]);
   const editRow = (item, index) => {
     console.log(item, "hello")
     const params = new URLSearchParams();
@@ -61,7 +68,7 @@ const NewTable = ({ updating, tableloading, setTableData2, tableData2 }) => {
   };
   return (
     <div className="table-responsive">
-      {(loading && login) || tableloading ? (
+      {loading ? (
         <div style={{ height: "200px" }} className="d-flex justify-content-center  align-items-center">
           <CircularProgress
             style={{ color: "black" }}

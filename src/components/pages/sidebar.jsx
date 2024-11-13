@@ -25,7 +25,6 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
   const dispatch = useDispatch();
   const location = useLocation();
   const login = useSelector((state) => state.data.data.isLogin_);
-  console.log(login, "login");
   const roles = useSelector(
     (state) => state?.adminData?.adminData?.user?.roles
   );
@@ -34,7 +33,6 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
     const initialLanguage = JSON.parse(window.localStorage.getItem('imperial_language')) || 'pt';
     const [language, setLanguage] = useState(initialLanguage);
     const handleChangeLanguage = (lang) => {
-      console.log(lang)
       i18n.changeLanguage(lang);
       window.localStorage.setItem('imperial_language', JSON.stringify(lang));
       setLanguage(lang);  // Update state with the selected language
@@ -367,7 +365,6 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                   <div style={{ flexGrow: 1 }}>
                     {mainItems.map((item, i) => (
                       <Fragment key={i}>
-                        {console.log(item.items, "ii")}
                         {item.subItems ? (
                           <SubMenu
                             icon={item.icon}
@@ -471,18 +468,16 @@ const SidebarMenu = ({ children, setToggled, toggled, setBroken }) => {
                                 </Tooltip>
                               )}
                               {item.items === t('logout') && (
-                                <Tooltip title="Check t">
-                                  <div className="plusJakara_semibold">
-                                    {item.items}
-                                  </div>
-                                </Tooltip>
+                                <div className="plusJakara_semibold">
+                                  {item.items}
+                                </div>
+
                               )}
                               {item.items === t('login') && (
-                                <Tooltip title="Check t">
-                                  <div className="plusJakara_semibold">
-                                    {item.items}
-                                  </div>
-                                </Tooltip>
+                                <div className="plusJakara_semibold">
+                                  {item.items}
+                                </div>
+
                               )}
                             </div>
 

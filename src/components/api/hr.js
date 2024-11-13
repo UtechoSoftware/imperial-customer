@@ -11,7 +11,6 @@ export const create_hr = async (data) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
   }
 };
 // update hr --------------
@@ -25,7 +24,6 @@ export const update_hr = async (data, id) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
   }
 };
 // get all hrs --------------
@@ -39,7 +37,6 @@ export const get_hr = async (type) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
   }
 };
 // get all hrs --------------
@@ -53,7 +50,6 @@ export const del_hr = async (type) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
   }
 };
 export const del_hr_by_id = async (id) => {
@@ -66,7 +62,7 @@ export const del_hr_by_id = async (id) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
+    // console.log(error, "error");
   }
 };
 // api/hr/all/type ----> delete req
@@ -81,6 +77,6 @@ export const getPotential = async (type) => {
     });
     return res;
   } catch (error) {
-    console.log(error, "error");
+    // console.log(error, "error");
   }
 };

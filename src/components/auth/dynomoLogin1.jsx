@@ -139,6 +139,8 @@ const DynomoLogin1 = () => {
             window.localStorage.setItem('imperial_token', res?.data?.token);
             dispatch(setIsLogin_(true));
             message.success("login successfully");
+            window.sessionStorage.removeItem('hrData_company');
+            window.sessionStorage.removeItem('hrData');
             dispatch(setUserData(res?.data?.user))
 
             setIsProcessing(false);

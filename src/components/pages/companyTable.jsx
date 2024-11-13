@@ -1,20 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Spinner, Table } from "react-bootstrap";
 import { useSelector } from "react-redux";
-import { del_hr, del_hr_by_id, get_hr } from "../api/hr";
+import { del_hr_by_id } from "../api/hr";
 import { CircularProgress } from "@mui/material";
-import { FaPencilAlt, FaTrash } from "react-icons/fa";
 import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { message } from "antd";
 import { useTranslation } from "react-i18next";
-const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading }) => {
+const CompanyTable = ({ loading, tableData, }) => {
   const { t, i18n } = useTranslation();
-  // const [tableData, setTableData] = useState([]);
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
-  const [loading, setLoading] = useState(false);
   const [delLoading, setDelLoading] = useState(false);
   const navigate = useNavigate();
   const editRow = (item, index) => {
@@ -30,38 +27,9 @@ const CompanyTable = ({ updating, setTableData, tableData, newHire, tableloading
     setShowModal2(true)
   };
   const login = useSelector((state) => state.data.data.isLogin_);
-  useEffect(() => {
-    if (!login) {
-      setLoading(false);
-      const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      if (storedData?.length > 0 && storedData[0].type === "newhire") {
-        setTableData(storedData);
-      } else {
-        setTableData([]);
-      }
-    }
-  }, [!login, tableloading]);
-  console.log(tableData, "loading")
-  useEffect(() => {
-    setLoading(true);
-    if (login) {
-      if (global.BASEURL) {
-        get_hr("newhire")
-          .then((res) => {
-            setTableData(res?.data?.data);
-            setLoading(false);
-          })
-          .catch((er) => {
-            setLoading(false);
-          });
-      } else {
-        setLoading(true);
-      }
-    }
-  }, [login, updating, delLoading,]);
   return (
     <div className="table-responsive">
-      {(loading && login) || tableloading ? (
+      {loading ? (
         <div
           style={{ height: "200px" }}
           className="d-flex justify-content-center  align-items-center"
