@@ -1,275 +1,203 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Spinner, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { del_hr_by_id, get_hr } from "../api/hr";
+import { message } from "antd";
 import { CircularProgress } from "@mui/material";
 import { Edit2, Trash2 } from "react-feather";
 import { useNavigate } from "react-router-dom";
-import { message } from "antd";
-import { useTranslation } from "react-i18next";
-const NewTable = ({ updating, tableloading, setTableData2, loading, tableData2 }) => {
-  const hrData_company = window.sessionStorage.getItem('hrData_company')
-  console.log(hrData_company)
-  const { t } = useTranslation();
+import { del_hr_by_id, get_hr } from "../api/hr";
+import { useSelector } from "react-redux";
+
+const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) => {
+  const [currentPage, setCurrentPage] = useState(1); // Pagination state
+  const [totalPages, setTotalPages] = useState(0); // Assume 5 pages for example
   const [showModal2, setShowModal2] = useState(false);
-  const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
-  const [delLoading, setDelLoading] = useState(false);
-  // const [tableData, setTableData] = useState([]);
-  const navigate = useNavigate();
   const login = useSelector((state) => state.data.data.isLogin_);
-  // useEffect(() => {
-  //   console.log(tableloading, "starting")
+  const [delLoader, setDelLoader] = useState(false);
+  const [delLoading, setDelLoading] = useState(false);
+  const navigate = useNavigate();
 
+  useEffect(() => {
+    fetchPageData(currentPage); // Fetch data for the current page on component mount and page change
+  }, [currentPage]);
 
-  //   // alert('data')
-  //   if (!login) {
+  const fetchPageData = (page) => {
+    setLoading(true)
+    get_hr("companystaff", page)
+      .then((res) => {
+        setTableData2(res?.data?.data);
+        setLoading(false)
+        setTotalPages(res?.data?.count?.totalPage || 0); // Update total pages if provided by API
+      })
+      .catch(() => {
+        setLoading(false)
+        message.error("Failed to fetch data.");
+      });
+  };
 
-  //     setLoading(false)
-  //     const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-  //     if (storedData?.length > 0 && storedData[0].type === 'companystaff') {
+  const handlePageChange = (page) => {
+    setCurrentPage(page);
+  };
 
-  //       setTableData2(storedData);
-  //     } else {
-  //       setTableData2([]);
-  //     }
-  //   }
-  //   // alert('2')
-  //   console.log('ending')
-
-  // }, [!login, tableloading]);
-  // useEffect(() => {
-  //   setLoading(true)
-  //   if (login) {
-  //     get_hr("companystaff")
-  //       .then((res) => {
-  //         setLoading(false)
-  //         setTableData2(res?.data?.data);
-
-  //       })
-  //       .catch((er) => {
-  //         setLoading(false)
-
-  //       });
-  //   }
-  // }, [login, updating, delLoading]);
-  const editRow = (item, index) => {
-    console.log(item, "hello")
+  const editRow = (item) => {
     const params = new URLSearchParams();
-    params.set('data', JSON.stringify(item))
+    params.set("data", JSON.stringify(item));
     navigate({
-      pathname: '/add-hr',
-      search: params.toString()
-    })
+      pathname: "/add-hr",
+      search: params.toString(),
+    });
   };
-  const deleteRow = (data, index) => {
-    setRowData(data?._id)
-    setShowModal2(true)
+
+  const deleteRow = (data) => {
+    setRowData(data?._id);
+    setShowModal2(true);
   };
+
   return (
-    <div className="table-responsive">
-      {loading ? (
-        <div style={{ height: "200px" }} className="d-flex justify-content-center  align-items-center">
-          <CircularProgress
-            style={{ color: "black" }}
-            size={24}
-            className="text_white"
-          />
-        </div>
-      ) : (
-        <Table bordered hover>
-          <thead>
-            <tr>
-              <th
-                colSpan="3"
-                style={{ whiteSpace: "nowrap", textAlign: "center" }}
-              >
-                {t('table_2-head_1')}
-              </th>
-              <th
-                colSpan="2"
-
-                style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {/* {t('table_2-head_2')} */}Registration as unemployed</th>
-              {/* <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_3')}
-              </th> */}
-              <th
-                colSpan="4"
-
-                style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {/* {t('table_2-head_2')} */}Employment contract details</th>
-
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_8')}
-              </th>
-              <th
-                colSpan="1"
-                style={{ whiteSpace: "nowrap", textAlign: "center" }}
-              >
-                {t('table_head_6')}
-              </th>
-              {
-                login && (
-
-                  <th
-                    colSpan="1"
-                    style={{ whiteSpace: "nowrap", textAlign: "center" }}
-                  >
-                    {t('table_head_7')}
-                  </th>
-                )
-              }
-            </tr>
-            <tr>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_10')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_11')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_12')}
-              </th>
-              <th style={{ minWidth: "290px" }}>{t('table_2-head_2')}</th>
-              <th style={{ minWidth: "330px" }}>  {t('table_2-head_3')} </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center", minWidth: "200px" }}>
-                {t('table_2-head_4')}
-              </th>
-
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_5')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_6')}
-              </th>
-              <th style={{ whiteSpace: "nowrap", textAlign: "center" }}>
-                {t('table_2-head_7')}
-              </th>
-              <th>{t('yes')}/{t('no')}</th>
-              <th>{t('yes')}/{t('no')}</th>
-              {
-                login && (
-
-                  <th>{t('table_head_14')}</th>
-                )
-              }
-
-            </tr>
-          </thead>
-
-          <tbody>
-
-            {tableData2?.map((employee, index) => (
-              <tr key={index}>
-                <td style={{ textAlign: "center" }}>{employee.identifier}</td>
-                <td>
-                  {employee.newHiring
-                    ? new Date(employee.newHiring).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })
-                    : "N/A"}
-                </td>
-                <td>
-                  {employee.dob
-                    ? new Date(employee.dob).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })
-                    : "N/A"}
-                </td>
-
-                <td style={{ textAlign: "center" }}>{employee.iefp}</td>
-                <td>
-                  {employee.iefpDate
-                    ? new Date(employee.iefpDate).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })
-                    : "N/A"}
-                </td>
-
-                <td style={{ textAlign: "center" }}>
-                  {employee.employmentContractType}
-                </td>
-                <td>
-                  {employee.startDate
-                    ? new Date(employee.startDate).toLocaleDateString("en-GB", {
-                      day: "2-digit",
-                      month: "2-digit",
-                      year: "numeric",
-                    })
-                    : "N/A"}
-                </td>
-
-                <td style={{ textAlign: "center" }}>{employee.salary}</td>
-                <td style={{ textAlign: "center" }}>
-                  {employee.currentSSCRate}
-                </td>
-                <td style={{ textAlign: "center" }}>{employee.workHistory}</td>
-                <td style={{ textAlign: "center" }}>
-                  {employee.saving !== null && employee.saving !== undefined ? employee?.saving.toFixed(2) : "N/A"}
-
-                </td>
-                {
-                  login && (
-                    <td>
-
-                      <div className="d-flex flex-row  justify-content-center">
-
-                        <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
-                        <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
-                      </div>
-                      {/* hello are */}
-                    </td>
-                  )
-                }
+    <div>
+      {/* Table Section */}
+      <div className="table-responsive">
+        {loading ? (
+          <div
+            style={{ height: "200px" }}
+            className="d-flex justify-content-center align-items-center"
+          >
+            <CircularProgress style={{ color: "black" }} size={24} />
+          </div>
+        ) : (
+          <Table bordered hover>
+            <thead>
+              <tr>
+                <th>Identifier</th>
+                <th>New Hiring</th>
+                <th>Date of Birth</th>
+                <th>IEFP</th>
+                <th>IEFP Date</th>
+                <th>Contract Type</th>
+                <th>Start Date</th>
+                <th>Salary</th>
+                <th>Current SSC Rate</th>
+                <th>Work History</th>
+                <th>Savings</th>
+                <th>Actions</th>
               </tr>
-            ))}
+            </thead>
+            <tbody>
 
-          </tbody>
-        </Table>
-      )}
+              {tableData2?.map((employee, index) => (
+                <tr key={index}>
+                  <td style={{ textAlign: "center" }}>{employee.identifier}</td>
+                  <td>
+                    {employee.newHiring
+                      ? new Date(employee.newHiring).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                      : "N/A"}
+                  </td>
+                  <td>
+                    {employee.dob
+                      ? new Date(employee.dob).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                      : "N/A"}
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>{employee.iefp}</td>
+                  <td>
+                    {employee.iefpDate
+                      ? new Date(employee.iefpDate).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                      : "N/A"}
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>
+                    {employee.employmentContractType}
+                  </td>
+                  <td>
+                    {employee.startDate
+                      ? new Date(employee.startDate).toLocaleDateString("en-GB", {
+                        day: "2-digit",
+                        month: "2-digit",
+                        year: "numeric",
+                      })
+                      : "N/A"}
+                  </td>
+
+                  <td style={{ textAlign: "center" }}>{employee.salary}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {employee.currentSSCRate}
+                  </td>
+                  <td style={{ textAlign: "center" }}>{employee.workHistory}</td>
+                  <td style={{ textAlign: "center" }}>
+                    {employee.saving !== null && employee.saving !== undefined ? employee?.saving.toFixed(2) : "N/A"}
+
+                  </td>
+                  {
+                    login && (
+                      <td>
+
+                        <div className="d-flex flex-row  justify-content-center">
+
+                          <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
+                          <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
+                        </div>
+                        {/* hello are */}
+                      </td>
+                    )
+                  }
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        )}
+      </div>
+
+      <div className="d-flex justify-content-center mt-3">
+        {[...Array(totalPages).keys()].map((page) => (
+          <Button
+            key={page}
+            variant={currentPage === page + 1 ? "primary" : "light"}
+            onClick={() => handlePageChange(page + 1)}
+            className="mx-1"
+          >
+            {page + 1}
+          </Button>
+        ))}
+      </div>
+
+      {/* Delete Confirmation Modal */}
       <Modal show={showModal2} onHide={() => setShowModal2(false)} centered>
-        <Modal.Header
-          className="border-0 mt-2 mr-2 p-0"
-          closeButton
-        ></Modal.Header>
+        <Modal.Header closeButton />
         <Modal.Body className="text-center">
-          <h5>{t('are_you_sure')}</h5>
+          <h5>Are you sure you want to delete this record?</h5>
           <div className="d-flex justify-content-center gap-3 mt-4">
-            <Button style={{ backgroundColor: "#B39D70" }}
-              onClick={() => setShowModal2(false)}
-            >
-              {t('cancel_btn')}
-            </Button>
+            <Button onClick={() => setShowModal2(false)}>Cancel</Button>
             <Button
-              style={{ backgroundColor: "#161920" }}
-              className="me-2"
               onClick={() => {
                 setDelLoader(true);
-                setDelLoading(true)
                 del_hr_by_id(rowData)
-                  .then((res) => {
-                    if (res) {
-                      setDelLoader(false);
-                      setDelLoading(false)
-                      message.success("Data deleted successfully");
-                      setShowModal2(false);
-                    }
+                  .then(() => {
+                    message.success("Data deleted successfully");
+                    setDelLoader(false);
+                    setShowModal2(false);
+                    fetchPageData(currentPage); // Refresh current page data
                   })
                   .catch(() => {
                     setDelLoader(false);
-                    setDelLoading(false)
                     setShowModal2(false);
                   });
               }}
             >
-              {delLoader ? <Spinner size="sm" /> : t('del_btn')}
+              {delLoader ? <Spinner size="sm" /> : "Delete"}
             </Button>
           </div>
         </Modal.Body>

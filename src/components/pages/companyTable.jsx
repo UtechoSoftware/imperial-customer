@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { Button, Modal, Spinner, Table } from "react-bootstrap";
-import { useSelector } from "react-redux";
-import { del_hr_by_id } from "../api/hr";
 import { CircularProgress } from "@mui/material";
-import { Edit2, Trash2 } from "react-feather";
-import { useNavigate } from "react-router-dom";
 import { message } from "antd";
+import React, { useState } from "react";
+import { Button, Modal, Spinner, Table } from "react-bootstrap";
+import { Edit2, Trash2 } from "react-feather";
 import { useTranslation } from "react-i18next";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { del_hr_by_id } from "../api/hr";
 const CompanyTable = ({ loading, tableData, }) => {
   const { t, i18n } = useTranslation();
   const [showModal2, setShowModal2] = useState(false);

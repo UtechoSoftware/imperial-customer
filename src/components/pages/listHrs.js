@@ -222,7 +222,9 @@ const ListHrs = () => {
       if (payload) {
         axiosInstance.post('api/users/support', payload).then((response) => {
           if (response?.data.success) {
-            message.success(response?.data?.message)
+
+
+            message.success(t('message_success_email'))
             setLoader(false)
             setShow(false)
           }
@@ -230,7 +232,6 @@ const ListHrs = () => {
           setLoader(false)
 
         })
-
       };
     }
 
@@ -270,7 +271,7 @@ const ListHrs = () => {
       if (payload) {
         axiosInstance.post('api/users/support', payload).then((response) => {
           if (response?.data.success) {
-            message.success(response?.data?.message)
+            message.success(t('message_success_email'))
             setLoader(false)
             setShow(false)
           }
@@ -292,7 +293,6 @@ const ListHrs = () => {
       email,
       position,
       saving: potential
-
     };
 
 
@@ -411,7 +411,7 @@ const ListHrs = () => {
           setTableData2={setTableData2}
           tableData2={tableData2}
           loading={loading}
-
+          setLoading={setLoading}
         // tableloading={tableloading}
         // setTableLoading={setTableLoading}
         />
@@ -514,7 +514,6 @@ const ListHrs = () => {
                     </button>
                   </div>
                   <div>
-
                     <Tooltip
                       style={{ backgroundColor: "yellow" }}
                       title={t('popup_missing_2')}
@@ -636,7 +635,7 @@ const ListHrs = () => {
                 </button>
               )
             }
-            {login && (
+            {/* {login && (
               <>
                 <Tooltip
                   style={{ backgroundColor: "yellow" }}
@@ -649,12 +648,12 @@ const ListHrs = () => {
                     type="button"
                     className="btn2 px-3 py-3 text-nowrap   border-black "
                   >
-                    {/* Calculate Savings */}
+                    Calculate Savings
                     {t('calculate_saving')}
                   </button>
                 </Tooltip>
               </>
-            )}
+            )} */}
           </div>
           <div className="mb-4">
             <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}

@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+import { CircularProgress } from "@mui/material";
 import { message, Tooltip } from "antd";
 import {
   addYears,
@@ -11,14 +12,11 @@ import {
 import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-import { useLocation, useNavigate } from "react-router-dom";
-import avatar from "../assets//png/avatar1.png";
-import { useDispatch, useSelector } from "react-redux";
-import { create_hr, update_hr } from "../api/hr";
-import { CircularProgress } from "@mui/material";
-import { setSaving } from "../store/reducer/imperialAuth";
-import { SingleDatePicker } from 'react-dates';
 import { useTranslation } from "react-i18next";
+import { useDispatch, useSelector } from "react-redux";
+import { useLocation, useNavigate } from "react-router-dom";
+import { create_hr, update_hr } from "../api/hr";
+import avatar from "../assets//png/avatar1.png";
 const Dashboard = () => {
   const { t, i18n } = useTranslation();
   const user = useSelector(state => state.data.data.user)
@@ -741,34 +739,30 @@ const Dashboard = () => {
                   </div>
                 </div>
               </div>
-            )
-          }
+            )}
           <p className="manrope_bold  fs-5 text_black">
             {t('calculator_h1')}
           </p>
           <h4 className="manrope_bold max-md:text-xl text_secondary mt-3">
-
             {t('new_entry')}
           </h4>
           {employeeType === "newhire" ? (
             <div>
               <div className="">
-                <div className="flex flex-row items-center flex-wrap  gap-3">
-
-                  <div className=" col-lg-4 col-md-6  col-12">
+                <div className="flex flex-row items-center flex-wrap gap-3">
+                  <div className=" col-lg-4 col-md-6 col-12">
                     <label className="form-label w-fit manrope_semibold cursor-pointer">
                       {t('type_of_employee')}
                     </label>
-                    <Tooltip title=" New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
+                    <Tooltip title={t('new_hr')}>
                       <div className="">
                         <select
                           required
                           className="form-select cursor-pointer py-3 custom_radius text-center"
-                          value={employeeType} // Bind the value to state
+                          value={employeeType}
                           onChange={handleChange}
                         >
-                          <option value="">{t('select')}</option>{" "}
-                          {/* Default placeholder option */}
+                          <option value="">{t('select')}</option>
                           <option value="newhire">{t('NewHire')}</option>
                           <option value="companystaff">{t('comp_staff')}</option>
                         </select>
@@ -780,7 +774,7 @@ const Dashboard = () => {
                     <label className="form-label cursor-pointer manrope_semibold">
                       {t('table_head_1')}
                     </label>
-                    <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
+                    <Tooltip title={t('indicate_birth')}>
                       <div className="">
                         <DatePicker
                           yearDropdownItemNumber={200}
@@ -810,7 +804,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
-                  <Tooltip title="Indicate whether, before joining the company, the HR was registered with IEFP as unemployed">
+                  <Tooltip title={t('indicate_join')}>
                     <div className="">
                       <select
                         className="form-select cursor-pointer custom_radius  text-center input_3 mr-2 mb-2"
@@ -829,7 +823,7 @@ const Dashboard = () => {
                     </div>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
-                    <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
+                    <Tooltip title={t('indicate_hr_reg')}>
                       <div className="">
                         <DatePicker
                           yearDropdownItemNumber={200}
@@ -858,12 +852,7 @@ const Dashboard = () => {
                   </label>
 
                   <div className="d-flex gap-2 flex-wrap">
-                    <Tooltip title="
-                    Please select between:
-- Non-permanent (or fixed term) employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain; or,
-- Open-ended (or permanent/indefinite-term) employment contract (Article 147 of the Portuguese Labor Code).
-If the contract is not written, please consider it “Open-ended”.
-                    ">
+                    <Tooltip title={t('fixed_between')}>
                       <div className="">
                         <select
                           className="form-select custom_radius cursor-pointer text-center py-3  input_3 mr-2 mb-2"
@@ -886,12 +875,11 @@ If the contract is not written, please consider it “Open-ended”.
                     {formData.employmentContractType ===
                       "open-ended contract" && (
                         <>
-                          <Tooltip title="Indicate the expected hiring date for the new HR (dd/mm/yyyy)">
+                          <Tooltip title={t('indicate_date')}>
                             {/* <h5 className="">
                           Predicted Start Date
                           </h5> */}
                             <div>
-
                               <DatePicker
                                 yearDropdownItemNumber={200}
                                 selected={formData.startDate}
@@ -911,7 +899,7 @@ If the contract is not written, please consider it “Open-ended”.
                             </div>
                           </Tooltip>
 
-                          <Tooltip title="Indicate the expected gross monthly salary for the HR">
+                          <Tooltip title={t('indicate_salery')}>
                             <div className="">
                               <input
                                 type="text"
@@ -933,7 +921,7 @@ If the contract is not written, please consider it “Open-ended”.
                               <label className="form-label cursor-pointer w-fit manrope_semibold">
                                 {t('table_head_4')}
                               </label>
-                              <Tooltip title="Indicate whether the salary to be paid to the HR will be subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34.75%) or another rate">
+                              <Tooltip title={t('indicate_salary_paid')}>
                                 <div className="">
                                   <select
                                     className="form-select custom_radius cursor-pointer text-center w-100 mr-2 mb-2"
@@ -958,9 +946,8 @@ If the contract is not written, please consider it “Open-ended”.
                               <label className="form-label cursor-pointer w-fit manrope_semibold">
                                 {t('work_history')}
                               </label>
-
                               <div className="col-12">
-                                <Tooltip title="Indicate whether the employment contract to be signed will be the first permanent employment contract ever entered into by the new HR">
+                                <Tooltip title={t('indicate_employee_contract')}>
                                   <div className="">
                                     <select
                                       className="form-select cursor-pointer custom_radius text-center w-100 mr-2 "
@@ -1001,19 +988,18 @@ If the contract is not written, please consider it “Open-ended”.
           ) : employeeType === "companystaff" ? (
             <div>
               <div className="my-3  ">
-                <label className="form-label  manrope_semibold">
+                <label className="form-label manrope_semibold">
                   {t('type_of_employee')}
                 </label>
-                <div className=" col-lg-4 col-md-6  col-12 ">
-                  <Tooltip title="New hire - HR to be hired in the near future by the company Company's staff - HR already in the company">
+                <div className=" col-lg-4 col-md-6  col-12">
+                  <Tooltip title={t('new_hr_company')}>
                     <div className="">
                       <select
-                        className="form-select cursor-pointer py-3 custom_radius  text-center"
+                        className="form-select cursor-pointer py-3 custom_radius text-center"
                         value={employeeType}
                         onChange={handleChange}
                       >
                         <option value="">{t('select')}</option>
-
                         <option value="newhire">{t('NewHire')}</option>
                         <option value="companystaff">{t('tab_2')}</option>
                       </select>
@@ -1030,8 +1016,7 @@ If the contract is not written, please consider it “Open-ended”.
 
                 <div className="flex  flex-wrap">
                   <Tooltip
-                    title="Please provide a unique identifier for this HR record, which must be different from all other HR records being entered. We suggest using, for example, the employee's, Tax, Social Security or Identification card numbers
-"
+                    title={t('unique_identifier_desc')}
                   >
                     <div className="">
                       <input
@@ -1050,7 +1035,7 @@ If the contract is not written, please consider it “Open-ended”.
                     </div>
                   </Tooltip>
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  <Tooltip title="Indicate the date when the HR joined the company (dd/mm/yyyy)">
+                  <Tooltip title={t('indicate_birth_com')}>
                     <div className="">
                       <DatePicker
                         yearDropdownItemNumber={200}
@@ -1067,7 +1052,7 @@ If the contract is not written, please consider it “Open-ended”.
                       {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
                     </div>
                   </Tooltip>
-                  <Tooltip title="Indicate the HR date of birth (dd/mm/yyyy)">
+                  <Tooltip title={t('indicate_birth')}>
                     <div>
                       <DatePicker
                         yearDropdownItemNumber={200}
@@ -1093,7 +1078,7 @@ If the contract is not written, please consider it “Open-ended”.
                 </label>
 
                 <div className="d-flex gap-2 flex-wrap cursor-pointer">
-                  <Tooltip title="Indicate whether, before joining the company, the HR was registered with IEFP as unemployed">
+                  <Tooltip title={t('indicate_join')}>
                     <select
                       className="form-select cursor-pointer custom_radius  text-center input_3 mr-2 mb-2"
                       name="iefp"
@@ -1108,7 +1093,7 @@ If the contract is not written, please consider it “Open-ended”.
                     </select>
                   </Tooltip>
                   {formData?.iefp === "yes" && (
-                    <Tooltip title="Indicate the date of the HR's registration with IEFP as unemployed (dd/mm/yyyy)">
+                    <Tooltip title={t('indicate_hr_reg')}>
                       <div
                         style={{ width: "300px" }}
 
@@ -1151,8 +1136,7 @@ If the contract is not written, please consider it “Open-ended”.
                 </button> */}
                 <div className="d-flex gap-2 col-12 flex-wrap">
                   <Tooltip
-                    title="Fixed-term employment contract (Article 141 of the Portuguese Labor Code), either certain or uncertain, must be in writing. If not written, please select the option Permanent employment contract or indefinite-term.
-Permanent employment contract (Article 147 of the Portuguese Labor Code) or indefinite-term, associated with a permanent employee/on-staff employee. This contract does not need to be in writing."
+                    title={t('indicate_fixed_term')}
                   >
                     <div className="">
                       <select
@@ -1178,7 +1162,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                   {formData.employmentContractType ===
                     "open-ended contract" && (
                       <>
-                        <Tooltip title="Indicate the date of the (most recent) employment contract with the HR (dd/mm/yyyy)">
+                        <Tooltip title={t('indicate_date_com')}>
                           <div>
                             <DatePicker
                               yearDropdownItemNumber={200}
@@ -1195,10 +1179,9 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                               isClearable
                             />
                             {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
-
                           </div>
                         </Tooltip>
-                        <Tooltip title="Indicate the current gross monthly salary of the HR">
+                        <Tooltip title={t('indicate_salery_com')}>
                           <div className="">
                             <input
                               type="text"
@@ -1217,8 +1200,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                             {t('table_head_4')}
                           </label>
                           <Tooltip
-                            title="Indicate whether the salary paid to the HR  is subject to the standard Portuguese Social Security contribution rate of 23.75% usually applicable to the employer (resulting in a total rate of 34,75%) or another rate
-"
+                            title={t('indicate_salary_paid_com')}
                           >
                             <div className="">
                               <select
@@ -1241,9 +1223,8 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
                             <label className="form-label cursor-pointer w-fit manrope_semibold">
                               {t('work_history')}
                             </label>
-
                             <div className="col-12">
-                              <Tooltip title="Indicate whether the current employment contract is the first open-ended employment contract ever entered into by the HR">
+                              <Tooltip title={t('indicate_employee_contract_com')}>
                                 <div className="">
                                   <select
                                     className="form-select cursor-pointer custom_radius text-center w-100 mr-2 mb-2"
@@ -1285,8 +1266,7 @@ Permanent employment contract (Article 147 of the Portuguese Labor Code) or inde
 
               <div className=" col-lg-4 col-md-6  col-12">
                 <Tooltip
-                  title="New hire - HR to be hired in the near future by the company
-Company's staff - HR already in the company"
+                  title={t('new_hr')}
                 >
                   <div className="">
                     <select
@@ -1325,7 +1305,7 @@ Company's staff - HR already in the company"
           </div>
         </main>
       </>
-    </div>
+    </div >
   );
 };
 

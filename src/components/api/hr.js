@@ -27,9 +27,9 @@ export const update_hr = async (data, id) => {
   }
 };
 // get all hrs --------------
-export const get_hr = async (type) => {
+export const get_hr = async (type, page) => {
   try {
-    const res = await axios.get(global.BASEURL + `api/hr/me/${type}/1`, {
+    const res = await axios.get(global.BASEURL + `api/hr/me/${type}/${page}`, {
       headers: {
         "Content-Type": "application/json",
         "x-auth-token": global.TOKEN,
@@ -39,10 +39,12 @@ export const get_hr = async (type) => {
   } catch (error) {
   }
 };
+
+// get all hrs
 // get all hrs --------------
 export const del_hr = async (type) => {
   try {
-    const res = await axios.delete(global.BASEURL + `api/hr/all/${type}/`, {
+    const res = await axios.delete(global.BASEURL + `api/hr/all/${type}`, {
       headers: {
         "Content-Type": "application/json",
         "x-auth-token": global.TOKEN,

@@ -1,7 +1,6 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useEffect } from 'react'
+import React, { useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Input } from 'reactstrap';
 
 const Language = () => {
     const { i18n } = useTranslation();
@@ -15,6 +14,9 @@ const Language = () => {
     useEffect(() => {
         handleChangeLanguage(userLangauge)
     }, [userLangauge])
+
+    console.log(userLangauge, 'userLangauge');
+
     return (
         <div className='d-flex gap-1 align-items-center w-100'>
             {/* Language Select Dropdown */}
