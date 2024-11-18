@@ -8,6 +8,7 @@ import QuestionItem from "./questionItem";
 import axios from "axios";
 import { message } from "antd";
 import { ArrowLeft } from "react-feather";
+import { axiosInstance } from "../../api/axiosIntance";
 
 const AddQuestion = () => {
   const { state } = useLocation();
@@ -105,7 +106,7 @@ const AddQuestion = () => {
         questions: questions,
       };
       try {
-        const res = await axios.post(`${global.BASEURL}api/quiz/create`, data, {
+        const res = await axiosInstance.post(`api/quiz/create`, data, {
           headers,
         });
         if (res?.data) {

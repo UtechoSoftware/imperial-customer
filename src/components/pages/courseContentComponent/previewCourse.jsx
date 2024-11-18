@@ -20,12 +20,13 @@ import { MdDiscount, MdPets } from "react-icons/md";
 import { news1, pdflogo } from "../../icons/icon";
 import ProductTable from "../../DataTable/productTable";
 import axios from "axios";
+import { axiosInstance } from "../../api/axiosIntance";
 
 const PreviewCourse = () => {
   const navigate = useNavigate();
   const { state } = useLocation();
   const [loading, setLoading] = useState(false)
-  const [search,setSearch]=useState('')
+  const [search, setSearch] = useState('')
   const [feedback, setFeedback] = useState([])
   const [lastId, setLastId] = useState(1);
   const [lastId2, setLastId2] = useState(0);
@@ -115,13 +116,9 @@ const PreviewCourse = () => {
   ]
 
   const fetchData = async () => {
-    const headers = {
-      'Content-Type': 'application/json',
-      'x-auth-token': `${global.TOKEN}`,
-    };
     setLoading(true);
     try {
-      const res = await axios.get(`${global.BASEURL}api/feedback/course/${courseDetail?._id}/${lastId}`, { headers });
+      const res = await axiosInstance.get(`api/feedback/course/${courseDetail?._id}/${lastId}`);
       if (res?.data) {
         setFeedback(res?.data?.feedback);
         setCount(res?.data?.count?.totalPage);

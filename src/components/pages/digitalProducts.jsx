@@ -24,6 +24,7 @@ import { Select, message } from "antd";
 import { CircularProgress } from "@mui/material";
 import { Input } from "reactstrap";
 import CKEditorComponent from "../../newCk";
+import { axiosInstance } from "../api/axiosIntance";
 
 const DigitalProducts = () => {
   const [ckdata, setckData] = useState(null);
@@ -65,9 +66,8 @@ const DigitalProducts = () => {
     setFileLoading(true);
     if (!digitalProductFile) return;
     const currentDate = new Date();
-    const uniqueFileName = `${currentDate.getTime()}_${
-      digitalProductFile?.name
-    }`;
+    const uniqueFileName = `${currentDate.getTime()}_${digitalProductFile?.name
+      }`;
     const imageRef = ref(storage, `digitalProductFile/${uniqueFileName}`);
     uploadBytes(imageRef, digitalProductFile).then((snapshot) => {
       getDownloadURL(snapshot.ref).then((url) => {
@@ -77,36 +77,36 @@ const DigitalProducts = () => {
     });
   };
 
-console.log(categoryId,"cck")
+  console.log(categoryId, "cck")
 
   const handleFetchCategory = async () => {
     const headers = {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
+      "Content-Type": "application/json",
+      "x-auth-token": global.TOKEN,
     };
     try {
-        const res = await axios.get(
-            `${global.BASEURL}api/product_cat/admin/all/1`,
-            {
-                headers,  
-            }
-        );
-        setCategories(res?.data?.categories);
+      const res = await axiosInstance.get(
+        `api/product_cat/admin/all/1`,
+        {
+          headers,
+        }
+      );
+      setCategories(res?.data?.categories);
     } catch (error) {
-        console.log(error);
+      console.log(error);
     }
-};
-useEffect(() => {
-    
+  };
+  useEffect(() => {
+
     handleFetchCategory();
-        setLongDescription(selectedItem?.long_des)
-        setShortDescription(selectedItem?.des)
-        setTitle(selectedItem?.title)
-        setHoneypots(selectedItem?.honeypot)
-        setImage(selectedItem?.image)
-        setckData(selectedItem?.tos)
-        setCategoryId(selectedItem?.category?._id)
-}, [showModal ,selectedItem]);
+    setLongDescription(selectedItem?.long_des)
+    setShortDescription(selectedItem?.des)
+    setTitle(selectedItem?.title)
+    setHoneypots(selectedItem?.honeypot)
+    setImage(selectedItem?.image)
+    setckData(selectedItem?.tos)
+    setCategoryId(selectedItem?.category?._id)
+  }, [showModal, selectedItem]);
 
 
   const handleShow = (item) => {
@@ -117,7 +117,7 @@ useEffect(() => {
   const handleClose = () => {
     setShowModal(false);
   };
-console.log(selectedItem,"dd")
+  console.log(selectedItem, "dd")
   const data = [
     {
       name: "Category",
@@ -160,8 +160,8 @@ console.log(selectedItem,"dd")
       "x-auth-token": `${global.TOKEN}`,
     };
     try {
-      const res = await axios.get(
-        `${global.BASEURL}api/product/admin/${lastId}/parent`,
+      const res = await axiosInstance.get(
+        `api/product/admin/${lastId}/parent`,
         { headers }
       );
       if (res?.data) {
@@ -181,18 +181,18 @@ console.log(selectedItem,"dd")
       "x-auth-token": global.TOKEN,
     };
     const formData = {
-        image: image ,
-        category:categoryId,
-        title: title,
-        honeypot: honeypots,
-        des:shortDescription,
-        long_des:longDescription,
-        tos:ckdata,
-        user_type: 'parent'
+      image: image,
+      category: categoryId,
+      title: title,
+      honeypot: honeypots,
+      des: shortDescription,
+      long_des: longDescription,
+      tos: ckdata,
+      user_type: 'parent'
     };
     try {
-      const res = await axios.put(
-        `${global.BASEURL}api/product/edit/${selectedItem?._id}`,
+      const res = await axiosInstance.put(
+        `api/product/edit/${selectedItem?._id}`,
         formData,
         { headers }
       );
@@ -245,7 +245,7 @@ console.log(selectedItem,"dd")
           </main>
         ) : !productdata || productdata.length === 0 ? (
           <main className="my-5 d-flex w-100 justify-content-center align-items-center">
-          <CircularProgress size={18} color="inherit" />
+            <CircularProgress size={18} color="inherit" />
 
           </main>
         ) : (
@@ -263,15 +263,15 @@ console.log(selectedItem,"dd")
         )}
       </main>
       {selectedItem && (
-        <Modal show={showModal} onHide={handleClose}   centered>
+        <Modal show={showModal} onHide={handleClose} centered>
           <Modal.Body>
-          <div className="d-flex justify-end">
+            <div className="d-flex justify-end">
 
-          <Button onClick={()=>setShowModal(false)} className="btn btn-close bg-white"></Button>
+              <Button onClick={() => setShowModal(false)} className="btn btn-close bg-white"></Button>
 
-          </div>
- 
-                        <h4 className="mb-0 mt-4 px-3">Edit Digital Product</h4>
+            </div>
+
+            <h4 className="mb-0 mt-4 px-3">Edit Digital Product</h4>
             <Form
               onSubmit={handleSubmit}
               className="w-full bg_white rounded-3  py-4"
@@ -324,29 +324,29 @@ console.log(selectedItem,"dd")
                 </div>
               </Form.Group>
               <Form.Group className="shadow_def px-3 mb-3">
-                    <Form.Label className="plusJakara_semibold text_dark">
-                        Choose  Category
-                    </Form.Label>
-                    <Select
-                        showSearch
-                        style={{
-                            width: "100%",
-                        }}
-                        size="large"
-                        className="custom_control rounded-2 plusJakara_regular text_secondarydark bg_white"
-                        placeholder="Select..."
-                        value={categoryId}
-                        required
-                        allowClear
-                        onChange={(e) => setCategoryId(e)}
-                    >
-                        {categories?.map((item, i) => (
-                            <Select.Option key={i} value={item?._id}>
-                                {item?.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </Form.Group>
+                <Form.Label className="plusJakara_semibold text_dark">
+                  Choose  Category
+                </Form.Label>
+                <Select
+                  showSearch
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  className="custom_control rounded-2 plusJakara_regular text_secondarydark bg_white"
+                  placeholder="Select..."
+                  value={categoryId}
+                  required
+                  allowClear
+                  onChange={(e) => setCategoryId(e)}
+                >
+                  {categories?.map((item, i) => (
+                    <Select.Option key={i} value={item?._id}>
+                      {item?.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Group>
               <Form.Group className="shadow_def px-3 mb-3">
                 <Form.Label className="plusJakara_semibold text_dark">
                   Digital Product Name
@@ -410,7 +410,7 @@ console.log(selectedItem,"dd")
                 <Form.Label className="plusJakara_semibold text_dark">
                   Terms & Conditions
                 </Form.Label>
-                <CKEditorComponent setckData={setckData} ckdata={ckdata}  />
+                <CKEditorComponent setckData={setckData} ckdata={ckdata} />
               </Form.Group>
 
               <div className="flex justify-content-end my-4 w-100">

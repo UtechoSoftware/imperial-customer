@@ -1,13 +1,8 @@
-import axios from "axios";
+import { axiosInstance } from "./axiosIntance";
 // post help-----
 export const post_help = async (data) => {
   try {
-    const res = await axios.post(global.BASEURL + `api/help/create`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.post(`api/help/create`, data);
     return res?.data;
   } catch (error) {
     console.log(error, "error");
@@ -16,16 +11,9 @@ export const post_help = async (data) => {
 // update help-----
 export const updateHelp = async (id) => {
   try {
-    const res = await axios.put(
-      global.BASEURL + `api/help/attended/${id}`,
-      {},
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "x-auth-token": global.TOKEN,
-        },
-      }
-    );
+    const res = await axiosInstance.put(
+      `api/help/attended/${id}`,
+      {},);
     return res;
   } catch (error) {
     console.log(error, "error");

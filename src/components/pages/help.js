@@ -1,3 +1,5 @@
+/* eslint-disable react-hooks/exhaustive-deps */
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { Form, Modal } from "react-bootstrap";
 import { post_help } from "../api/help";
@@ -14,6 +16,7 @@ const Help = () => {
   const { t, i18n } = useTranslation();
   const login = useSelector((state) => state.data.data.isLogin_);
   const [data, setData] = useState([]);
+  const [type, setType] = useState(i18n.language);
   const user = useSelector(state => state.data.data.user)
   const [count, setcount] = useState(0);
   const [faqTitle, setFaqTitle] = useState("");
@@ -43,27 +46,28 @@ const Help = () => {
   };
   const fetchData = async (lastId) => {
     setLoading(true);
-    axiosInstance.get(`api/users/faqs/all/${lastId}`).then((res) => {
+    axiosInstance.get(`api/users/faqs/${type === 'pt' ? 'pr' : 'en'}/${lastId}`).then((res) => {
       if (res?.data) {
         setData(res?.data?.faqs);
         setcount(res?.data?.count?.totalPage);
         setLoading(false);
       }
     })
-      .catch((er) => {
-        setLoading(false);
-      });
-
+      .catch(() => setLoading(false));
   };
+
   useEffect(() => {
     fetchData(lastId);
-  }, [lastId]);
+  }, [lastId, type]);
+
+  useEffect(() => {
+    setType(i18n.language)
+  }, [i18n.language, type]);
 
   const handlePageChange = (page) => {
     setLoading(true);
     setLastId(page);
   };
-
 
   return (
     <div style={{ backgroundColor: "#f8f8f8 " }}>
@@ -97,7 +101,6 @@ const Help = () => {
                   </div>
                 </div>
               </div>
-
             )
           }
           {/* <h4 className="manrope_bold max-md:text-xl text_black">Help</h4> */}

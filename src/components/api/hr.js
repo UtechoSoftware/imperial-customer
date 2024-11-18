@@ -1,40 +1,26 @@
-import { message } from "antd";
-import axios from "axios";
+import { axiosInstance } from "./axiosIntance";
 // create hr ------------------
 export const create_hr = async (data) => {
   try {
-    const res = await axios.post(global.BASEURL + `api/hr/create`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.post(`api/hr/create`, data);
     return res;
   } catch (error) {
   }
 };
+
 // update hr --------------
 export const update_hr = async (data, id) => {
   try {
-    const res = await axios.put(global.BASEURL + `api/hr/edit/${id}`, data, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.put(`api/hr/edit/${id}`, data);
     return res;
   } catch (error) {
   }
 };
+
 // get all hrs --------------
 export const get_hr = async (type, page) => {
   try {
-    const res = await axios.get(global.BASEURL + `api/hr/me/${type}/${page}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.get(`api/hr/me/${type}/${page}`);
     return res;
   } catch (error) {
   }
@@ -44,24 +30,14 @@ export const get_hr = async (type, page) => {
 // get all hrs --------------
 export const del_hr = async (type) => {
   try {
-    const res = await axios.delete(global.BASEURL + `api/hr/all/${type}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.delete(`api/hr/all/${type}`);
     return res;
   } catch (error) {
   }
 };
 export const del_hr_by_id = async (id) => {
   try {
-    const res = await axios.delete(global.BASEURL + `api/hr/${id}/`, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.delete(`api/hr/${id}/`);
     return res;
   } catch (error) {
     // console.log(error, "error");
@@ -71,12 +47,7 @@ export const del_hr_by_id = async (id) => {
 // calculate potential saving against type-----------
 export const getPotential = async (type) => {
   try {
-    const res = await axios.get(global.BASEURL + `api/hr/saving/${type}`, {
-      headers: {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      },
-    });
+    const res = await axiosInstance.get(`api/hr/saving/${type}`);
     return res;
   } catch (error) {
     // console.log(error, "error");

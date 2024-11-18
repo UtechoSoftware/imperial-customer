@@ -9,6 +9,7 @@ import { CircularProgress } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { Edit } from 'react-feather';
 import { message } from 'antd';
+import { axiosInstance } from '../api/axiosIntance';
 
 const CustomerSupport = () => {
     const navigate = useNavigate()
@@ -27,7 +28,7 @@ const CustomerSupport = () => {
         };
         setIsProcessing(true);
         try {
-            const res = await axios.put(`${global.BASEURL}api/support/attended/${item}`, {}, { headers });
+            const res = await axiosInstance.put(`api/support/attended/${item}`, {});
             console.log(res);
             message.success('Message Attend Successfully')
             fetchData()
@@ -83,7 +84,7 @@ const CustomerSupport = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/support/admin/${lastId}`, { headers });
+            const res = await axiosInstance.get(`api/support/admin/${lastId}`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.Messages);
                 setCount(res?.data?.count?.totalPage);

@@ -16,236 +16,236 @@ import { Select, message } from 'antd';
 import { CircularProgress } from '@mui/material';
 import { Input } from 'reactstrap';
 import CKEditorComponent from '../../newCk';
+import { axiosInstance } from '../api/axiosIntance';
 
 const DigitalProductsChild = () => {
-    const navigate = useNavigate()
-    const [search,setSearch]=useState('')
-    const [ckdata, setckData] = useState(null);
-    const [title, setTitle] = useState("");
-    const [shortDescription, setShortDescription] = useState("");
-    const [categoryId, setCategoryId] = useState("");
-    const [selectedImg, setSelectedImg] = useState(null);
-    const [image, setImage] = useState(null);
-    const [longDescription, setLongDescription] = useState('');
-    const [productdata, setProductData] = useState([]);
-    const [honeypots, setHoneypots] = useState(null);
-    const [fileLoading, setFileLoading] = useState(false);
-    const [categories, setCategories] = useState([]);
-    const [showModal, setShowModal] = useState(false);
-    const [selectedItem, setSelectedItem] = useState(null);
-    const [lastId, setLastId] = useState(1);
-    const [lastId2, setLastId2] = useState(0);
-    const [count, setCount] = useState(0);
-  
-    const [isProcessing, setIsProcessing] = useState(false);
-    const handleFile = (e) => {
-      setFileLoading(true);
-      const file = e.target.files[0];
-      if (file) {
-        const reader = new FileReader();
-        reader.onloadend = () => {
-          setSelectedImg(reader.result);
-        };
-        reader.readAsDataURL(file);
-      } else {
-        setSelectedImg(null);
-      }
-      if (file) {
-        uploadFile(file);
-      }
-    };
-    const uploadFile = (digitalProductFile) => {
-      setFileLoading(true);
-      if (!digitalProductFile) return;
-      const currentDate = new Date();
-      const uniqueFileName = `${currentDate.getTime()}_${
-        digitalProductFile?.name
-      }`;
-      const imageRef = ref(storage, `digitalProductFile/${uniqueFileName}`);
-      uploadBytes(imageRef, digitalProductFile).then((snapshot) => {
-        getDownloadURL(snapshot.ref).then((url) => {
-          setFileLoading(false);
-          setImage(url);
-        });
-      });
-    };
-  
-  console.log(categoryId,"cck")
-  
-    const handleFetchCategory = async () => {
-      const headers = {
-          "Content-Type": "application/json",
-          "x-auth-token": global.TOKEN,
+  const navigate = useNavigate()
+  const [search, setSearch] = useState('')
+  const [ckdata, setckData] = useState(null);
+  const [title, setTitle] = useState("");
+  const [shortDescription, setShortDescription] = useState("");
+  const [categoryId, setCategoryId] = useState("");
+  const [selectedImg, setSelectedImg] = useState(null);
+  const [image, setImage] = useState(null);
+  const [longDescription, setLongDescription] = useState('');
+  const [productdata, setProductData] = useState([]);
+  const [honeypots, setHoneypots] = useState(null);
+  const [fileLoading, setFileLoading] = useState(false);
+  const [categories, setCategories] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [selectedItem, setSelectedItem] = useState(null);
+  const [lastId, setLastId] = useState(1);
+  const [lastId2, setLastId2] = useState(0);
+  const [count, setCount] = useState(0);
+
+  const [isProcessing, setIsProcessing] = useState(false);
+  const handleFile = (e) => {
+    setFileLoading(true);
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setSelectedImg(reader.result);
       };
-      try {
-          const res = await axios.get(
-              `${global.BASEURL}api/product_cat/admin/all/1`,
-              {
-                  headers,  
-              }
-          );
-          setCategories(res?.data?.categories);
-      } catch (error) {
-          console.log(error);
-      }
+      reader.readAsDataURL(file);
+    } else {
+      setSelectedImg(null);
+    }
+    if (file) {
+      uploadFile(file);
+    }
+  };
+  const uploadFile = (digitalProductFile) => {
+    setFileLoading(true);
+    if (!digitalProductFile) return;
+    const currentDate = new Date();
+    const uniqueFileName = `${currentDate.getTime()}_${digitalProductFile?.name
+      }`;
+    const imageRef = ref(storage, `digitalProductFile/${uniqueFileName}`);
+    uploadBytes(imageRef, digitalProductFile).then((snapshot) => {
+      getDownloadURL(snapshot.ref).then((url) => {
+        setFileLoading(false);
+        setImage(url);
+      });
+    });
+  };
+
+  console.log(categoryId, "cck")
+
+  const handleFetchCategory = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": global.TOKEN,
+    };
+    try {
+      const res = await axiosInstance.get(
+        `api/product_cat/admin/all/1`,
+        {
+          headers,
+        }
+      );
+      setCategories(res?.data?.categories);
+    } catch (error) {
+      console.log(error);
+    }
   };
   useEffect(() => {
-      
-      handleFetchCategory();
-          setLongDescription(selectedItem?.long_des)
-          setShortDescription(selectedItem?.des)
-          setTitle(selectedItem?.title)
-          setHoneypots(selectedItem?.honeypot)
-          setImage(selectedItem?.image)
-          setckData(selectedItem?.tos)
-          setCategoryId(selectedItem?.category?._id)
-  }, [showModal ,selectedItem]);
-  
-  
-    const handleShow = (item) => {
-      setSelectedItem(item);
-      setShowModal(true);
+
+    handleFetchCategory();
+    setLongDescription(selectedItem?.long_des)
+    setShortDescription(selectedItem?.des)
+    setTitle(selectedItem?.title)
+    setHoneypots(selectedItem?.honeypot)
+    setImage(selectedItem?.image)
+    setckData(selectedItem?.tos)
+    setCategoryId(selectedItem?.category?._id)
+  }, [showModal, selectedItem]);
+
+
+  const handleShow = (item) => {
+    setSelectedItem(item);
+    setShowModal(true);
+  };
+
+  const handleClose = () => {
+    setShowModal(false);
+  };
+  console.log(selectedItem, "dd")
+  const data = [
+    {
+      name: "Category",
+      sortable: true,
+      cell: (row) => row?.category?.name,
+    },
+    {
+      name: "Name",
+      sortable: true,
+      cell: (row) => row?.title,
+    },
+    {
+      name: "HoneyPots",
+      sortable: true,
+      selector: (row) => row?.honeypot,
+    },
+    {
+      name: "Action",
+      allowoverflow: true,
+      cell: (row) => {
+        return (
+          <div className="flex gap-1">
+            <button
+              onClick={() => handleShow(row)}
+              style={{ backgroundColor: "#06d6a0" }}
+              className="blex justify-center inter_medium text-xs text_white rounded-3 p-2 items-center"
+            >
+              <Edit size={16} />
+            </button>
+            {/* <button style={{ backgroundColor: '#ff6f61' }} className="flex justify-center inter_medium text-xs text_white rounded-3 p-2 items-center"><Trash2 size={16} /></button> */}
+          </div>
+        );
+      },
+    },
+  ];
+
+  const fetchData = async () => {
+    const headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": `${global.TOKEN}`,
     };
-  
-    const handleClose = () => {
-      setShowModal(false);
+    try {
+      const res = await axiosInstance.get(
+        `api/product/admin/${lastId}/child`,
+        { headers }
+      );
+      if (res?.data) {
+        setProductData(res?.data?.products);
+        setCount(res?.data?.count?.totalPage);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setIsProcessing(true);
+    const headers = {
+      "Content-Type": "application/json",
+      "x-auth-token": global.TOKEN,
     };
-  console.log(selectedItem,"dd")
-    const data = [
-      {
-        name: "Category",
-        sortable: true,
-        cell: (row) => row?.category?.name,
-      },
-      {
-        name: "Name",
-        sortable: true,
-        cell: (row) => row?.title,
-      },
-      {
-        name: "HoneyPots",
-        sortable: true,
-        selector: (row) => row?.honeypot,
-      },
-      {
-        name: "Action",
-        allowoverflow: true,
-        cell: (row) => {
-          return (
-            <div className="flex gap-1">
-              <button
-                onClick={() => handleShow(row)}
-                style={{ backgroundColor: "#06d6a0" }}
-                className="blex justify-center inter_medium text-xs text_white rounded-3 p-2 items-center"
-              >
-                <Edit size={16} />
-              </button>
-              {/* <button style={{ backgroundColor: '#ff6f61' }} className="flex justify-center inter_medium text-xs text_white rounded-3 p-2 items-center"><Trash2 size={16} /></button> */}
+    const formData = {
+      image: image,
+      category: categoryId,
+      title: title,
+      honeypot: honeypots,
+      des: shortDescription,
+      long_des: longDescription,
+      tos: ckdata,
+      user_type: 'child'
+    };
+    try {
+      const res = await axiosInstance.put(
+        `api/product/edit/${selectedItem?._id}`,
+        formData,
+        { headers }
+      );
+      console.log(res);
+      if (res?.data) {
+        message.success("Product Updated successfully");
+        navigate("/digital-products-child");
+        setShowModal(false);
+        fetchData();
+      }
+    } catch (error) {
+      setIsProcessing(false);
+      console.log(error);
+    } finally {
+      setIsProcessing(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, [lastId]);
+
+  return (
+    <StyleSheetManager shouldForwardProp={(prop) => !['sortActive'].includes(prop)}>
+      <main className='min-h-screen lg:container py-4 px-4 mx-auto'>
+        <div className="flex justify-between flex-wrap gap-3 items-center w-full">
+          <div className="flex flex-col mb-3">
+            <h2 className='plusJakara_bold text_black'>Child Side Digital Products</h2>
+            <h6 className="text_secondary plusJakara_regular">Information about your current plan and usages</h6>
+          </div>
+          <button onClick={() => { navigate('/digital-products-child/add-product') }} style={{ minWidth: '150px' }} className="bg_primary py-3 rounded-3 text_white plusJakara_medium">Add New Product</button>
+        </div>
+        {isProcessing ? <main className='my-5 d-flex w-100 justify-content-center align-items-center'>
+          <CircularProgress size={24} className='text_dark' />
+        </main> :
+          !categories || categories.length === 0 ?
+            <main className='my-5 d-flex w-100 justify-content-center align-items-center'>
+              <CircularProgress size={18} color="inherit" />
+
+            </main> :
+            <div className="my-4 w-full">
+              <ProductTable
+                // loading={loading}
+                setSearch={setSearch}
+                search={search}
+                count={count}
+                setCurrentPage={setLastId2}
+                currentPage={lastId2}
+                columns={data}
+                data={productdata}
+                setLastId={setLastId}
+              />
             </div>
-          );
-        },
-      },
-    ];
-  
-    const fetchData = async () => {
-      const headers = {
-        "Content-Type": "application/json",
-        "x-auth-token": `${global.TOKEN}`,
-      };
-      try {
-        const res = await axios.get(
-          `${global.BASEURL}api/product/admin/${lastId}/child`,
-          { headers }
-        );
-        if (res?.data) {
-          setProductData(res?.data?.products);
-          setCount(res?.data?.count?.totalPage);
         }
-      } catch (error) {
-        console.log(error);
-      }
-    };
-  
-    const handleSubmit = async (e) => {
-      e.preventDefault();
-      setIsProcessing(true);
-      const headers = {
-        "Content-Type": "application/json",
-        "x-auth-token": global.TOKEN,
-      };
-      const formData = {
-          image: image ,
-          category:categoryId,
-          title: title,
-          honeypot: honeypots,
-          des:shortDescription,
-          long_des:longDescription,
-          tos:ckdata,
-          user_type: 'child'
-      };
-      try {
-        const res = await axios.put(
-          `${global.BASEURL}api/product/edit/${selectedItem?._id}`,
-          formData,
-          { headers }
-        );
-        console.log(res);
-        if (res?.data) {
-          message.success("Product Updated successfully");
-          navigate("/digital-products-child");
-          setShowModal(false);
-          fetchData();
-        }
-      } catch (error) {
-        setIsProcessing(false);
-        console.log(error);
-      } finally {
-        setIsProcessing(false);
-      }
-    };
-  
-    useEffect(() => {
-      fetchData();
-    }, [lastId]);
+      </main>
 
-    return (
-        <StyleSheetManager shouldForwardProp={(prop) => !['sortActive'].includes(prop)}>
-            <main className='min-h-screen lg:container py-4 px-4 mx-auto'>
-                <div className="flex justify-between flex-wrap gap-3 items-center w-full">
-                    <div className="flex flex-col mb-3">
-                        <h2 className='plusJakara_bold text_black'>Child Side Digital Products</h2>
-                        <h6 className="text_secondary plusJakara_regular">Information about your current plan and usages</h6>
-                    </div>
-                    <button onClick={() => { navigate('/digital-products-child/add-product') }} style={{ minWidth: '150px' }} className="bg_primary py-3 rounded-3 text_white plusJakara_medium">Add New Product</button>
-                </div>
-                {isProcessing ? <main className='my-5 d-flex w-100 justify-content-center align-items-center'>
-                    <CircularProgress size={24} className='text_dark' />
-                </main> :
-                    !categories || categories.length === 0 ?
-                        <main className='my-5 d-flex w-100 justify-content-center align-items-center'>
-                        <CircularProgress size={18} color="inherit" />
-
-                        </main> :
-                        <div className="my-4 w-full">
-                            <ProductTable
-                                // loading={loading}
-                                setSearch={setSearch}
-                                search={search}
-                                count={count}
-                                setCurrentPage={setLastId2}
-                                currentPage={lastId2}
-                                columns={data}
-                                data={productdata}
-                                setLastId={setLastId}
-                            />
-                        </div>
-                }
-            </main>
-
-            {selectedItem && (
-                <Modal show={showModal} onHide={handleClose} centered>
-                    <Modal.Body>
-                        {/* <Form onSubmit={handleSubmit} className="w-full bg_white d-flex flex-column my-3 gap-3">
+      {selectedItem && (
+        <Modal show={showModal} onHide={handleClose} centered>
+          <Modal.Body>
+            {/* <Form onSubmit={handleSubmit} className="w-full bg_white d-flex flex-column my-3 gap-3">
                             <div className="flex flex-col mb-3 gap-2 px-3">
                                 <Form.Label className="plusJakara_semibold text_dark">Upload Document</Form.Label>
                                 <div className="d-flex align-items-center">
@@ -303,7 +303,7 @@ const DigitalProductsChild = () => {
                                 )}
                             </div>
                         </Form> */}
-                        <h4 className="mb-0 mt-4 px-3">Edit Child Product</h4>
+            <h4 className="mb-0 mt-4 px-3">Edit Child Product</h4>
             <Form
               onSubmit={handleSubmit}
               className="w-full bg_white rounded-3  py-4"
@@ -356,29 +356,29 @@ const DigitalProductsChild = () => {
                 </div>
               </Form.Group>
               <Form.Group className="shadow_def px-3 mb-3">
-                    <Form.Label className="plusJakara_semibold text_dark">
-                        Choose  Category
-                    </Form.Label>
-                    <Select
-                        showSearch
-                        style={{
-                            width: "100%",
-                        }}
-                        size="large"
-                        className="custom_control rounded-2 plusJakara_regular text_secondarydark bg_white"
-                        placeholder="Select..."
-                        value={categoryId}
-                        required
-                        allowClear
-                        onChange={(e) => setCategoryId(e)}
-                    >
-                        {categories?.map((item, i) => (
-                            <Select.Option key={i} value={item?._id}>
-                                {item?.name}
-                            </Select.Option>
-                        ))}
-                    </Select>
-                </Form.Group>
+                <Form.Label className="plusJakara_semibold text_dark">
+                  Choose  Category
+                </Form.Label>
+                <Select
+                  showSearch
+                  style={{
+                    width: "100%",
+                  }}
+                  size="large"
+                  className="custom_control rounded-2 plusJakara_regular text_secondarydark bg_white"
+                  placeholder="Select..."
+                  value={categoryId}
+                  required
+                  allowClear
+                  onChange={(e) => setCategoryId(e)}
+                >
+                  {categories?.map((item, i) => (
+                    <Select.Option key={i} value={item?._id}>
+                      {item?.name}
+                    </Select.Option>
+                  ))}
+                </Select>
+              </Form.Group>
               <Form.Group className="shadow_def px-3 mb-3">
                 <Form.Label className="plusJakara_semibold text_dark">
                   Digital Product Name
@@ -442,7 +442,7 @@ const DigitalProductsChild = () => {
                 <Form.Label className="plusJakara_semibold text_dark">
                   Terms & Conditions
                 </Form.Label>
-                <CKEditorComponent setckData={setckData} ckdata={ckdata}  />
+                <CKEditorComponent setckData={setckData} ckdata={ckdata} />
               </Form.Group>
 
               <div className="flex justify-content-end my-4 w-100">
@@ -467,12 +467,12 @@ const DigitalProductsChild = () => {
                 )}
               </div>
             </Form>
-                    </Modal.Body>
-                </Modal>
-            )}
+          </Modal.Body>
+        </Modal>
+      )}
 
-        </StyleSheetManager>
-    )
+    </StyleSheetManager>
+  )
 }
 
 export default DigitalProductsChild

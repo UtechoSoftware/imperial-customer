@@ -6,6 +6,7 @@ import React, { useEffect, useState } from 'react';
 import { Button, Form, Modal } from 'react-bootstrap';
 import { ArrowLeft, CheckCircle, Clock, Edit, Plus, Trash2 } from 'react-feather';
 import { useLocation, useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../../api/axiosIntance';
 
 const QuizDetail = () => {
     const navigate = useNavigate()
@@ -105,7 +106,7 @@ const QuizDetail = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.put(`${global.BASEURL}api/questions/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.put(`api/questions/edit/${selectedItem?._id}`, formData, { headers });
             message.success('Question Updated Successfully')
             setShowModal(false)
             navigate('/quiz')
@@ -133,7 +134,7 @@ const QuizDetail = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/questions/create`, formData, { headers });
+            const res = await axiosInstance.post(`api/questions/create`, formData, { headers });
             message.success('Question created Successfully')
             navigate('/quiz')
         } catch (error) {
@@ -149,7 +150,7 @@ const QuizDetail = () => {
             'x-auth-token': `${global.TOKEN}`
         };
         try {
-            const res = await axios.delete(`${global.BASEURL}api/questions/${value?._id}`, { headers });
+            const res = await axiosInstance.delete(`api/questions/${value?._id}`, { headers });
             message.success('Question deleted successfuly')
             navigate('/quiz')
         } catch (error) {

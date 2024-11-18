@@ -12,6 +12,7 @@ import { StyleSheetManager } from "styled-components";
 import ProductTable from "../../DataTable/productTable";
 import { ErrorHandler } from "../errorHandler";
 import { eye, eyeoff } from "../../icons/icon";
+import { axiosInstance } from "../../api/axiosIntance";
 // import { del_Role, EditPassword, EditRoles } from "../../api/info";
 
 const Role = () => {
@@ -129,7 +130,7 @@ const Role = () => {
       "x-auth-token": `${global.TOKEN}`,
     };
     try {
-      const res = await axios.get(`${global.BASEURL}api/info/alladmins/1`, {
+      const res = await axiosInstance.get(`api/info/alladmins/1`, {
         headers,
       });
       if (res) {
@@ -470,7 +471,7 @@ const Role = () => {
                 let rowArray = [...admins];
                 const index = rowArray.findIndex(
                   (value) => value?._id === selectedItem3?._id
-                );  
+                );
                 setDelLoader(true)
                 // del_Role(selectedItem3?._id)
                 //     fetchData()

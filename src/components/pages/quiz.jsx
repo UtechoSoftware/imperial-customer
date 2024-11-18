@@ -1,12 +1,11 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from 'react'
-import { course1, course2, course3, course4, course5, news1 } from '../icons/icon'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
-import { Clock, Edit } from 'react-feather'
-import { Form, Modal } from 'react-bootstrap'
 import { CircularProgress } from '@mui/material'
 import { message } from 'antd'
+import React, { useEffect, useState } from 'react'
+import { Form, Modal } from 'react-bootstrap'
+import { Clock, Edit } from 'react-feather'
+import { useNavigate } from 'react-router-dom'
+import { axiosInstance } from '../api/axiosIntance'
 
 const Quiz = () => {
     const navigate = useNavigate()
@@ -26,7 +25,7 @@ const Quiz = () => {
             'x-auth-token': global.TOKEN
         };
         try {
-            const res = await axios.get(`${global.BASEURL}api/quiz`, { headers });
+            const res = await axiosInstance.get(`api/quiz`, { headers });
             setCategories(res?.data?.quizes);
         } catch (error) {
             setIsProcessing(false)
@@ -83,7 +82,7 @@ const Quiz = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.put(`${global.BASEURL}api/quiz/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.put(`api/quiz/edit/${selectedItem?._id}`, formData, { headers });
             console.log(res);
             message.success('Quiz Updated Successfully')
             handleFetchCategory()
@@ -120,7 +119,7 @@ const Quiz = () => {
                     </main> :
                     <div className="flex my-4 w-full displaygrid_3">
                         {categories.map((item, i) => (
-                            
+
                             <div key={i} className="shadow-sm rounded-4 bg_white flex flex-col">
                                 <div className="position-relative">
                                     <button onClick={() => handleShow(item)} style={{ right: 0, }} className="position-absolute bg_white p-2">

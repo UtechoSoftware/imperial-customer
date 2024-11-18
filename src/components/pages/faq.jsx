@@ -8,6 +8,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { CircularProgress } from "@mui/material";
 import { Accordion, Button, Form, Modal } from "react-bootstrap";
 import { message } from "antd";
+import { axiosInstance } from "../api/axiosIntance";
 // import { CKEditor, CKEditorContext } from "@ckeditor/ckeditor5-react";
 
 // import { ClassicEditor } from "@ckeditor/ckeditor5-editor-classic";
@@ -33,20 +34,15 @@ const Faq = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": `${global.TOKEN}`,
-    };
     const formData = {
       title: title,
       description: description,
     };
     setIsProcessing(true);
     try {
-      const res = await axios.put(
-        `${global.BASEURL}api/faq/edit/${selectedItem?._id}`,
-        formData,
-        { headers }
+      const res = await axiosInstance.put(
+        `api/faq/edit/${selectedItem?._id}`,
+        formData
       );
       message.success("Faq Updated Successfully");
       fetchData();
@@ -70,17 +66,11 @@ const Faq = () => {
   };
 
   const fetchData = async () => {
-    const headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": `${global.TOKEN}`,
-    };
     setLoading(true);
     try {
       let allFaqs = [];
       for (let page = 1; page <= totalPages; page++) {
-        const res = await axios.get(`${global.BASEURL}api/faq/admin/${page}`, {
-          headers,
-        });
+        const res = await axiosInstance.get(`api/faq/admin/${page}`,);
 
         if (res?.data) {
           allFaqs = allFaqs.concat(res?.data?.Faqs);

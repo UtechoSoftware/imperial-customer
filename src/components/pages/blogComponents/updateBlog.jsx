@@ -13,6 +13,7 @@ import { storage } from '../../../config/firebase';
 import axios from 'axios';
 import { Select, message } from 'antd';
 import CKEditorComponent from '../../../newCk';
+import { axiosInstance } from '../../api/axiosIntance';
 
 const UpdateBlog = () => {
     const [isProcessing, setIsProcessing] = useState(false)
@@ -44,16 +45,9 @@ const UpdateBlog = () => {
     };
 
     const handleFetchCategory = async () => {
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         try {
-            const res = await axios.get(
-                `${global.BASEURL}api/blogcategories/admin/all`,
-                {
-                    headers,
-                }
+            const res = await axiosInstance.get(
+                `api/blogcategories/admin/all`,
             );
             setCategories(res?.data?.categories);
         } catch (error) {
@@ -91,16 +85,12 @@ const UpdateBlog = () => {
             setSelectedImg(blogDetail?.image)
             setCaption(blogDetail?.description)
             setTitle(blogDetail?.title)
-      
+
         }
     }, [blogDetail])
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-auth-token': `${global.TOKEN}`
-        };
         const formData = {
             image: blogImage ? blogImage : selectedImg,
             description: caption,
@@ -108,11 +98,10 @@ const UpdateBlog = () => {
         };
         setIsProcessing(true);
         try {
-            const res = await axios.put(`${global.BASEURL}api/blog/edit/${blogDetail?._id}`, formData, { headers });
+            const res = await axiosInstance.put(`api/blog/edit/${blogDetail?._id}`, formData);
             navigate('/blogs')
             message.success('Blog Updated Successfully')
             setBlogImage('')
-
         } catch (error) {
             console.log(error);
         } finally {
@@ -197,7 +186,7 @@ const UpdateBlog = () => {
                     />
                 </Form.Group>
                 <hr style={{ color: '#f4f4f4' }} />
-  
+
                 <Form.Group className='shadow_def px-3 mb-3'>
                     <Form.Label className="plusJakara_semibold text_dark">Blog Description</Form.Label>
                     {/* <Form.Control

@@ -13,6 +13,7 @@ import { storage } from '../../../config/firebase';
 import axios from 'axios';
 import { Select, message } from 'antd';
 import CKEditorComponent from '../../../newCk';
+import { axiosInstance } from '../../api/axiosIntance';
 
 const AddBlog = () => {
     const [isProcessing, setIsProcessing] = useState(false)
@@ -60,16 +61,9 @@ const AddBlog = () => {
     };
 
     const handleFetchCategory = async () => {
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         try {
-            const res = await axios.get(
-                `${global.BASEURL}api/blogcategories/admin/all`,
-                {
-                    headers,
-                }
+            const res = await axiosInstance.get(
+                `api/blogcategories/admin/all`,
             );
             setCategories(res?.data?.categories);
         } catch (error) {
@@ -83,14 +77,9 @@ const AddBlog = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        if(!blogImage){
+        if (!blogImage) {
             message.error('wait..!file is uploading')
-        }else{
-
-            const headers = {
-                'Content-Type': 'application/json',
-                'x-auth-token': `${global.TOKEN}`
-            };
+        } else {
             const formData = {
                 image: blogImage,
                 title: title,
@@ -98,7 +87,7 @@ const AddBlog = () => {
             };
             setIsProcessing(true);
             try {
-                const res = await axios.post(`${global.BASEURL}api/blog/create`, formData, { headers });
+                const res = await axiosInstance.post(`api/blog/create`, formData);
                 console.log(res);
                 navigate('/blogs')
                 message.success('Blog Created Successfully')
@@ -155,7 +144,7 @@ const AddBlog = () => {
                         />
                     </div>
                 </div>
-       
+
                 <Form.Group className='shadow_def px-3 w-full'>
                     <Form.Label className="plusJakara_semibold text_dark">Blog Title</Form.Label>
                     <Form.Control

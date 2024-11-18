@@ -10,6 +10,7 @@ import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 import { ArrowLeft } from 'react-feather';
 import axios from 'axios';
 import { message } from 'antd';
+import { axiosInstance } from '../../api/axiosIntance';
 
 const AddFaq = () => {
     const [isProcessing, setIsProcessing] = useState(false)
@@ -20,17 +21,13 @@ const AddFaq = () => {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-auth-token': `${global.TOKEN}`
-        };
         const formData = {
             title: title,
             description: description,
         };
         setIsProcessing(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/faq/create`, formData, { headers });
+            const res = await axiosInstance.post(`api/faq/create`, formData,);
             navigate('/faq')
             message.success('Faq Created Successfully')
             setCaption('')

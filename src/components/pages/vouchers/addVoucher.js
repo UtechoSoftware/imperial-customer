@@ -10,6 +10,7 @@ import { Form } from "react-bootstrap";
 import { ArrowLeft } from "react-feather";
 import { useNavigate } from "react-router-dom";
 import { create_faq } from "../../api/faqs";
+import { axiosInstance } from "../../api/axiosIntance";
 
 const AddVoucher = () => {
   const [title, setTitle] = useState("");
@@ -54,7 +55,7 @@ const AddVoucher = () => {
       "x-auth-token": global.TOKEN,
     };
     try {
-      const res = await axios.get(`${global.BASEURL}api/faq_cat/admin/all/1`, {
+      const res = await axiosInstance.get(`api/faq_cat/admin/all/1`, {
         headers,
       });
       setCategories(res?.data?.categories);

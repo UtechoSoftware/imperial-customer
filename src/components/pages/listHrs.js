@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
 import { message, Tabs, Tooltip } from "antd";
@@ -18,14 +19,18 @@ import { del_hr, get_hr, getPotential } from "../api/hr";
 import { CircularProgress } from "@mui/material";
 import { useTranslation } from "react-i18next";
 import { axiosInstance } from "../api/axiosIntance";
+import moment from "moment";
+
 const ListHrs = () => {
   const [loader, setLoader] = useState(false)
   const [tableData, setTableData] = useState([]);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [currentPage2, setCurrentPage2] = useState(1);
+  const [totalPages2, setTotalPages2] = useState(0);
   const [tableData2, setTableData2] = useState([]);
-  const [type, setType] = useState('');
+  const [type, setType] = useState('1');
   const [loading3, setLoading3] = useState(false);
-
-
   const { t, i18n } = useTranslation();
   const [tableloading, setTableLoading] = useState(false);
   const [updating, setUpdating] = useState(false);
@@ -33,7 +38,7 @@ const ListHrs = () => {
   const [showModal2, setShowModal2] = useState(false);
   const formatDate = (date) => date?.toLocaleDateString();
   const login = useSelector((state) => state.data.data.isLogin_);
-  var user = useSelector(state => state.data.data.user)
+  const user = useSelector(state => state.data.data.user)
 
   const [newHire, setNewhire] = useState(true);
   const navigate = useNavigate();
@@ -57,6 +62,7 @@ const ListHrs = () => {
   const [loading, setLoading] = useState(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
+
   const onChange = (key) => {
     setType(key)
     setLoading(true);
@@ -66,7 +72,7 @@ const ListHrs = () => {
     if (key === "1") {
       value = "newhire";
       const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      if (storedData?.length > 0 && storedData[0].type === "newhire") {
+      if (storedData?.length > 0) {
         setLoading(false);
         setTableData(storedData);
       } else {
@@ -79,48 +85,43 @@ const ListHrs = () => {
       value = "companystaff";
       // setNewhire(false);
       const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      if (storedData?.length > 0 && storedData[0].type === "companystaff") {
+      if (storedData?.length > 0) {
+        console.log(storedData);
         setTableData2(storedData);
         setLoading(false);
-
       } else {
+        setTableData2(storedData);
         // setTableData([]);
         setLoading(false);
-
       }
     }
-    if (global.BASEURL && login) {
-      setLoading(true);
-
-      get_hr("newhire")
+    if (login) {
+      get_hr("newhire", currentPage)
         .then((res) => {
-          console.log(res, "res")
           setLoading(false)
           setLoading3(false)
           setTableData(res?.data?.data);
+          setTotalPages(res?.data?.count?.totalPage || 0);
           setTableLoading(false);
         })
         .catch((err) => {
           setLoading(false);
         });
-      get_hr("companystaff")
+      get_hr("companystaff", currentPage2)
         .then((res) => {
           setLoading(false)
           setLoading3(false)
-
           setTableData2(res?.data?.data);
+          setTotalPages2(res.data.count?.totalPage || 0)
           setTableLoading(false);
-
         })
         .catch((err) => {
           setLoading(false);
         });
     } else {
-
     }
-    if (global.BASEURL && login) {
-
-      getPotential(value)
+    if (login) {
+      getPotential('all')
         .then((res) => {
           setPotential(res?.data?.totalSums);
           setLoading3(false);
@@ -132,15 +133,15 @@ const ListHrs = () => {
       // setTableLoading(true);
     }
   };
+
   useEffect(() => {
     setLoading(true);
-    if (global.BASEURL && login) {
-
-      get_hr("newhire")
+    if (login) {
+      get_hr("newhire", currentPage)
         .then((res) => {
-          console.log(res, "res")
           setLoading(false)
           setLoading3(false)
+          setTotalPages(res.data.count?.totalPage || 0)
           setTableData(res?.data?.data);
           setTableLoading(false);
         })
@@ -148,27 +149,21 @@ const ListHrs = () => {
           setLoading(false);
         });
     }
-    // setUpdating(true)
-    if (global.BASEURL) {
-      getPotential("newhire")
-        .then((res) => {
-          setPotential(res?.data?.totalSums);
-          setLoading(false);
-          setUpdating(false)
-          setTableLoading(false);
+    getPotential('all')
+      .then((res) => {
+        setPotential(res?.data?.totalSums);
+        setLoading(false);
+        setUpdating(false)
+        setTableLoading(false);
 
-        })
-        .catch((err) => {
-          setLoading(false);
-          setUpdating(false)
-          setTableLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        setUpdating(false)
+        setTableLoading(false);
+      });
+  }, [login, currentPage, currentPage2]);
 
-
-        });
-    } else {
-
-    }
-  }, [login]);
   useEffect(() => {
     setLoading(true);
 
@@ -176,16 +171,28 @@ const ListHrs = () => {
     if (storedData?.length > 0 && storedData[0].type === "newhire") {
       setTableData(storedData);
       setLoading(false);
-
     } else {
       setLoading(false);
-
     }
   }, [!login])
 
   const handleCalculate = (event) => {
     // alert('logout scenerio')
     event.preventDefault();
+    let roundedTotalSaving;
+    if (type === '1') {
+      const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+      const totalSaving = storedData?.reduce((sum, item) => sum + (item?.saving || 0), 0);
+      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
+    } else {
+      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      const totalSaving = storedData?.reduce((sum, item) => sum + (item?.saving || 0), 0);
+      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
+    }
+    if (roundedTotalSaving === undefined || isNaN(roundedTotalSaving)) {
+      message.error("Failed to calculate savings. Please try again.");
+      return;
+    }
     setLoader(true)
     const formData = new FormData(event.target);
 
@@ -198,57 +205,49 @@ const ListHrs = () => {
       email,
       comp_name: companyName,
       position,
-      arrayData: tableData,
-      arrayData2: tableData2
+      date: moment(new Date()).format('MM-DD-YYYY'),
+      saving: roundedTotalSaving
     };
-
     const validateForm = (payload) => {
       for (const key in payload) {
         if (!payload[key]) {
           setLoader(false)
           setShow(true)
-
           return "Please fill out the form first";
         }
       }
       return null;
     };
-
-    // Usage
     const errorMessage = validateForm(payload);
     if (errorMessage) {
       message.error('please fill the form first')
     } else {
       if (payload) {
-        axiosInstance.post('api/users/support', payload).then((response) => {
-          if (response?.data.success) {
-
-
-            message.success(t('message_success_email'))
+        axiosInstance.get('api/users/support', { params: payload })
+          .then((response) => {
+            console.log(response, 'rs');
+            if (response.status === 200) {
+              message.success(t('message_success_email'))
+              setLoader(false)
+              setShow(false)
+            }
+          }).catch((error) => {
             setLoader(false)
-            setShow(false)
-          }
-        }).catch((error) => {
-          setLoader(false)
-
-        })
+          })
       };
     }
-
   }
+
   const handleCalculate2 = () => {
     setLoader(true)
     const { name, comp_name, email, position } = user;
-
     const payload = {
       name,
       comp_name,
+      saving: potential,
       email,
+      date: moment(new Date()).format('MM-DD-YYYY'),
       position,
-      arrayData: tableData,
-      arrayData2: tableData2
-
-
     };
 
     const validateForm = (payload) => {
@@ -256,7 +255,6 @@ const ListHrs = () => {
         if (!payload[key]) {
           setLoader(false)
           setShow(true)
-
           return "your submitted data is missing ";
         }
       }
@@ -269,16 +267,17 @@ const ListHrs = () => {
       message.error('please fill the form first')
     } else {
       if (payload) {
-        axiosInstance.post('api/users/support', payload).then((response) => {
-          if (response?.data.success) {
-            message.success(t('message_success_email'))
+        axiosInstance.get('api/users/support', { params: payload })
+          .then((response) => {
+            if (response.status === 200) {
+              message.success(t('message_success_email'))
+              setLoader(false)
+              setShow(false)
+            }
+          }).catch((error) => {
             setLoader(false)
-            setShow(false)
-          }
-        }).catch((error) => {
-          setLoader(false)
 
-        })
+          })
 
       }
     }
@@ -292,9 +291,10 @@ const ListHrs = () => {
       comp_name,
       email,
       position,
-      saving: potential
+      saving: potential,
+      arrayData: type === '1' ? tableData : [],
+      arrayData2: type === '2' ? tableData2 : []
     };
-
 
     const validateForm = (payload) => {
       for (const key in payload) {
@@ -309,16 +309,17 @@ const ListHrs = () => {
     if (errorMessage) {
     } else {
       if (payload) {
-        axiosInstance.post('api/users/calcSaving', payload).then((response) => {
-          if (response?.data.success) {
-            message.success(response?.data?.message)
+        axiosInstance.post('api/users/calcSaving', payload)
+          .then((response) => {
+            if (response?.data.success) {
+              message.success(response?.data?.message)
+              setLoader(false)
+              setShow(false)
+            }
+          }).catch((error) => {
             setLoader(false)
-            setShow(false)
-          }
-        }).catch((error) => {
-          setLoader(false)
 
-        })
+          })
 
       };
     }
@@ -328,36 +329,31 @@ const ListHrs = () => {
     e.preventDefault();
     let roundedTotalSaving;
     if (type === '1') {
-      const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
-      const totalSaving = storedData.reduce((sum, item) => sum + (item.saving || 0), 0);
+      const totalSaving = tableData?.reduce((sum, item) => sum + (item?.saving || 0), 0);
       roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
     } else {
-      const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
-      const totalSaving = storedData.reduce((sum, item) => sum + (item.saving || 0), 0);
+      const totalSaving = tableData2?.reduce((sum, item) => sum + (item?.saving || 0), 0);
       roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
     }
-
     if (roundedTotalSaving === undefined || isNaN(roundedTotalSaving)) {
       message.error("Failed to calculate savings. Please try again.");
       return;
     }
-
     setLoader(true);
-
-    const formData = new FormData(e.target);
-    const name = formData.get('formName');
-    const email = formData.get('formEmail');
-    const companyName = formData.get('formCompanyName');
-    const position = formData.get('formPosition');
-
+    const { name, comp_name, email, position } = user;
+    // if (!formElement) {
+    //   message.error("Form element not found. Ensure the button is inside a form.");
+    //   return;
+    // }
     const payload = {
       name,
       email,
-      comp_name: companyName,
+      comp_name,
       position,
-      saving: roundedTotalSaving,
+      saving: potential,
+      arrayData: type === '1' ? tableData : [],
+      arrayData2: type === '2' ? tableData2 : []
     };
-
     const validateForm = (payload) => {
       for (const key in payload) {
         if (key !== 'saving' && !payload[key]) {
@@ -393,12 +389,14 @@ const ListHrs = () => {
       label: "New Hire",
       children: (
         <CompanyTable
+          setCurrentPage={setCurrentPage}
+          currentPage={currentPage}
+          totalPages={totalPages}
+          setTotalPages={setTotalPages}
           updating={updating}
           setTableData={setTableData}
           tableData={tableData}
           loading={loading}
-        // tableloading={tableloading}
-        // setTableLoading={setTableLoading}
         />
       ),
     },
@@ -411,6 +409,10 @@ const ListHrs = () => {
           setTableData2={setTableData2}
           tableData2={tableData2}
           loading={loading}
+          setCurrentPage={setCurrentPage2}
+          currentPage={currentPage2}
+          totalPages={totalPages2}
+          setTotalPages={setTotalPages2}
           setLoading={setLoading}
         // tableloading={tableloading}
         // setTableLoading={setTableLoading}
@@ -635,25 +637,24 @@ const ListHrs = () => {
                 </button>
               )
             }
-            {/* {login && (
+            {login && (
               <>
                 <Tooltip
                   style={{ backgroundColor: "yellow" }}
                   title={t('popup_missing_2')}
                   className="cursor-pointer "
                 >
-
                   <button
-                    onClick={handleCalculateSaving}
+                    onClick={handleCalculateSaving2}
                     type="button"
                     className="btn2 px-3 py-3 text-nowrap   border-black "
                   >
-                    Calculate Savings
+                    {/* Calculate Savings */}
                     {t('calculate_saving')}
                   </button>
                 </Tooltip>
               </>
-            )} */}
+            )}
           </div>
           <div className="mb-4">
             <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}
@@ -666,9 +667,8 @@ const ListHrs = () => {
           >
             <Modal.Body
               style={{ position: "relative" }}
-
             >
-              <div className="d-flex justify-content-between ">
+              <div className="d-flex justify-content-between">
                 <div className="modal-title mb-3 ">
                   {t('fill_in')}
                   <br />
@@ -720,7 +720,7 @@ const ListHrs = () => {
                   <button
                     type="submit"
                     className="btn2 px-3 py-2 border-black"
-                    onClick={handleClose}
+                    // onClick={handleClose}
                     style={{ width: "9rem" }}
                   >
                     {

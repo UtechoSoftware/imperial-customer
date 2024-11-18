@@ -15,6 +15,7 @@ import axios from "axios";
 import { fileavatar } from "../../icons/icon";
 import { ArrowLeft, Video } from "react-feather";
 import CKEditorComponent from "../../../newCk";
+import { axiosInstance } from "../../api/axiosIntance";
 // import CKEditorComponent from "../../../tiptap";
 
 const AddCourseContent = () => {
@@ -174,10 +175,6 @@ const AddCourseContent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsProcessing(true);
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         const formData = {
             category: categoryId,
             title: title,
@@ -193,10 +190,9 @@ const AddCourseContent = () => {
         }
         else {
             try {
-                const res = await axios.post(
-                    `${global.BASEURL}api/courses/create`,
+                const res = await axiosInstance.post(
+                    `api/courses/create`,
                     formData,
-                    { headers }
                 );
                 console.log(res);
                 if (res?.data) {
@@ -213,16 +209,9 @@ const AddCourseContent = () => {
     };
 
     const handleFetchCategory = async () => {
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         try {
-            const res = await axios.get(
-                `${global.BASEURL}api/categories/admin/all`,
-                {
-                    headers,
-                }
+            const res = await axiosInstance.get(
+                `api/categories/admin/all`,
             );
             setCategories(res?.data?.categories);
         } catch (error) {

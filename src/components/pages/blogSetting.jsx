@@ -7,6 +7,7 @@ import ProductTable from '../DataTable/productTable';
 import { dataTable } from '../DataTable/productsData';
 import { Edit, Trash2 } from 'react-feather';
 import axios from 'axios';
+import { axiosInstance } from '../api/axiosIntance';
 
 const BlogSetting = () => {
     const navigate = useNavigate()
@@ -48,7 +49,7 @@ const BlogSetting = () => {
             'x-auth-token': global.TOKEN
         };
         try {
-            const res = await axios.get(`${global.BASEURL}api/blog/all`, { headers });
+            const res = await axiosInstance.get(`api/blog/all`,);
             setCategories(res?.data?.blogs);
         } catch (error) {
             console.log(error);

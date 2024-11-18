@@ -1,27 +1,36 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
+import { CircularProgress } from "@mui/material";
+import { message } from "antd";
 import React, { useEffect, useState } from "react";
 import { Button, Modal, Spinner, Table } from "react-bootstrap";
-import { message } from "antd";
-import { CircularProgress } from "@mui/material";
 import { Edit2, Trash2 } from "react-feather";
+import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { del_hr_by_id, get_hr } from "../api/hr";
-import { useSelector } from "react-redux";
 
-const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) => {
-  const [currentPage, setCurrentPage] = useState(1); // Pagination state
-  const [totalPages, setTotalPages] = useState(0); // Assume 5 pages for example
+const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalPages, setLoading, setTableData2, loading, tableData2 }) => {
   const [showModal2, setShowModal2] = useState(false);
   const [rowData, setRowData] = useState("");
   const login = useSelector((state) => state.data.data.isLogin_);
   const [delLoader, setDelLoader] = useState(false);
-  const [delLoading, setDelLoading] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetchPageData(currentPage); // Fetch data for the current page on component mount and page change
-  }, [currentPage]);
+    if (!login) {
+      const storedDataCompany = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+      if (storedDataCompany?.length > 0) {
+        console.log(storedDataCompany);
+        setTableData2(storedDataCompany);
+        setLoading(false);
+      } else {
+        setTableData2(storedDataCompany);
+        setLoading(false);
+      }
+    } else {
+      fetchPageData(currentPage);
+    }
+  }, [currentPage, !login]);
 
   const fetchPageData = (page) => {
     setLoading(true)
@@ -107,7 +116,6 @@ const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) 
                       })
                       : "N/A"}
                   </td>
-
                   <td style={{ textAlign: "center" }}>{employee.iefp}</td>
                   <td>
                     {employee.iefpDate
@@ -118,7 +126,6 @@ const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) 
                       })
                       : "N/A"}
                   </td>
-
                   <td style={{ textAlign: "center" }}>
                     {employee.employmentContractType}
                   </td>
@@ -131,7 +138,6 @@ const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) 
                       })
                       : "N/A"}
                   </td>
-
                   <td style={{ textAlign: "center" }}>{employee.salary}</td>
                   <td style={{ textAlign: "center" }}>
                     {employee.currentSSCRate}
@@ -144,9 +150,7 @@ const NewTable = ({ updating, setLoading, setTableData2, loading, tableData2 }) 
                   {
                     login && (
                       <td>
-
                         <div className="d-flex flex-row  justify-content-center">
-
                           <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
                           <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
                         </div>

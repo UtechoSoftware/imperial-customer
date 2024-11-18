@@ -12,6 +12,7 @@ import { message } from 'antd'
 import Select from 'react-select';
 import ProductTable from '../../DataTable/productTable'
 import { Edit, Edit2 } from 'react-feather'
+import { axiosInstance } from '../../api/axiosIntance'
 const DigitalCategory = () => {
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
@@ -42,7 +43,7 @@ const DigitalCategory = () => {
         });
     };
 
-   
+
 
     useEffect(() => {
         setTitle(selectedItem?.name)
@@ -55,13 +56,9 @@ const DigitalCategory = () => {
     };
 
     const fetchData = async () => {
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-auth-token': `${global.TOKEN}`,
-        };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/product_cat/admin/all/`+ lastId, { headers });
+            const res = await axiosInstance.get(`api/product_cat/admin/all/` + lastId);
             if (res?.data) {
                 setCategories(res?.data?.categories);
                 setCount(res?.data?.count?.totalPage)
@@ -76,7 +73,7 @@ const DigitalCategory = () => {
 
     useEffect(() => {
         fetchData();
-    }, [category,lastId]);
+    }, [category, lastId]);
 
     const columns = [
         {
@@ -109,17 +106,13 @@ const DigitalCategory = () => {
 
     const handleUpdate = async (e) => {
         e.preventDefault();
-        const headers = {
-            'Content-Type': 'application/json',
-            'x-auth-token': `${global.TOKEN}`
-        };
         const formData = {
             name: title,
             status: categoryStatus
         };
         setIsProcessing(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/product_cat/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.post(`api/product_cat/edit/${selectedItem?._id}`, formData);
             console.log(res);
             message.success('Category Updated Successfully')
             setShowModal(false)

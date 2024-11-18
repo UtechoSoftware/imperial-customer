@@ -6,19 +6,18 @@ import {
   TextField
 } from "@mui/material";
 import { Form, message } from "antd";
-import { LinkedIn, useLinkedIn } from 'react-linkedin-login-oauth2';
 import React, { useState } from "react";
 import { } from "react-bootstrap";
-import { Eye, EyeOff, Linkedin } from "react-feather";
+import { Eye, EyeOff } from "react-feather";
+import { useTranslation } from 'react-i18next';
+import { useLinkedIn } from 'react-linkedin-login-oauth2';
 import "react-phone-input-2/lib/style.css";
 import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { useTranslation } from 'react-i18next';
 import { login } from "../api/auth";
 import {
   finabeelight,
   left,
-  linkedin_,
   questionMark,
   rightarrow
 } from "../icons/icon";
@@ -102,7 +101,6 @@ const DynomoLogin1 = () => {
           'Os contratos a termo em determinadas circunstâncias convertem-se automaticamente em contratos sem termo, mesmo que não exista contrato formal, tornando-os potencialmente elegíveis para este benefício.',
       },
     ];
-
 
 
   const [currentIndex, setCurrentIndex] = useState(0);

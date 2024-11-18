@@ -777,7 +777,6 @@
   align-items: center;
   border: 1px solid black;
   border-radius: 20px !important;
-  width: auto;
 }
 @media screen and (max-width: 500px) {
   .q_card {

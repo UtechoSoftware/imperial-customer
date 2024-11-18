@@ -13,6 +13,7 @@ import { message } from 'antd'
 import Select from 'react-select';
 import ProductTable from '../DataTable/productTable'
 import { Edit, Edit2 } from 'react-feather'
+import { axiosInstance } from '../api/axiosIntance'
 const BlogCategories = () => {
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
@@ -77,7 +78,7 @@ const BlogCategories = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/blogcategories/admin/all`, { headers });
+            const res = await axiosInstance.get(`api/blogcategories/admin/all`);
             if (res?.data) {
                 setCategories(res?.data?.categories);
             }
@@ -134,7 +135,7 @@ const BlogCategories = () => {
         };
         setIsProcessing(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/blogcategories/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.post(`api/blogcategories/edit/${selectedItem?._id}`, formData);
             console.log(res);
             message.success('Category Updated Successfully')
             setShowModal(false)

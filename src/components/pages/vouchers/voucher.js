@@ -25,13 +25,14 @@ import { Input } from "reactstrap";
 import CKEditorComponent from "../../../newCk";
 import { ErrorHandler } from "../errorHandler";
 import { del_faq } from "../../api/faqs";
+import { axiosInstance } from "../../api/axiosIntance";
 
 const Voucher = () => {
   const [ckdata, setckData] = useState(null);
   const [title, setTitle] = useState("");
   const [search, setSearch] = useState("");
   const [showSearch, setShowSearch] = useState(false);
-  const [delLoader,setDelLoader]=useState(false)
+  const [delLoader, setDelLoader] = useState(false)
   const [showModal2, setShowModal2] = useState(false)
 
   const [Description, setDescription] = useState("");
@@ -58,7 +59,7 @@ const Voucher = () => {
       "x-auth-token": global.TOKEN,
     };
     try {
-      const res = await axios.get(`${global.BASEURL}api/faq_cat/admin/all/`, {
+      const res = await axiosInstance.get(`api/faq_cat/admin/all/`, {
         headers,
       });
       setCategories(res?.data?.categories);
@@ -113,9 +114,9 @@ const Voucher = () => {
             >
               <Edit size={16} />
             </button>
-            <button onClick={()=>{
-                setShowModal2(true)
-                setSelectedItem(row?._id)
+            <button onClick={() => {
+              setShowModal2(true)
+              setSelectedItem(row?._id)
             }} style={{ backgroundColor: '#ff6f61' }} className="flex justify-center inter_medium text-xs text_white rounded-2 p-1 items-center"><Trash2 size={16} /></button>
           </div>
         );
@@ -129,8 +130,8 @@ const Voucher = () => {
       "x-auth-token": `${global.TOKEN}`,
     };
     try {
-      const res = await axios.get(
-        `${global.BASEURL}api/faq/admin/${lastId}/${search}`,
+      const res = await axiosInstance.get(
+        `api/faq/admin/${lastId}/${search}`,
         { headers }
       );
       if (res?.data) {
@@ -157,8 +158,8 @@ const Voucher = () => {
       description: Description,
     };
     try {
-      const res = await axios.put(
-        `${global.BASEURL}api/faq/edit/${selectedItem?._id}`,
+      const res = await axiosInstance.put(
+        `api/faq/edit/${selectedItem?._id}`,
         formData,
         { headers }
       );
@@ -169,9 +170,9 @@ const Voucher = () => {
         setShowModal(false);
         fetchData();
         let array = [...productdata]
-        const index = array?.findIndex((item=>item?._id===selectedItem?._id))
-        if(index!==-1){
-          array[index]= res?.data?.Faqs
+        const index = array?.findIndex((item => item?._id === selectedItem?._id))
+        if (index !== -1) {
+          array[index] = res?.data?.Faqs
           setProductData(array)
         }
       }
@@ -311,53 +312,53 @@ const Voucher = () => {
             </Form>
           </Modal.Body>
         </Modal>
-        
+
       )}
       <Modal show={showModal2} onHide={() => setShowModal2(false)} centered>
-      <Modal.Header className='border-0 mt-2 mr-2 p-0' closeButton>
-      </Modal.Header>
-      <Modal.Body className='text-center'>
-        <h5>Are you sure?</h5>
-        <div className='d-flex justify-content-center mt-4'>
-          <Button
-            variant="danger"
-            className='me-2'
-            onClick={() => {
+        <Modal.Header className='border-0 mt-2 mr-2 p-0' closeButton>
+        </Modal.Header>
+        <Modal.Body className='text-center'>
+          <h5>Are you sure?</h5>
+          <div className='d-flex justify-content-center mt-4'>
+            <Button
+              variant="danger"
+              className='me-2'
+              onClick={() => {
                 let rowArray = [...categories];
                 const index = rowArray.findIndex(
                   (value) => value?._id === selectedItem?._id
                 );
                 setDelLoader(true)
-                del_faq(selectedItem).then((res)=>{
-                    fetchData()
-                    setShowModal2(false)
-                setDelLoader(false)
-                if (index !== -1) {
-                  rowArray?.splice(index, 1);
-                  setCategories(rowArray);
+                del_faq(selectedItem).then((res) => {
+                  fetchData()
+                  setShowModal2(false)
+                  setDelLoader(false)
+                  if (index !== -1) {
+                    rowArray?.splice(index, 1);
+                    setCategories(rowArray);
                     message.success('category deleted successfully')
-                }
+                  }
 
-                }).catch((er)=>{
-                    setShowModal2(false)
-                    setDelLoader(false)
+                }).catch((er) => {
+                  setShowModal2(false)
+                  setDelLoader(false)
 
                 })
-            }}
-          >
-         {delLoader ? 
-           <Spinner size='sm'/>: 
-            "Delete"}
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => setShowModal2(false)}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Modal.Body>
-    </Modal>
+              }}
+            >
+              {delLoader ?
+                <Spinner size='sm' /> :
+                "Delete"}
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => setShowModal2(false)}
+            >
+              Cancel
+            </Button>
+          </div>
+        </Modal.Body>
+      </Modal>
     </StyleSheetManager>
   );
 };

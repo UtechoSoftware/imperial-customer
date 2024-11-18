@@ -11,6 +11,7 @@ import { Input } from "reactstrap";
 import { storage } from "../../../config/firebase";
 import CKEditorComponent from "../../../newCk";
 import { fileavatar } from "../../icons/icon";
+import { axiosInstance } from "../../api/axiosIntance";
 
 // import CKEditorComponent from "../../../tiptap";
 export const AddCourseContent = () => {
@@ -169,10 +170,6 @@ export const AddCourseContent = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setIsProcessing(true);
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         const tempDiv = document.createElement('div');
         tempDiv.innerHTML = ckdata;
         const imgElement = tempDiv.querySelector('img');
@@ -196,10 +193,9 @@ export const AddCourseContent = () => {
         }
         else {
             try {
-                const res = await axios.post(
-                    `${global.BASEURL}api/courses/create`,
+                const res = await axiosInstance.post(
+                    `api/courses/create`,
                     formData,
-                    { headers }
                 );
                 console.log(res);
                 if (res?.data) {
@@ -215,16 +211,9 @@ export const AddCourseContent = () => {
     };
 
     const handleFetchCategory = async () => {
-        const headers = {
-            "Content-Type": "application/json",
-            "x-auth-token": global.TOKEN,
-        };
         try {
-            const res = await axios.get(
-                `${global.BASEURL}api/categories/admin/all/1/${category}`,
-                {
-                    headers,
-                }
+            const res = await axiosInstance.get(
+                `api/categories/admin/all/1/${category}`,
             );
             setCategories(res?.data?.categories);
         } catch (error) {

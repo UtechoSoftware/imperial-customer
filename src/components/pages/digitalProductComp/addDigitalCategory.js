@@ -20,6 +20,7 @@ import { storage } from "../../../config/firebase";
 import axios from "axios";
 import { message } from "antd";
 import Select from "react-select";
+import { axiosInstance } from "../../api/axiosIntance";
 const AddDigitalCategory = () => {
   const [isProcessing, setIsProcessing] = useState(false);
   const [fileLoading, setFileLoading] = useState(false);
@@ -62,19 +63,14 @@ const AddDigitalCategory = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const headers = {
-      "Content-Type": "application/json",
-      "x-auth-token": `${global.TOKEN}`,
-    };
     const formData = {
       name: title,
     };
     setIsProcessing(true);
     try {
-      const res = await axios.post(
-        `${global.BASEURL}api/product_cat/create`,
+      const res = await axiosInstance.post(
+        `api/product_cat/create`,
         formData,
-        { headers }
       );
       navigate("/digital-categories");
       message.success("Category Created Successfully");

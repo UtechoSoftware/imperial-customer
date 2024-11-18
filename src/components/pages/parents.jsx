@@ -11,9 +11,10 @@ import axios from 'axios';
 import { useEffect } from 'react';
 import { CircularProgress } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import { axiosInstance } from '../api/axiosIntance';
 
 const Parents = () => {
-    const [search,setSearch]=useState('')
+    const [search, setSearch] = useState('')
 
     const navigate = useNavigate()
     const [loading, setLoading] = useState(false)
@@ -79,7 +80,7 @@ const Parents = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/info/all/parent/${lastId}`, { headers });
+            const res = await axiosInstance.get(`api/info/all/parent/${lastId}`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.parents);
                 setCount(res?.data?.count?.totalPage);
@@ -107,8 +108,8 @@ const Parents = () => {
                         <span className="text_secondary plusJakara_medium">No Parents Found</span>
                     </main> :
                     <ProductTable
-                      setSearch={setSearch}
-                      search={search}
+                        setSearch={setSearch}
+                        search={search}
                         loading={loading}
                         count={count}
                         setCurrentPage={setLastId2}

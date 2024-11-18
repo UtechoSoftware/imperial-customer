@@ -17,6 +17,7 @@ import "swiper/css/pagination";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "../styles/swiper.css";
 import ProductTable from "../DataTable/productTable";
+import { axiosInstance } from "../api/axiosIntance";
 const CourseContent = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ const CourseContent = () => {
     };
     setLoading(true);
     try {
-      const res = await axios.get(`${global.BASEURL}api/courses/admin/${categoryId}/${lastId}`, { headers });
+      const res = await axiosInstance.get(`api/courses/admin/${categoryId}/${lastId}`);
       if (res?.data) {
         setCategories(res?.data?.courses);
         setCount(res?.data?.count?.totalPage);
@@ -67,9 +68,8 @@ const CourseContent = () => {
       "x-auth-token": `${global.TOKEN}`,
     };
     try {
-      const res = await axios.get(
-        `${global.BASEURL}api/categories/admin/all`,
-        { headers }
+      const res = await axiosInstance.get(
+        `api/categories/admin/all`,
       );
       if (res?.data) {
         setCourseCategories(res?.data?.categories);

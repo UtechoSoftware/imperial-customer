@@ -11,6 +11,7 @@ import { storage } from '../../config/firebase'
 import { Input } from 'reactstrap'
 import { message } from 'antd'
 import Select from 'react-select';
+import { axiosInstance } from '../api/axiosIntance'
 const Courses = () => {
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
@@ -72,7 +73,7 @@ const Courses = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/categories/admin/all/1`, { headers });
+            const res = await axiosInstance.get(`api/categories/admin/all/1`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.categories);
             }
@@ -101,7 +102,7 @@ const Courses = () => {
         };
         setIsProcessing(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/categories/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.post(`api/categories/edit/${selectedItem?._id}`, formData, { headers });
             console.log(res);
             message.success('Category Updated Successfully')
             setShowModal(false)

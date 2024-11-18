@@ -88,19 +88,18 @@ const Users = () => {
           <p className="m-0 font-bold text-lg">
             {t('info_p4')}
           </p>
-          <Tooltip
-            style={{ backgroundColor: "yellow" }}
-            title={t('popup_missing_4')}
-            className="cursor-pointer "
-          >
-
-            <div style={{ borderRadius: "40px" }} className="flex justify-end pt-3 cursor-pointer" onClick={() => navigate('/list-hr')}>
-              <div className="q_card flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
+          <div style={{ borderRadius: "40px" }} className="flex justify-end pt-3">
+            <Tooltip
+              style={{ backgroundColor: "yellow" }}
+              title={t('popup_missing_4')}
+              className="cursor-pointer "
+            >
+              <div onClick={() => navigate('/list-hr')} className="q_card flex w-fit manrope_bold cursor-pointer max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white">
                 <h6>{t('info_btn')}</h6>
                 <img className="h-10 d-md-block d-none" src={hand} alt="email" />
               </div>
-            </div>
-          </Tooltip>
+            </Tooltip>
+          </div>
         </main>
       </>
     </div>

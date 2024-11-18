@@ -11,6 +11,7 @@ import axios from 'axios';
 import { CircularProgress } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { ArrowLeft } from 'react-feather';
+import { axiosInstance } from '../api/axiosIntance';
 
 const ParentsChild = () => {
     const navigate = useNavigate()
@@ -107,7 +108,7 @@ const ParentsChild = () => {
         };
         setLoading(true);
         try {
-            const res = await axios.get(`${global.BASEURL}api/info/childs/${ParentsData?._id}`, { headers });
+            const res = await axiosInstance.get(`api/info/childs/${ParentsData?._id}`, { headers });
             if (res?.data) {
                 setCategories(res?.data?.childs);
             }

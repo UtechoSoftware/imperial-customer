@@ -12,12 +12,13 @@ import { storage } from '../../../config/firebase'
 import ProductTable from '../../DataTable/productTable'
 import { del_cat, get_cat } from '../../api/faqs'
 import { ErrorHandler } from '../errorHandler'
+import { axiosInstance } from '../../api/axiosIntance'
 const VoucherCategories = () => {
     const navigate = useNavigate()
     const [categories, setCategories] = useState([])
-    const [search,setSearch]=useState('')
-    const [delLoader,setDelLoader]=useState(false)
-const [showSearch,setShowSearch]=useState(false)
+    const [search, setSearch] = useState('')
+    const [delLoader, setDelLoader] = useState(false)
+    const [showSearch, setShowSearch] = useState(false)
     const [loading, setLoading] = useState(false)
     const [isProcessing, setIsProcessing] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
@@ -33,9 +34,9 @@ const [showSearch,setShowSearch]=useState(false)
     const [courseImage, setCourseImage] = useState('')
     const [title, setTitle] = useState('')
     const [category, setCategory] = useState(null);
-    
 
-   
+
+
     useEffect(() => {
         setTitle(selectedItem?.name)
         setSelectedImg(selectedItem?.image)
@@ -48,25 +49,25 @@ const [showSearch,setShowSearch]=useState(false)
 
     const fetchData = async () => {
 
-       get_cat(lastId,search).then((res)=>{
-        setCategories(res?.data?.categories);
-        setCount(res?.data?.count?.totalPage)
-        setLoading(false);
+        get_cat(lastId, search).then((res) => {
+            setCategories(res?.data?.categories);
+            setCount(res?.data?.count?.totalPage)
+            setLoading(false);
 
-       }).catch((err)=>{
-        ErrorHandler(err)
-        setLoading(false);
+        }).catch((err) => {
+            ErrorHandler(err)
+            setLoading(false);
 
-       })
+        })
     };
 
     useEffect(() => {
-        if(!search){
+        if (!search) {
             setLoading(true);
         }
         setShowSearch(true)
         fetchData();
-    }, [lastId,search]);
+    }, [lastId, search]);
 
     const columns = [
         {
@@ -75,7 +76,7 @@ const [showSearch,setShowSearch]=useState(false)
             minWidth: '200px',
             selector: row => row?.name
         },
-    
+
         {
             name: 'Action',
             sortable: true,
@@ -88,10 +89,10 @@ const [showSearch,setShowSearch]=useState(false)
                     >
                         <Edit size={14} />
                     </button>
-            <button onClick={()=>{
-                setShowModal2(true)
-                setSelectedItem(row?._id)
-            }} style={{ backgroundColor: '#ff6f61' }} className="flex justify-center inter_medium text-xs text_white rounded-2 p-1 items-center"><Trash2 size={16} /></button>
+                    <button onClick={() => {
+                        setShowModal2(true)
+                        setSelectedItem(row?._id)
+                    }} style={{ backgroundColor: '#ff6f61' }} className="flex justify-center inter_medium text-xs text_white rounded-2 p-1 items-center"><Trash2 size={16} /></button>
 
                 </div>
             ),
@@ -110,16 +111,16 @@ const [showSearch,setShowSearch]=useState(false)
         };
         setIsProcessing(true);
         try {
-            const res = await axios.post(`${global.BASEURL}api/faq_cat/edit/${selectedItem?._id}`, formData, { headers });
+            const res = await axiosInstance.post(`api/faq_cat/edit/${selectedItem?._id}`, formData, { headers });
             console.log(res);
             message.success('Category Updated Successfully')
             setShowModal(false)
             fetchData()
             let array = [...categories]
-            const index = array?.findIndex((item=>item?._id===selectedItem?._id))
-            if(index!==-1){
-              array[index]= res?.data?.category
-              setCategories(array)
+            const index = array?.findIndex((item => item?._id === selectedItem?._id))
+            if (index !== -1) {
+                array[index] = res?.data?.category
+                setCategories(array)
             }
 
             setCategoryStatus('')
@@ -141,30 +142,30 @@ const [showSearch,setShowSearch]=useState(false)
 
                 {/* <button onClick={() => { navigate('/faq-categories/add-category') }} style={{ minWidth: '150px' }} className="bg_primary py-3 rounded-3 text_white plusKajara_semibold">Add Category</button> */}
             </div>
-       
-            
-             
-                    <ProductTable
-                        loading={loading}
-                        buttontext=' Faq Category' 
-                    navigation={'/faq-categories/add-category'}   
-                        count={count}
-                        setCurrentPage={setLastId2}
-                        setSearch={setSearch}
-                        search={search}
-                        showSearch={showSearch}
-                        currentPage={lastId2}
-                        columns={columns}
-                        data={categories}
-                        setLastId={setLastId}
-                    />
-            
+
+
+
+            <ProductTable
+                loading={loading}
+                buttontext=' Faq Category'
+                navigation={'/faq-categories/add-category'}
+                count={count}
+                setCurrentPage={setLastId2}
+                setSearch={setSearch}
+                search={search}
+                showSearch={showSearch}
+                currentPage={lastId2}
+                columns={columns}
+                data={categories}
+                setLastId={setLastId}
+            />
+
 
             {selectedItem && (
                 <Modal show={showModal} onHide={() => setShowModal(false)} centered>
                     <Modal.Body>
                         <Modal.Header className='border-0' closeButton >
-                        <h5 className=''>Edit Category</h5>
+                            <h5 className=''>Edit Category</h5>
 
                         </Modal.Header>
                         <Form onSubmit={handleUpdate}>
@@ -212,50 +213,50 @@ const [showSearch,setShowSearch]=useState(false)
                 </Modal>
             )}
             <Modal show={showModal2} onHide={() => setShowModal2(false)} centered>
-      <Modal.Header className='border-0 mt-2 mr-2 p-0' closeButton>
-      </Modal.Header>
-      <Modal.Body className='text-center'>
-        <h5>Are you sure?</h5>
-        <div className='d-flex justify-content-center mt-4'>
-          <Button
-            variant="danger"
-            className='me-2'
-            onClick={() => {
-                let rowArray = [...categories];
-                const index = rowArray.findIndex(
-                  (value) => value?._id === selectedItem?._id
-                );
-                setDelLoader(true)
-                del_cat(selectedItem).then((res)=>{
-                    fetchData()
-                    setShowModal2(false)
-                setDelLoader(false)
-                if (index !== -1) {
-                  rowArray?.splice(index, 1);
-                  setCategories(rowArray);
-                    message.success('category deleted successfully')
-                }
+                <Modal.Header className='border-0 mt-2 mr-2 p-0' closeButton>
+                </Modal.Header>
+                <Modal.Body className='text-center'>
+                    <h5>Are you sure?</h5>
+                    <div className='d-flex justify-content-center mt-4'>
+                        <Button
+                            variant="danger"
+                            className='me-2'
+                            onClick={() => {
+                                let rowArray = [...categories];
+                                const index = rowArray.findIndex(
+                                    (value) => value?._id === selectedItem?._id
+                                );
+                                setDelLoader(true)
+                                del_cat(selectedItem).then((res) => {
+                                    fetchData()
+                                    setShowModal2(false)
+                                    setDelLoader(false)
+                                    if (index !== -1) {
+                                        rowArray?.splice(index, 1);
+                                        setCategories(rowArray);
+                                        message.success('category deleted successfully')
+                                    }
 
-                }).catch((er)=>{
-                    setShowModal2(false)
-                    setDelLoader(false)
+                                }).catch((er) => {
+                                    setShowModal2(false)
+                                    setDelLoader(false)
 
-                })
-            }}
-          >
-         {delLoader ? 
-           <Spinner size='sm'/>: 
-            "Delete"}
-          </Button>
-          <Button
-            variant="secondary"
-            onClick={() => setShowModal2(false)}
-          >
-            Cancel
-          </Button>
-        </div>
-      </Modal.Body>
-    </Modal>
+                                })
+                            }}
+                        >
+                            {delLoader ?
+                                <Spinner size='sm' /> :
+                                "Delete"}
+                        </Button>
+                        <Button
+                            variant="secondary"
+                            onClick={() => setShowModal2(false)}
+                        >
+                            Cancel
+                        </Button>
+                    </div>
+                </Modal.Body>
+            </Modal>
         </main>
     )
 }
