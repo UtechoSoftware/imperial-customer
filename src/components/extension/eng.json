@@ -118,6 +118,8 @@
   "sign_last": "Type of the last employment contract signed",
   "current_rate": "Current Social Security contributions rate",
   "other": "Other",
+  "new_hire": "New Hire",
+  "new_hire_company": "Company Staff",
   "new_hr": "New hire - HR to be hired in the near future by the company Company's staff - HR already in the company",
   "new_hr_company": "New hire - HR to be hired in the near future by the company Company's staff - HR already in the company",
   "unique_identifier_desc":"Please provide a unique identifier for this HR record, which must be different from all other HR records being entered. We suggest using, for example, the employee's, Tax, Social Security or Identification card numbers",

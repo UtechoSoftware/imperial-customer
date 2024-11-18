@@ -386,7 +386,7 @@ const ListHrs = () => {
   const items = [
     {
       key: "1",
-      label: "New Hire",
+      label: `${t('new_hire')}`,
       children: (
         <CompanyTable
           setCurrentPage={setCurrentPage}
@@ -402,7 +402,7 @@ const ListHrs = () => {
     },
     {
       key: "2",
-      label: "Company Staff",
+      label: `${t('new_hire_company')}`,
       children: (
         <NewTable
           updating={updating}
