@@ -265,9 +265,9 @@ const DynomoLogin1 = () => {
                 {t('Login_p2')}
 
                 { }
-                <span className="text_darkprimary ms-2">
+                <span className=" ms-2">
                   <Link
-                    className="text_darkprimary poppins_semibold text-decoration-none"
+                    className="text_primary underline poppins_semibold"
                     to="/register"
                   >
                     {t('Register')}

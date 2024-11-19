@@ -256,9 +256,9 @@ const Register = () => {
               <p className="text-sm text_para poppins_regular my-2">
                 {/* Already have an account ?{" "} */}
                 {t('Register_p1')}
-                <span className="text_darkprimary">
+                <span className="text_primary">
                   <Link
-                    className="text_darkprimary poppins_semibold text-decoration-none"
+                    className="text_primary ms-1 poppins_semibold underline"
                     to="/login"
                   >
                     {/* Login
