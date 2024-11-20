@@ -834,7 +834,7 @@ const Dashboard = () => {
                           className="form-control  input_1 cursor-pointer custom_radius text-center "
                           placeholderText={t('table_2-head_3')}
                           dateFormat="dd/MM/yyyy"
-                          maxDate={new Date()}
+                          // maxDate={new Date()}
                           showYearDropdown
                           scrollableYearDropdown
                           isClearable
