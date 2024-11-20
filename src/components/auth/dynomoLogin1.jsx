@@ -140,7 +140,6 @@ const DynomoLogin1 = () => {
             window.sessionStorage.removeItem('hrData_company');
             window.sessionStorage.removeItem('hrData');
             dispatch(setUserData(res?.data?.user))
-
             setIsProcessing(false);
           } else {
             setIsProcessing(false);

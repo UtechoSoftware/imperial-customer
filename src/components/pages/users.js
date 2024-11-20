@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import { Tooltip } from "antd";
 import React from "react";
 import { useTranslation } from "react-i18next";
@@ -17,13 +18,6 @@ const Users = () => {
   const login = useSelector((state) => state.data.data.isLogin_);
   const user = useSelector(state => state.data.data.user)
   const languages = window.localStorage.getItem('imperial_language').replace(/"/g, '');
-  console.log(languages === "en" ? "Matched 'en'" : "Did not match 'en'");
-  if (languages === "en") {
-    console.log("Condition is true");
-  } else {
-    console.log("Condition is false");
-  }
-
 
   const images = languages === 'en'
     ? [img1, img2, img3]

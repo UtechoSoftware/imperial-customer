@@ -33,6 +33,7 @@
     "axios-mock-adapter": "^1.22.0",
     "bootstrap": "^5.3.3",
     "chart.js": "^4.4.1",
+    "crypto": "^1.0.1",
     "d3-ease": "^3.0.1",
     "dayjs": "^1.11.10",
     "dompurify": "^3.1.5",
@@ -85,6 +86,7 @@
     "styled-components": "^6.1.6",
     "swiper": "^9.4.1",
     "tinymce": "^7.1.1",
+    "uuid": "^11.0.3",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

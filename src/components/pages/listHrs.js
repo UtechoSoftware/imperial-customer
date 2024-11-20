@@ -203,6 +203,7 @@ const ListHrs = () => {
     const payload = {
       name,
       email,
+      userId: user?._id,
       comp_name: companyName,
       position,
       date: moment(new Date()).format('MM-DD-YYYY'),
@@ -244,6 +245,7 @@ const ListHrs = () => {
     const payload = {
       name,
       comp_name,
+      userId: user?._id,
       saving: potential,
       email,
       date: moment(new Date()).format('MM-DD-YYYY'),
@@ -289,6 +291,7 @@ const ListHrs = () => {
     const payload = {
       name,
       comp_name,
+      userId: user?._id,
       email,
       position,
       saving: potential,
@@ -351,6 +354,7 @@ const ListHrs = () => {
       comp_name,
       position,
       saving: potential,
+      userId: user?._id,
       arrayData: type === '1' ? tableData : [],
       arrayData2: type === '2' ? tableData2 : []
     };

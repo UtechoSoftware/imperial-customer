@@ -1,86 +1,122 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable no-unused-vars */
-import "bootstrap/dist/js/bootstrap.bundle";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "bootstrap/dist/js/bootstrap.bundle";
 
-import { Suspense, lazy, useEffect, useState } from "react";
-import "./App.scss";
-import "./components/styles/main.css";
-import { finabeelight, logoDynomo } from "./components/icons/icon";
 import { CircularProgress } from "@mui/material";
+import { Suspense, lazy, useEffect, useState } from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
-import PublicRoutes from "./components/authRoutes/publicRoutes";
-import PrivateRoutes from "./components/authRoutes/privateRoutes";
-import exam from "./components/pages/exam/exam";
+import "./App.scss";
 import Courses from "./components/pages/courses";
+import "./components/styles/main.css";
 
-import AddCourse from "./components/pages/courseComponents/addCourse";
-import Quiz from "./components/pages/quiz";
-import AddQuestion from "./components/pages/quizComponents/addQuestions";
-import PreviewCourse from "./components/pages/courseContentComponent/previewCourse";
-import Blog from "./components/pages/blog";
-import AddBlog from "./components/pages/blogComponents/addBlog";
-import PreviewBlog from "./components/pages/blogComponents/previewBlog";
-import DigitalProducts from "./components/pages/digitalProducts";
-import AddProduct from "./components/pages/digitalProductComp/addProduct";
-import BlogSetting from "./components/pages/blogSetting";
-import AddBlogHoneypots from "./components/pages/blogComponents/addBlogHoneypots";
-import CourseContent from "./components/pages/courseContent";
-import AddCourseContent from "./components/pages/courseContentComponent/addCourseContent";
-import UpdateCourse from "./components/pages/courseContentComponent/updateCourse";
+import { useDispatch, useSelector } from "react-redux";
+import { axiosInstance } from "./components/api/axiosIntance.js";
+import LinkedInPage from "./components/auth/linkedinPage.js";
+import Register from "./components/auth/register.js";
+import Language from "./components/extension/language.js";
 import AlotQuestions from "./components/pages/alotQuestions";
-import QuizDetail from "./components/pages/quizComponents/quizDetail";
-import UpdateBlog from "./components/pages/blogComponents/updateBlog";
-import ParentsChild from "./components/pages/parentsChild";
-import DigitalProductsChild from "./components/pages/digitalProductsChild";
-import AddProductChild from "./components/pages/digitalProductComp/addProductChild";
-import Faq from "./components/pages/faq";
-import CustomerSupport from "./components/pages/customerSupport";
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import MyComponent from "./components/pages/ckeditor";
-import MyEditor from "./components/pages/ckeditor";
-import RichTextEditor from "./tiptap";
+import Blog from "./components/pages/blog";
 import BlogCategories from "./components/pages/blogCategories";
 import AddBlogCategory from "./components/pages/blogComponents/abbBlogCategory";
-import DigitalCategory from "./components/pages/digitalProductComp/digitalCategory";
+import AddBlog from "./components/pages/blogComponents/addBlog";
+import AddBlogHoneypots from "./components/pages/blogComponents/addBlogHoneypots";
+import PreviewBlog from "./components/pages/blogComponents/previewBlog";
+import UpdateBlog from "./components/pages/blogComponents/updateBlog";
+import BlogSetting from "./components/pages/blogSetting";
+import AddCourse from "./components/pages/courseComponents/addCourse";
+import CourseContent from "./components/pages/courseContent";
+import AddCourseContent from "./components/pages/courseContentComponent/addCourseContent";
+import PreviewCourse from "./components/pages/courseContentComponent/previewCourse";
+import UpdateCourse from "./components/pages/courseContentComponent/updateCourse";
+import CustomerSupport from "./components/pages/customerSupport";
 import AddDigitalCategory from "./components/pages/digitalProductComp/addDigitalCategory";
-import VoucherCategories from "./components/pages/vouchers/voucherCategories";
-import addVoucherCat from "./components/pages/vouchers/addVoucherCat";
-import Voucher from "./components/pages/vouchers/voucher";
-import addVoucher from "./components/pages/vouchers/addVoucher";
-import Exam from "./components/pages/exam/exam";
-import Help from "./components/pages/help";
-import Users from "./components/pages/users.js";
+import AddProduct from "./components/pages/digitalProductComp/addProduct";
+import AddProductChild from "./components/pages/digitalProductComp/addProductChild";
+import DigitalCategory from "./components/pages/digitalProductComp/digitalCategory";
+import DigitalProducts from "./components/pages/digitalProducts";
+import DigitalProductsChild from "./components/pages/digitalProductsChild";
 import CreateExam from "./components/pages/exam/createExam";
-import AddVoucherCat from "./components/pages/vouchers/addVoucherCat";
-import AddVoucher from "./components/pages/vouchers/addVoucher";
-import GeneralExam from "./components/pages/generalExam/general";
 import EditQuestion from "./components/pages/exam/editQuestion";
-import Question from "./components/pages/question/question";
-import CreateQuestion from "./components/pages/question/createQuestion";
+import Exam from "./components/pages/exam/exam";
 import PreviewQuestions from "./components/pages/exam/previewQuestions.js";
-import Role from "./components/pages/role/role.js";
-import AddRole from "./components/pages/role/addRole.js";
-import { useSelector } from "react-redux";
-import Register from "./components/auth/register.js";
-import ListHrs from "./components/pages/listHrs.js";
+import Faq from "./components/pages/faq";
+import GeneralExam from "./components/pages/generalExam/general";
+import Help from "./components/pages/help";
 import ListHr2 from "./components/pages/listHr2.js";
-import LinkedInPage from "./components/auth/linkedinPage.js";
-import Language from "./components/extension/language.js";
+import ListHrs from "./components/pages/listHrs.js";
+import ParentsChild from "./components/pages/parentsChild";
+import CreateQuestion from "./components/pages/question/createQuestion";
+import Question from "./components/pages/question/question";
+import Quiz from "./components/pages/quiz";
+import AddQuestion from "./components/pages/quizComponents/addQuestions";
+import QuizDetail from "./components/pages/quizComponents/quizDetail";
+import AddRole from "./components/pages/role/addRole.js";
+import Role from "./components/pages/role/role.js";
+import Users from "./components/pages/users.js";
+import AddVoucher from "./components/pages/vouchers/addVoucher";
+import AddVoucherCat from "./components/pages/vouchers/addVoucherCat";
+import Voucher from "./components/pages/vouchers/voucher";
+import VoucherCategories from "./components/pages/vouchers/voucherCategories";
+import { setUserData } from "./components/store/reducer/imperialAuth.js";
+import RichTextEditor from "./tiptap";
 const NavHeader = lazy(() => import("./components/header/navHeader"));
 const SidebarMenu = lazy(() => import("./components/pages/sidebar"));
 const LoginPage1 = lazy(() => import("./components/auth/dynomoLogin1"));
 const Dashboard = lazy(() => import("./components/pages/dashboard.jsx"));
 const Parents = lazy(() => import("./components/pages/parents"));
 
+
+
+const generateRandomId = () => {
+  const randomNumbers = Math.floor(Math.random() * 90 + 10).toString();
+  let randomAlphanumeric = "";
+  while (randomAlphanumeric.length < 22) {
+    randomAlphanumeric += Math.random().toString(36).substring(2);
+  }
+  randomAlphanumeric = randomAlphanumeric.substring(0, 22);
+  return randomNumbers + randomAlphanumeric;
+};
+
 function App() {
+  const dispatch = useDispatch();
+  const uuid = generateRandomId();
   const [toggled, setToggled] = useState(false);
   const [broken, setBroken] = useState(false);
+  const userData = useSelector((state) => state?.data?.data?.user)
   const [isLogin, setIsLogin] = useState(false);
   const pathname = useLocation();
   const roles = useSelector(
     (state) => state?.adminData?.adminData?.user?.roles
   );
+
+
+  console.log(userData);
+
+  useEffect(() => {
+    if (!userData?._id) {
+      axiosInstance.post(`api/users/view/${uuid}`, {})
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(setUserData({ ...userData, _id: uuid }));
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+    } else {
+      axiosInstance.post(`api/users/view/${userData?._id}`, {})
+        .then((res) => {
+          if (res.status === 200) {
+            dispatch(setUserData(...userData))
+          }
+        }).catch((err) => {
+          console.log(err);
+        })
+    }
+  }, [userData?._id])
+
+  console.log(userData);
+
   useEffect(() => {
     global.TOKEN = localStorage.getItem("imperial_token");
     const isLoginData = JSON.parse(
@@ -90,6 +126,8 @@ function App() {
     setIsLogin(isLoginData);
     window.scrollTo(0, 0);
   }, [pathname]);
+
+
 
   return (
     <>
