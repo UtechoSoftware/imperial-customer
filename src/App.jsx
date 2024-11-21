@@ -90,9 +90,6 @@ function App() {
     (state) => state?.adminData?.adminData?.user?.roles
   );
 
-
-  console.log(userData);
-
   useEffect(() => {
     if (!userData?._id) {
       axiosInstance.post(`api/users/view/${uuid}`, {})
@@ -114,8 +111,6 @@ function App() {
         })
     }
   }, [userData?._id])
-
-  console.log(userData);
 
   useEffect(() => {
     global.TOKEN = localStorage.getItem("imperial_token");

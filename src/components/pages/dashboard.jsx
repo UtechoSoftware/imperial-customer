@@ -95,14 +95,48 @@ const Dashboard = () => {
   // console.log(ans)
 
 
+  const calculateSaving = (formData) => {
+    console.log(formData);
+    let saving = 14 * (23.75 / 100);
+    let salary = parseInt(formData.salary);
+    if (isNaN(salary)) {
+      console.log(salary, 'dhjk');
+      // console.error("Salary is not a valid number");
+      return null; // Early exit if salary is invalid
+    } else {
+      return saving * salary;
+    }
+  };
+  const calculateSaving2 = (formData) => {
+    let saving = 14 * (11.85 / 100);
+    let salary = parseInt(formData.salary);
+    if (isNaN(salary)) {
+      // console.error("Salary is not a valid number");
+      return null;
+    } else {
+      return saving * salary;
+    }
+  };
 
   const handleChange = (event) => {
     setEmployeeType(event.target.value);
   };
-
   const handleInputChange = (event) => {
     const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
+    const updatedFormData = { ...formData, [name]: value };
+
+    // Dynamically calculate savings when salary changes
+    if (name === "salary") {
+      if (updatedFormData.employmentContractType === "open-ended contract") {
+        const saving =
+          updatedFormData.currentSSCRate === "23.75%"
+            ? calculateSaving(updatedFormData)
+            : calculateSaving2(updatedFormData);
+        updatedFormData.saving = saving;
+      }
+    }
+
+    setFormData(updatedFormData);
   };
   // -------------------previous code for backup --------------- don't remove this -------------
   // const handleDateChange = (date, fieldName) => {
@@ -125,6 +159,7 @@ const Dashboard = () => {
   //   }));
   //   setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "" }));
   // };
+
   const handleDateChange = (date, fieldName) => {
     const currentDate = new Date();
     const selectedDate = date;
@@ -137,9 +172,7 @@ const Dashboard = () => {
       setErrors((prevErrors) => ({ ...prevErrors, [fieldName]: "Age must be 15 years or older." }));
       return;
     }
-
     const age = differenceInYears(currentDate, selectedDate);
-
     if (fieldName === "dob") {
       setDob(age);
       setDOB(selectedDate);
@@ -150,7 +183,6 @@ const Dashboard = () => {
       setStartDate(age);
       setbtDate(selectedDate);
     }
-
     setFormData((prevData) => ({
       ...prevData,
       [fieldName]: selectedDate,
@@ -222,6 +254,8 @@ const Dashboard = () => {
   //   }
   // };
 
+  // console.log(formData);
+
   const handleSubmit = () => {
     const today = new Date();
     const formattedDate = today.toISOString().split("T")[0];
@@ -234,9 +268,11 @@ const Dashboard = () => {
     const isDiff8filling = Math.abs(differenceInYears(btDate, today));
     if (login) {
       const calculateSaving = (formData) => {
+        console.log(formData);
         let saving = 14 * (23.75 / 100);
-        let salary = parseFloat(formData.salary);
+        let salary = parseInt(formData.salary);
         if (isNaN(salary)) {
+          console.log(salary, 'dhjk');
           // console.error("Salary is not a valid number");
           return null; // Early exit if salary is invalid
         } else {
@@ -245,7 +281,7 @@ const Dashboard = () => {
       };
       const calculateSaving2 = (formData) => {
         let saving = 14 * (11.85 / 100);
-        let salary = parseFloat(formData.salary);
+        let salary = parseInt(formData.salary);
         if (isNaN(salary)) {
           // console.error("Salary is not a valid number");
           return null;
@@ -321,13 +357,15 @@ const Dashboard = () => {
           iefp: formData.iefp,
           iefpDate: formData.iefpDate,
           newHiring: formData.newHiring,
-          saving: saving,
+          saving: saving || formData.saving,
           dob: formData.dob,
           identifier: formData.identifier,
         };
+        // console.log(saving);
+        // console.log(data);
+        // return
         if (editData && validateForm()) {
           setLoading(true);
-
           update_hr(data, editData?._id)
             .then((res) => {
               setLoading(false);
@@ -716,7 +754,9 @@ const Dashboard = () => {
   useEffect(() => {
     handleParamsData();
   }, []);
-  // console.log(editData, "editData")
+
+  console.log(user);
+
   return (
     <div>
       <>
@@ -733,7 +773,7 @@ const Dashboard = () => {
                   />
                   <div className="flex flex-col">
                     <h4 className="manrope_bold max-md:text-xl text_black">
-                      {user?.name?.charAt(0).toUpperCase() + user?.name?.slice(1).toLowerCase()}
+                      {user?.name?.charAt(0)?.toUpperCase() + user?.name?.slice(1)?.toLowerCase()}
                     </h4>
                     <p>{user?.position.charAt(0).toUpperCase() + user?.position?.slice(1).toLowerCase()}- {user?.comp_name.charAt(0).toUpperCase() + user?.comp_name?.slice(1).toLowerCase()}</p>
                   </div>

@@ -15,8 +15,6 @@ const Language = () => {
         handleChangeLanguage(userLangauge)
     }, [userLangauge])
 
-    console.log(userLangauge, 'userLangauge');
-
     return (
         <div className='d-flex gap-1 align-items-center w-100'>
             {/* Language Select Dropdown */}
