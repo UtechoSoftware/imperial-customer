@@ -369,8 +369,8 @@ const ListHrs = () => {
       position,
       saving: roundedTotalSaving + roundedTotalSaving2,
       userId: user?._id,
-      arrayData: storedData2,
-      arrayData2: storedData
+      arrayData: storedData,
+      arrayData2: storedData2
     };
     const validateForm = (payload) => {
       for (const key in payload) {
