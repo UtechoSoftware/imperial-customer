@@ -150,6 +150,17 @@ const ListHrs = () => {
         .catch((err) => {
           setLoading(false);
         });
+      get_hr("companystaff", currentPage2)
+        .then((res) => {
+          setLoading(false)
+          setLoading3(false)
+          setTableData2(res?.data?.data);
+          setTotalPages2(res.data.count?.totalPage || 0)
+          setTableLoading(false);
+        })
+        .catch((err) => {
+          setLoading(false);
+        });
     }
     getPotential('all')
       .then((res) => {
@@ -561,18 +572,17 @@ const ListHrs = () => {
               <div className="d-flex gap-4 flex-wrap justify-content-between">
                 {login && (
                   <>
-                    <div
+                    <button
+                      onClick={handleCalculateSaving}
                       className="q_card_4 flex manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
                     >
                       <h6>
                         {/* Export Savings report */}
                         {t('card_1')}
-
-
                       </h6>
                       <img className="h-10" src={plane} alt="email" />
-                    </div>
+                    </button>
                     <div
                       className="q_card_3 flex cursor-pointer flex-col manrope_bold max-md:text-xl text_black justify-center items-center border-solid border-1 rounded py-3 px-3 bg-white"
                       style={{ borderRadius: "60px" }}
