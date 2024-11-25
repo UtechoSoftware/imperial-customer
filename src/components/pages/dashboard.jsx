@@ -100,7 +100,6 @@ const Dashboard = () => {
     let saving = 14 * (23.75 / 100);
     let salary = parseInt(formData.salary);
     if (isNaN(salary)) {
-      console.log(salary, 'dhjk');
       // console.error("Salary is not a valid number");
       return null; // Early exit if salary is invalid
     } else {

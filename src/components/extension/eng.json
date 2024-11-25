@@ -152,5 +152,18 @@
   "popup2": "Get to know how the Social Security exemption works",
   "popup3": "Review your profile and check your previous simulations",
   "popup4": "Check the most frequently asked questions",
-  "popup5": "I wish to calculate the potential savings for my company"
+  "popup5": "I wish to calculate the potential savings for my company",
+  
+  "table_comp_1":"Identifier",
+  "table_comp_2":"New Hiring",
+  "table_comp_3":"Identifier",
+  "table_comp_4":"IEFP",
+  "table_comp_11":"IEFP Date",
+  "table_comp_5":"Contract Type",
+  "table_comp_6":"Start Date",
+  "table_comp_7":"Salary",
+  "table_comp_8":"Current SSC Rate",
+  "table_comp_9":"Work History",
+  "table_comp_10":"Savings",
+  "table_comp_12":"Actions"
 }

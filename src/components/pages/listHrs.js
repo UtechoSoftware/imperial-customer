@@ -62,6 +62,8 @@ const ListHrs = () => {
   const [loading, setLoading] = useState(true);
   const nodata = false;
   const [employeeType, setEmployeeType] = useState("New Hire");
+  const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+  const storedData2 = JSON.parse(sessionStorage.getItem("hrData")) || [];
 
   const onChange = (key) => {
     setType(key)
@@ -155,7 +157,6 @@ const ListHrs = () => {
         setLoading(false);
         setUpdating(false)
         setTableLoading(false);
-
       })
       .catch((err) => {
         setLoading(false);
@@ -284,6 +285,10 @@ const ListHrs = () => {
       }
     }
   }
+
+  console.log(tableData);
+  console.log(tableData2);
+
   const handleCalculateSaving = (e) => {
     e.preventDefault()
     setLoader(true)
@@ -295,8 +300,8 @@ const ListHrs = () => {
       email,
       position,
       saving: potential,
-      arrayData: type === '1' ? tableData : [],
-      arrayData2: type === '2' ? tableData2 : []
+      arrayData: tableData,
+      arrayData2: tableData2
     };
 
     const validateForm = (payload) => {
@@ -328,35 +333,44 @@ const ListHrs = () => {
     }
 
   }
-  const handleCalculateSaving2 = (e) => {
-    e.preventDefault();
+  const handleCalculateSaving2 = (event) => {
+    event.preventDefault();
     let roundedTotalSaving;
-    if (type === '1') {
-      const totalSaving = tableData?.reduce((sum, item) => sum + (item?.saving || 0), 0);
-      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
-    } else {
-      const totalSaving = tableData2?.reduce((sum, item) => sum + (item?.saving || 0), 0);
-      roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
-    }
+
+    const storedData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+    const totalSaving = storedData?.reduce((sum, item) => sum + (item?.saving || 0), 0);
+    roundedTotalSaving = parseFloat(totalSaving.toFixed(3));
+
     if (roundedTotalSaving === undefined || isNaN(roundedTotalSaving)) {
       message.error("Failed to calculate savings. Please try again.");
       return;
     }
-    setLoader(true);
-    const { name, comp_name, email, position } = user;
-    // if (!formElement) {
-    //   message.error("Form element not found. Ensure the button is inside a form.");
-    //   return;
-    // }
+
+    let roundedTotalSaving2;
+    const storedData2 = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+    const totalSaving2 = storedData2?.reduce((sum, item) => sum + (item?.saving || 0), 0);
+    roundedTotalSaving2 = parseFloat(totalSaving2.toFixed(3));
+
+    if (roundedTotalSaving2 === undefined || isNaN(roundedTotalSaving2)) {
+      message.error("Failed to calculate savings. Please try again.");
+      return;
+    }
+    setLoader(true)
+    const formData = new FormData(event.target);
+
+    const name = formData.get('formName');
+    const email = formData.get('formEmail');
+    const companyName = formData.get('formCompanyName');
+    const position = formData.get('formPosition');
     const payload = {
       name,
       email,
-      comp_name,
+      companyName,
       position,
-      saving: potential,
+      saving: roundedTotalSaving + roundedTotalSaving2,
       userId: user?._id,
-      arrayData: type === '1' ? tableData : [],
-      arrayData2: type === '2' ? tableData2 : []
+      arrayData: storedData2,
+      arrayData2: storedData
     };
     const validateForm = (payload) => {
       for (const key in payload) {
@@ -366,6 +380,7 @@ const ListHrs = () => {
       }
       return null;
     };
+    console.log('click');
 
     const errorMessage = validateForm(payload);
     if (errorMessage) {
@@ -641,7 +656,7 @@ const ListHrs = () => {
                 </button>
               )
             }
-            {login && (
+            {/* {login && (
               <>
                 <Tooltip
                   style={{ backgroundColor: "yellow" }}
@@ -653,12 +668,11 @@ const ListHrs = () => {
                     type="button"
                     className="btn2 px-3 py-3 text-nowrap   border-black "
                   >
-                    {/* Calculate Savings */}
                     {t('calculate_saving')}
                   </button>
                 </Tooltip>
               </>
-            )}
+            )} */}
           </div>
           <div className="mb-4">
             <span className="text_head fw-bold"> {t('des')}:</span> {t('description')}

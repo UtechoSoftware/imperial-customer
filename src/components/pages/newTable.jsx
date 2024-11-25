@@ -8,6 +8,7 @@ import { Edit2, Trash2 } from "react-feather";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { del_hr_by_id, get_hr } from "../api/hr";
+import { useTranslation } from "react-i18next";
 
 const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalPages, setLoading, setTableData2, loading, tableData2 }) => {
   const [showModal2, setShowModal2] = useState(false);
@@ -15,6 +16,7 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
   const login = useSelector((state) => state.data.data.isLogin_);
   const [delLoader, setDelLoader] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation()
 
   useEffect(() => {
     if (!login) {
@@ -79,18 +81,18 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
           <Table bordered hover>
             <thead>
               <tr>
-                <th>Identifier</th>
-                <th>New Hiring</th>
-                <th>Date of Birth</th>
-                <th>IEFP</th>
-                <th>IEFP Date</th>
-                <th>Contract Type</th>
-                <th>Start Date</th>
-                <th>Salary</th>
-                <th>Current SSC Rate</th>
-                <th>Work History</th>
-                <th>Savings</th>
-                <th>Actions</th>
+                <th>{t('table_comp_1')}</th>
+                <th>{t('table_comp_2')}</th>
+                <th>{t('table_comp_3')}</th>
+                <th>{t('table_comp_4')}</th>
+                <th>{t('table_comp_11')}</th>
+                <th>{t('table_comp_5')}</th>
+                <th>{t('table_comp_6')}</th>
+                <th>{t('table_comp_7')}</th>
+                <th>{t('table_comp_8')}</th>
+                <th>{t('table_comp_9')}</th>
+                <th>{t('table_comp_10')}</th>
+                <th>{t('table_comp_12')}</th>
               </tr>
             </thead>
             <tbody>

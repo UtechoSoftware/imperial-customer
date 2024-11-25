@@ -143,5 +143,18 @@
   "popup2": "Perceba o funcionamento da isenção de contribuições para a Segurança Social",
   "popup3": "Reveja o seu perfil e aceda às suas simulações ",
   "popup4": "Verifique as questões mais frequentes",
-  "popup5": "Botão Quero simular o benefício"
+  "popup5": "Botão Quero simular o benefício",
+  
+  "table_comp_1":"Identificador",
+  "table_comp_2":"Nova contratação",
+  "table_comp_3":"Data de nascimento",
+  "table_comp_4":"IEFP",
+  "table_comp_11":"Data do IEFP",
+  "table_comp_5":"Tipo de contrato",
+  "table_comp_6":"Data de início",
+  "table_comp_7":"Salário",
+  "table_comp_8":"Taxa SSC atual",
+  "table_comp_9":"Histórico de trabalho",
+  "table_comp_10":"Poupança",
+  "table_comp_12":"Ações"
 }
