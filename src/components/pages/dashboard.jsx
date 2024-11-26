@@ -399,141 +399,146 @@ const Dashboard = () => {
 
           }
         }
-      } else if (employeeType === "companystaff") {
-        if (
-          !formData.dob ||
-          !formData.identifier ||
-          !formData.newHiring ||
-          !formData.iefp ||
-          (formData.iefp === "yes" && !formData.iefpDate) ||
-          !formData.employmentContractType ||
-          (formData.employmentContractType === "open-ended contract" &&
-            (!formData.salary ||
-              !formData.workHistory ||
-              !formData.startDate ||
-              !formData.currentSSCRate))
-        ) {
-          setLoading(false)
-        } else {
-          if (
-            dob >= 45 &&
-            isDiff48 >= 45 &&
-            formData.iefp === "yes" &&
-            iefpDate >= 2 &&
-            isDiff64 >= 2 &&
-            formData.newHiring !== "" &&
-            formData.identifier !== "" &&
-            formData.salary &&
-            formData.employmentContractType === "open-ended contract" &&
-            isDiff8filling <= 2 &&
-            formData.currentSSCRate === "23.75%" &&
-            formData.workHistory === "no"
-          ) {
-            // message.success("Eligible for saving ");
-            saving = calculateSaving(formData);
-          } else if (
-            dob <= 31 &&
-            isDiff48 <= 31 &&
-            formData.iefp !== "" &&
-            iefpDate >= 2 &&
-            isDiff64 >= 2 &&
-            formData.newHiring !== "" &&
-            formData.identifier !== "" &&
-            formData.salary &&
-            formData.employmentContractType === "open-ended contract" &&
-            isDiff8filling < 5 &&
-            formData.currentSSCRate === "23.75%" &&
-            formData.workHistory === "yes"
-          ) {
-            // message.success("Eligible for saving ");
-            saving = calculateSaving(formData);
-          } else if (
-            dob &&
-            formData.iefp === "yes" &&
-            iefpDate >= 1 &&
-            isDiff64 >= 1 &&
-            formData.newHiring !== "" &&
-            formData.identifier !== "" &&
-            formData.salary &&
-            formData.employmentContractType === "open-ended contract" &&
-            isDiff8filling < 3 &&
-            formData.currentSSCRate === "23.75%" &&
-            formData.workHistory === "no"
-          ) {
-            // message.success("Eligible for saving ");
-            saving = calculateSaving(formData);
-          } else if (
-            dob <= 31 &&
-            isDiff48 <= 31 &&
-            formData.iefp === "yes" &&
-            iefpDate !== "" &&
-            formData.newHiring !== "" &&
-            formData.identifier !== "" &&
-            formData.salary &&
-            formData.employmentContractType === "open-ended contract" &&
-            isDiff8filling < 5 &&
-            formData.currentSSCRate === "23.75%" &&
-            formData.workHistory === "yes"
-          ) {
-            // message.success("Eligible for saving ");
-            saving = calculateSaving(formData);
-          } else {
-            // message.error("Not eligible for saving...!");
-          }
-        }
-        const data = {
-          type: employeeType,
-          currentSSCRate: formData.currentSSCRate,
-          // currentSalary:formData.currentSalary,
-          workHistory: formData.workHistory,
-          salary: formData.salary,
-          employmentContractType: formData.employmentContractType,
-          startDate: formData.startDate,
-          iefp: formData.iefp,
-          iefpDate: formData.iefpDate,
-          newHiring: formData.newHiring,
-          saving: saving,
-          dob: formData.dob,
-          identifier: formData.identifier,
-        };
-        // console.log(data, "data...");
-        if (editData && validateForm2()) {
-          update_hr(data, editData?._id)
-            .then((res) => {
-              setLoading(false);
-              if (res) {
-                message.success("Hr Updated successfully..");
-                navigate("/list-hr");
-              }
-            }).catch((err) => {
-              setLoading(false);
-
-            })
-        } else {
-          if (validateForm2()) {
-            setLoading(true)
-            create_hr(data)
-              .then((res) => {
-                setLoading(false);
-                if (res) {
-                  message.success("Hr Added successfully..");
-                  navigate("/list-hr");
-                }
-
-              })
-              .catch((err) => {
-                setLoading(false);
-              });
-          } else {
-            // message.error('Form data must be filled')
-            setLoading(false);
-          }
-        }
-        // Your logic here for when the form data is complete
-      } else {
-        // message.error("Not eligible for saving...!");
-        // navigate("/list-hr");
       }
+
+
+      // else if (employeeType === "companystaff") {
+      //   if (
+      //     !formData.dob ||
+      //     !formData.identifier ||
+      //     !formData.newHiring ||
+      //     !formData.iefp ||
+      //     (formData.iefp === "yes" && !formData.iefpDate) ||
+      //     !formData.employmentContractType ||
+      //     (formData.employmentContractType === "open-ended contract" &&
+      //       (!formData.salary ||
+      //         !formData.workHistory ||
+      //         !formData.startDate ||
+      //         !formData.currentSSCRate))
+      //   ) {
+      //     setLoading(false)
+      //   } else {
+      //     if (
+      //       dob >= 45 &&
+      //       isDiff48 >= 45 &&
+      //       formData.iefp === "yes" &&
+      //       iefpDate >= 2 &&
+      //       isDiff64 >= 2 &&
+      //       formData.newHiring !== "" &&
+      //       formData.identifier !== "" &&
+      //       formData.salary &&
+      //       formData.employmentContractType === "open-ended contract" &&
+      //       isDiff8filling <= 2 &&
+      //       formData.currentSSCRate === "23.75%" &&
+      //       formData.workHistory === "no"
+      //     ) {
+      //       // message.success("Eligible for saving ");
+      //       saving = calculateSaving(formData);
+      //     } else if (
+      //       dob <= 31 &&
+      //       isDiff48 <= 31 &&
+      //       formData.iefp !== "" &&
+      //       iefpDate >= 2 &&
+      //       isDiff64 >= 2 &&
+      //       formData.newHiring !== "" &&
+      //       formData.identifier !== "" &&
+      //       formData.salary &&
+      //       formData.employmentContractType === "open-ended contract" &&
+      //       isDiff8filling < 5 &&
+      //       formData.currentSSCRate === "23.75%" &&
+      //       formData.workHistory === "yes"
+      //     ) {
+      //       // message.success("Eligible for saving ");
+      //       saving = calculateSaving(formData);
+      //     } else if (
+      //       dob &&
+      //       formData.iefp === "yes" &&
+      //       iefpDate >= 1 &&
+      //       isDiff64 >= 1 &&
+      //       formData.newHiring !== "" &&
+      //       formData.identifier !== "" &&
+      //       formData.salary &&
+      //       formData.employmentContractType === "open-ended contract" &&
+      //       isDiff8filling < 3 &&
+      //       formData.currentSSCRate === "23.75%" &&
+      //       formData.workHistory === "no"
+      //     ) {
+      //       // message.success("Eligible for saving ");
+      //       saving = calculateSaving(formData);
+      //     } else if (
+      //       dob <= 31 &&
+      //       isDiff48 <= 31 &&
+      //       formData.iefp === "yes" &&
+      //       iefpDate !== "" &&
+      //       formData.newHiring !== "" &&
+      //       formData.identifier !== "" &&
+      //       formData.salary &&
+      //       formData.employmentContractType === "open-ended contract" &&
+      //       isDiff8filling < 5 &&
+      //       formData.currentSSCRate === "23.75%" &&
+      //       formData.workHistory === "yes"
+      //     ) {
+      //       // message.success("Eligible for saving ");
+      //       saving = calculateSaving(formData);
+      //     } else {
+      //       // message.error("Not eligible for saving...!");
+      //     }
+      //   }
+      //   const data = {
+      //     type: employeeType,
+      //     currentSSCRate: formData.currentSSCRate,
+      //     // currentSalary:formData.currentSalary,
+      //     workHistory: formData.workHistory,
+      //     salary: formData.salary,
+      //     employmentContractType: formData.employmentContractType,
+      //     startDate: formData.startDate,
+      //     iefp: formData.iefp,
+      //     iefpDate: formData.iefpDate,
+      //     newHiring: formData.newHiring,
+      //     saving: saving,
+      //     dob: formData.dob,
+      //     identifier: formData.identifier,
+      //   };
+      //   // console.log(data, "data...");
+      //   if (editData && validateForm2()) {
+      //     update_hr(data, editData?._id)
+      //       .then((res) => {
+      //         setLoading(false);
+      //         if (res) {
+      //           message.success("Hr Updated successfully..");
+      //           navigate("/list-hr");
+      //         }
+      //       }).catch((err) => {
+      //         setLoading(false);
+
+      //       })
+      //   } else {
+      //     if (validateForm2()) {
+      //       setLoading(true)
+      //       create_hr(data)
+      //         .then((res) => {
+      //           setLoading(false);
+      //           if (res) {
+      //             message.success("Hr Added successfully..");
+      //             navigate("/list-hr");
+      //           }
+
+      //         })
+      //         .catch((err) => {
+      //           setLoading(false);
+      //         });
+      //     } else {
+      //       // message.error('Form data must be filled')
+      //       setLoading(false);
+      //     }
+      //   }
+      //   // Your logic here for when the form data is complete
+      // }
+
+      // else {
+      //   // message.error("Not eligible for saving...!");
+      //   // navigate("/list-hr");
+      // }
     }
     if (!login) {
       const calculateSaving = (formData) => {
@@ -858,6 +863,25 @@ const Dashboard = () => {
                         <option value="yes">{t('yes')}</option>
                         <option value="no">{t('no')}</option>
                       </select>
+
+                    </div>
+                  </Tooltip>
+                  <Tooltip
+                    title={t('unique_identifier_desc')}
+                  >
+                    <div className="">
+                      <input
+                        type="text"
+                        id="identifier"
+                        name="identifier"
+                        placeholder={t('unique_identifier')}
+                        value={formData.identifier}
+                        onChange={handleIdentifierChange}
+                        className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
+
+                      // className="form-control"
+                      />
+                      {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
 
                     </div>
                   </Tooltip>

@@ -13,6 +13,8 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
   const [rowData, setRowData] = useState("");
+  const storedData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+  const storedData2 = JSON.parse(sessionStorage.getItem("hrData")) || [];
   const [delLoading, setDelLoading] = useState(false);
   const navigate = useNavigate();
   const editRow = (item, index) => {
@@ -24,14 +26,24 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
     })
   };
 
+  console.log(storedData2);
+
   const handlePageChange = (page) => {
     setCurrentPage(page);
   };
+
+  const handleDelete = () => {
+    console.log(rowData);
+  }
+
+  console.log(rowData);
+
 
   const deleteRow = (data, index) => {
     setRowData(data?._id)
     setShowModal2(true)
   };
+
   const login = useSelector((state) => state.data.data.isLogin_);
   return (
     <>
@@ -51,6 +63,7 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
           <Table bordered hover style={{ width: "900px" }}>
             <thead>
               <tr className="text-nowrap">
+                <th>{t('table_comp_3')}</th>
                 <th colSpan="1" style={{ width: "175px" }}>
                   {t('table_head_1')}
                 </th>
@@ -71,15 +84,15 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
                   {t('table_head_6')}
                 </th>
                 {
-                  login && (
-
-                    <th colSpan="1" style={{ width: "175px" }}>
-                      {t('table_head_7')}
-                    </th>
-                  )
+                  // login && (
+                  <th colSpan="1" style={{ width: "175px" }}>
+                    {t('table_head_7')}
+                  </th>
+                  // )
                 }
               </tr>
               <tr className="text-nowrap">
+                <th style={{ width: "175px" }}>______</th>
                 <th style={{ width: "175px" }}>{t('table_head_8')}</th>
                 <th style={{ width: "175px" }}>{t('table_head_9')}</th>
                 <th style={{ width: "125px" }}>{t('table_head_10')}</th>
@@ -88,10 +101,10 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
                 <th style={{ width: "150px" }}>{t('table_head_13')}</th>
                 <th style={{ width: "150px" }}>______</th>
                 {
-                  login && (
+                  // login && (
 
-                    <th style={{ width: "150px" }}>{t('table_head_14')}</th>
-                  )
+                  <th style={{ width: "150px" }}>{t('table_head_14')}</th>
+                  // )
                 }
 
               </tr>
@@ -100,6 +113,7 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
               {tableData?.length > 0 ? (
                 tableData.map((data, index) => (
                   <tr key={index}>
+                    <td style={{ textAlign: "center" }}>{data.identifier || 'N/A'}</td>
                     <td>
                       {data.dob
                         ? new Date(data.dob).toLocaleDateString("en-GB", {
@@ -118,7 +132,6 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
                         })
                         : "N/A"}
                     </td>
-
                     <td>
                       {data.startDate
                         ? new Date(data.startDate).toLocaleDateString("en-GB", {
@@ -133,15 +146,15 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
                     <td>{data.workHistory || "N/A"}</td>
                     <td> {data.saving !== null && data.saving !== undefined ? data?.saving.toFixed(2) : "N/A"}</td>
                     {
-                      login && (
-                        <td>
-                          {/* hello are */}
-                          <div className="d-flex flex-row  justify-content-center">
-                            <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(data, index)} />
-                            <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(data, index)} />
-                          </div>
-                        </td>
-                      )
+                      // login && (
+                      <td>
+                        {/* hello are */}
+                        <div className="d-flex flex-row  justify-content-center">
+                          <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(data, index)} />
+                          <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(data, index)} />
+                        </div>
+                      </td>
+                      // )
                     }
                   </tr>
                 ))
@@ -183,30 +196,38 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
             >
               {t('cancel_btn')}
             </Button>
-            <Button
-              style={{ backgroundColor: "#161920" }}
-              className="me-2"
-              onClick={() => {
-                setDelLoader(true);
-                setDelLoading(true)
-                del_hr_by_id(rowData)
-                  .then((res) => {
-                    if (res) {
+            {login ?
+              <Button
+                style={{ backgroundColor: "#161920" }}
+                className="me-2"
+                onClick={() => {
+                  setDelLoader(true);
+                  setDelLoading(true)
+                  del_hr_by_id(rowData)
+                    .then((res) => {
+                      if (res) {
+                        setDelLoader(false);
+                        setDelLoading(false)
+                        message.success("Data deleted successfully");
+                        setShowModal2(false);
+                      }
+                    })
+                    .catch(() => {
                       setDelLoader(false);
                       setDelLoading(false)
-                      message.success("Data deleted successfully");
                       setShowModal2(false);
-                    }
-                  })
-                  .catch(() => {
-                    setDelLoader(false);
-                    setDelLoading(false)
-                    setShowModal2(false);
-                  });
-              }}
-            >
-              {delLoader ? <Spinner size="sm" /> : "Delete"}
-            </Button>
+                    });
+                }}
+              >
+                {delLoader ? <Spinner size="sm" /> : "Delete"}
+              </Button>
+              : <Button
+                onClick={handleDelete}
+                style={{ backgroundColor: "#161920" }}
+                className="me-2"
+              >
+                Delete
+              </Button>}
           </div>
         </Modal.Body>
       </Modal>

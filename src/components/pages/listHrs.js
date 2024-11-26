@@ -219,7 +219,7 @@ const ListHrs = () => {
       comp_name: companyName,
       position,
       date: moment(new Date()).format('MM-DD-YYYY'),
-      saving: roundedTotalSaving
+      saving: parseInt(roundedTotalSaving || 0)?.toFixed(2)
     };
     const validateForm = (payload) => {
       for (const key in payload) {
@@ -238,7 +238,6 @@ const ListHrs = () => {
       if (payload) {
         axiosInstance.get('api/users/support', { params: payload })
           .then((response) => {
-            console.log(response, 'rs');
             if (response.status === 200) {
               message.success(t('message_success_email'))
               setLoader(false)
@@ -297,9 +296,6 @@ const ListHrs = () => {
     }
   }
 
-  console.log(tableData);
-  console.log(tableData2);
-
   const handleCalculateSaving = (e) => {
     e.preventDefault()
     setLoader(true)
@@ -310,7 +306,7 @@ const ListHrs = () => {
       userId: user?._id,
       email,
       position,
-      saving: potential,
+      saving: parseInt(potential || 0)?.toFixed(2),
       arrayData: tableData,
       arrayData2: tableData2
     };
@@ -366,9 +362,9 @@ const ListHrs = () => {
       message.error("Failed to calculate savings. Please try again.");
       return;
     }
+    const totalAmount = roundedTotalSaving2 + roundedTotalSaving
     setLoader(true)
     const formData = new FormData(event.target);
-
     const name = formData.get('formName');
     const email = formData.get('formEmail');
     const companyName = formData.get('formCompanyName');
@@ -378,7 +374,7 @@ const ListHrs = () => {
       email,
       companyName,
       position,
-      saving: roundedTotalSaving + roundedTotalSaving2,
+      saving: parseInt(totalAmount || 0)?.toFixed(2),
       userId: user?._id,
       arrayData: storedData,
       arrayData2: storedData2
@@ -995,14 +991,28 @@ const ListHrs = () => {
                   onClick={() => {
                     if (login) {
                       setDelLoader(true);
-                      del_hr(newHire === true ? "newhire" : "companystaff")
+                      del_hr("newhire")
                         .then((res) => {
                           if (res) {
                             setUpdating(true);
+                            setTableData([])
+                            setDelLoader(false);
+                            // message.success("Data deleted successfully");
+                            setShowModal2(false);
+                          }
+                        })
+                        .catch(() => {
+                          setDelLoader(false);
+                          setUpdating(false);
+                          setShowModal2(false);
+                        });
+                      del_hr("companystaff")
+                        .then((res) => {
+                          if (res) {
+                            setUpdating(true);
+                            setTableData2([])
                             setDelLoader(false);
                             message.success("Data deleted successfully");
-                            // fetchData()
-
                             setShowModal2(false);
                           }
                         })
@@ -1013,14 +1023,14 @@ const ListHrs = () => {
                           setShowModal2(false);
                         });
                     } else {
-                      newHire === true ? sessionStorage.removeItem("hrData") : sessionStorage.removeItem("hrData_company")
+                      sessionStorage.removeItem("hrData")
+                      sessionStorage.removeItem("hrData_company")
+                      // newHire === true ? sessionStorage.removeItem("hrData") : sessionStorage.removeItem("hrData_company")
+                      setTableData([])
+                      setTableData2([])
                       message.success("Data deleted successfully");
                       setShowModal2(false);
-
                       // setTableData([]);
-
-
-
                     }
                   }}
                 >
