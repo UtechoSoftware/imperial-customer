@@ -274,11 +274,13 @@ const Dashboard = () => {
     const yearsDifferenceInHiringDateAndDob = hiringDate.diff(dob, "years");
     const monthsDifferenceInIefpDateAndStartDate = startDate.diff(iefpDate, "months");
     const monthsDifferenceInHiringAndIeftDate = hiringDate.diff(moment(formData.iefpDate), "months");
-    const daysDifferenceInTodayAndHiringDate = moment(new Date()).diff(moment(formData.hiringDate), "days");
+    const daysDifferenceInTodayAndHiringDate = moment().diff(hiringDate, "days");
 
-    console.log(monthsDifferenceInIefpDateAndStartDate, 'months');
-    console.log(yearsDifferenceInDobAndStartDate, 'years');
-    console.log(daysDifferenceInTodayAndHiringDate, 'days');
+    console.log("Years Difference (DOB & Start Date):", yearsDifferenceInDobAndStartDate);
+    console.log("Years Difference (Hiring Date & DOB):", yearsDifferenceInHiringDateAndDob);
+    console.log("Months Difference (IEFP Date & Start Date):", monthsDifferenceInIefpDateAndStartDate);
+    console.log("Months Difference (Hiring Date & IEFP Date):", monthsDifferenceInHiringAndIeftDate);
+    console.log("Days Difference (Today & Hiring Date):", daysDifferenceInTodayAndHiringDate);
 
     const calculateSaving = (formData) => {
       const percentage = 11.85 / 100;
@@ -586,7 +588,7 @@ const Dashboard = () => {
       } else {
         saving = null
         setFormData({ ...formData, saving: null })
-        message.error("Not eligible for saving");
+        message.error("Not eligible for saving 2");
         console.log(formData);
       }
       const data = {
@@ -604,6 +606,9 @@ const Dashboard = () => {
         dob: formData.dob,
         identifier: formData.identifier,
       };
+      console.log(data);
+      return
+
       if (login) {
         if (editData && validateForm2()) {
           update_hr(data, editData?._id)
