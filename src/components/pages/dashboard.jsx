@@ -358,7 +358,6 @@ const Dashboard = () => {
       );
       return potentialSaving;
     };
-
     let saving = null;
     if (employeeType === "newhire") {
       if (
@@ -478,40 +477,47 @@ const Dashboard = () => {
         dob: formData.dob,
         identifier: formData.identifier,
       };
-      if (editData && validateForm()) {
-        setLoading(true);
-        update_hr(data, editData?._id)
-          .then((res) => {
-            setLoading(false);
-            if (res) {
-              message.success("Hr Updated successfully..");
-              navigate("/list-hr");
-            }
-
-          })
-          .catch((err) => {
-            setLoading(false);
-          });
-      }
-      else {
-        if (validateForm()) {
-          setLoading(true)
-
-          create_hr(data)
+      if (login) {
+        if (editData && validateForm()) {
+          setLoading(true);
+          update_hr(data, editData?._id)
             .then((res) => {
               setLoading(false);
               if (res) {
-                message.success("Hr Added successfully..");
+                message.success("Hr Updated successfully..");
                 navigate("/list-hr");
               }
             })
             .catch((err) => {
               setLoading(false);
             });
-        } else {
-          // message.error('Form data must be filled')
-          setLoading(false);
+        }
+        else {
+          if (validateForm()) {
+            setLoading(true)
+            create_hr(data)
+              .then((res) => {
+                setLoading(false);
+                if (res) {
+                  message.success("Hr Added successfully..");
+                  navigate("/list-hr");
+                }
+              })
+              .catch((err) => {
+                setLoading(false);
+              });
+          } else {
+            // message.error('Form data must be filled')
+            setLoading(false);
 
+          }
+        }
+      } else {
+        const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+        if (validateForm()) {
+          existingData.push(data);
+          sessionStorage.setItem("hrData", JSON.stringify(existingData));
+          navigate("/list-hr");
         }
       }
     }
@@ -636,10 +642,10 @@ const Dashboard = () => {
           }
         }
       } else {
-        const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+        const existingData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
         if (validateForm()) {
           existingData.push(data);
-          sessionStorage.setItem("hrData", JSON.stringify(existingData));
+          sessionStorage.setItem("hrData_company", JSON.stringify(existingData));
           navigate("/list-hr");
         }
       }
