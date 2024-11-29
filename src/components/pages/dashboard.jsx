@@ -478,9 +478,6 @@ const Dashboard = () => {
         dob: formData.dob,
         identifier: formData.identifier,
       };
-      // console.log(saving);
-      console.log(data);
-      return
       if (editData && validateForm()) {
         setLoading(true);
         update_hr(data, editData?._id)
@@ -606,9 +603,6 @@ const Dashboard = () => {
         dob: formData.dob,
         identifier: formData.identifier,
       };
-      console.log(data);
-      return
-
       if (login) {
         if (editData && validateForm2()) {
           update_hr(data, editData?._id)
