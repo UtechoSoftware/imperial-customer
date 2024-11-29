@@ -117,7 +117,7 @@ function App() {
     const isLoginData = JSON.parse(
       localStorage.getItem("isLogin_qMed_admin") || false
     );
-    global.BASEURL = "https://imperialbackend.onrender.com/";
+    global.BASEURL = "http://62.72.19.226:8080/";
     setIsLogin(isLoginData);
     window.scrollTo(0, 0);
   }, [pathname]);
