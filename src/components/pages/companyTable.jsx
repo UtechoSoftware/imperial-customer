@@ -8,7 +8,7 @@ import { useTranslation } from "react-i18next";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { del_hr_by_id } from "../api/hr";
-const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPages, setCurrentPage }) => {
+const CompanyTable = ({ loading, setTableData, tableData, currentPage, totalPages, setTotalPages, setCurrentPage }) => {
   const { t, i18n } = useTranslation();
   const [showModal2, setShowModal2] = useState(false);
   const [delLoader, setDelLoader] = useState(false);
@@ -33,14 +33,20 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
   };
 
   const handleDelete = () => {
-    console.log(rowData);
-  }
-
-  console.log(rowData);
-
+    const existingData = JSON.parse(sessionStorage.getItem("hrData")) || [];
+    const updatedData = existingData.filter((item) => item.id !== rowData);
+    sessionStorage.setItem("hrData", JSON.stringify(updatedData));
+    setTableData(updatedData);
+    setShowModal2(false);
+    message.success("Data deleted successfully");
+  };
 
   const deleteRow = (data, index) => {
-    setRowData(data?._id)
+    if (login) {
+      setRowData(data?._id)
+    } else {
+      setRowData(data?.id)
+    }
     setShowModal2(true)
   };
 
@@ -202,19 +208,21 @@ const CompanyTable = ({ loading, tableData, currentPage, totalPages, setTotalPag
                 className="me-2"
                 onClick={() => {
                   setDelLoader(true);
-                  setDelLoading(true)
+                  setDelLoading(true);
                   del_hr_by_id(rowData)
                     .then((res) => {
                       if (res) {
-                        setDelLoader(false);
-                        setDelLoading(false)
+                        setTableData((prevData) => prevData.filter((item) => item._id !== rowData));
                         message.success("Data deleted successfully");
+                        setDelLoader(false);
+                        setDelLoading(false);
                         setShowModal2(false);
                       }
                     })
                     .catch(() => {
+                      message.error("Failed to delete the data");
                       setDelLoader(false);
-                      setDelLoading(false)
+                      setDelLoading(false);
                       setShowModal2(false);
                     });
                 }}

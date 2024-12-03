@@ -61,9 +61,23 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
     });
   };
 
-  const deleteRow = (data) => {
-    setRowData(data?._id);
-    setShowModal2(true);
+  const deleteRow = (data, index) => {
+    if (login) {
+      setRowData(data?._id);
+    } else {
+      setRowData(data?.id)
+    }
+    setShowModal2(true)
+  };
+
+
+  const handleDelete = () => {
+    const existingData = JSON.parse(sessionStorage.getItem("hrData_company")) || [];
+    const updatedData = existingData.filter((item) => item.id !== rowData);
+    sessionStorage.setItem("hrData_company", JSON.stringify(updatedData));
+    setTableData2(updatedData);
+    setShowModal2(false);
+    message.success("Data deleted successfully");
   };
 
   return (
@@ -149,17 +163,17 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
                     {employee.saving !== null && employee.saving !== undefined ? employee?.saving.toFixed(2) : "N/A"}
 
                   </td>
-                  {
-                    login && (
-                      <td>
-                        <div className="d-flex flex-row  justify-content-center">
-                          <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
-                          <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
-                        </div>
-                        {/* hello are */}
-                      </td>
-                    )
-                  }
+                  {/* {
+                    login && ( */}
+                  <td>
+                    <div className="d-flex flex-row  justify-content-center">
+                      <Edit2 size={18} style={{ cursor: "pointer", color: "#b39d70", marginRight: "10px" }} onClick={() => editRow(employee, index)} />
+                      <Trash2 size={18} style={{ cursor: "pointer", color: "black" }} onClick={() => deleteRow(employee, index)} />
+                    </div>
+                    {/* hello are */}
+                  </td>
+                  {/* )
+                  } */}
                 </tr>
               ))}
             </tbody>
@@ -187,15 +201,16 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
           <h5>Are you sure you want to delete this record?</h5>
           <div className="d-flex justify-content-center gap-3 mt-4">
             <Button onClick={() => setShowModal2(false)}>Cancel</Button>
-            <Button
+            {login ? <Button
               onClick={() => {
                 setDelLoader(true);
                 del_hr_by_id(rowData)
                   .then(() => {
+                    setTableData2((prevData) => prevData.filter((item) => item._id !== rowData));
                     message.success("Data deleted successfully");
                     setDelLoader(false);
                     setShowModal2(false);
-                    fetchPageData(currentPage); // Refresh current page data
+                    fetchPageData(currentPage);
                   })
                   .catch(() => {
                     setDelLoader(false);
@@ -204,7 +219,13 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
               }}
             >
               {delLoader ? <Spinner size="sm" /> : "Delete"}
-            </Button>
+            </Button> : <Button
+              onClick={handleDelete}
+              style={{ backgroundColor: "#161920" }}
+              className="me-2"
+            >
+              Delete
+            </Button>}
           </div>
         </Modal.Body>
       </Modal>
