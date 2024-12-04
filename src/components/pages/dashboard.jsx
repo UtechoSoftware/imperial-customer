@@ -96,8 +96,8 @@ const Dashboard = () => {
     if (!formData.dob) newErrors.dob = "Date of birth is required.";
     if (!formData.iefp) newErrors.iefp = "IEFP status is required.";
     if (!formData.iefpDate && formData.iefp === 'yes') newErrors.iefpDate = "IEFP Date  is required.";
-    if (formData.employmentContractType === "open-ended contract" && !formData.startDate) newErrors.startDate = "Contract Start Date"
-    if (formData.employmentContractType === "open-ended contract" && !formData.currentSSCRate) newErrors.currentSSCRate = "Company's current Social Security contribution rate is required"
+    // if (formData.employmentContractType === "open-ended contract" && !formData.startDate) newErrors.startDate = "Contract Start Date"
+    // if (formData.employmentContractType === "open-ended contract" && !formData.currentSSCRate) newErrors.currentSSCRate = "Company's current Social Security contribution rate is required"
     if (formData.employmentContractType === "open-ended contract" && !formData.salary) newErrors.salary = "Monthly Salary is required"
     if (formData.currentSSCRate === "23.75%" && formData.workHistory !== 'yes' && formData.workHistory !== 'no') {
       newErrors.workHistory = "Work History should be selected";
@@ -106,27 +106,6 @@ const Dashboard = () => {
     setErrors(newErrors);
     console.log("Validation errors:", newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const calculateSaving = (formData) => {
-    console.log(formData);
-    let saving = 14 * (23.75 / 100);
-    let salary = parseInt(formData.salary);
-    if (isNaN(salary)) {
-      return null;
-    } else {
-      return saving * salary;
-    }
-  };
-
-  const calculateSaving2 = (formData) => {
-    let saving = 14 * (11.85 / 100);
-    let salary = parseInt(formData.salary);
-    if (isNaN(salary)) {
-      return null;
-    } else {
-      return saving * salary;
-    }
   };
 
   const handleChange = (event) => {
@@ -181,15 +160,6 @@ const Dashboard = () => {
   };
 
   const handleSubmit = () => {
-    const today = new Date();
-    const formattedDate = today.toISOString().split("T")[0];
-    sessionStorage.setItem("todaysDate", formattedDate);
-    const btDatePlus31Years = addYears(btDate, 31);
-    const finalDate = subDays(btDatePlus31Years, 1);
-    const isBetween_ = isAfter(DOB, btDate) && isBefore(DOB, finalDate);
-    const isDiff64 = Math.abs(differenceInYears(btDate, iefpDate_));
-    const isDiff48 = Math.abs(differenceInYears(btDate, DOB));
-    const isDiff8filling = Math.abs(differenceInYears(btDate, today));
     const dob = moment(formData.dob);
     const startDate = moment(formData.startDate);
     const iefpDate = moment(formData.iefpDate);
@@ -199,12 +169,6 @@ const Dashboard = () => {
     const monthsDifferenceInIefpDateAndStartDate = startDate.diff(iefpDate, "months");
     const monthsDifferenceInHiringAndIeftDate = hiringDate.diff(moment(formData.iefpDate), "months");
     const daysDifferenceInTodayAndHiringDate = moment().diff(hiringDate, "days");
-
-    console.log("Years Difference (DOB & Start Date):", yearsDifferenceInDobAndStartDate);
-    console.log("Years Difference (Hiring Date & DOB):", yearsDifferenceInHiringDateAndDob);
-    console.log("Months Difference (IEFP Date & Start Date):", monthsDifferenceInIefpDateAndStartDate);
-    console.log("Months Difference (Hiring Date & IEFP Date):", monthsDifferenceInHiringAndIeftDate);
-    console.log("Days Difference (Today & Hiring Date):", daysDifferenceInTodayAndHiringDate);
 
     const calculateSaving = (formData) => {
       const percentage = 11.85 / 100;
@@ -290,11 +254,11 @@ const Dashboard = () => {
         !formData.employmentContractType ||
         (formData.employmentContractType === "open-ended contract" &&
           (!formData.salary ||
-            !formData.workHistory ||
+            (formData.currentSSCRate === "23.75%" && !formData.workHistory) ||
             !formData.startDate ||
             !formData.currentSSCRate))
       ) {
-        message.error("Form data must be filled first.....");
+        message.error("Please fill all data in the form");
         return;
       }
       let saving = null;
@@ -306,7 +270,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving2(formData);
-        message.success("Eligible for saving one");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.employmentContractType === "open-ended contract" &&
         formData.iefp === "no" &&
@@ -316,7 +280,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving2(formData);
-        message.success("Eligible for saving 1");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.iefp === "yes" &&
         formData.salary &&
@@ -328,7 +292,7 @@ const Dashboard = () => {
         formData.workHistory === "no"
       ) {
         saving = calculateSaving(formData);
-        message.success("Eligible for saving 2");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.iefp === "yes" &&
         formData.salary &&
@@ -339,7 +303,7 @@ const Dashboard = () => {
         monthsDifferenceInIefpDateAndStartDate < 24
       ) {
         saving = calculateSaving(formData);
-        message.success("Eligible for saving 2");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.iefp === "yes" &&
         formData.salary &&
@@ -351,7 +315,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving3(formData);
-        message.success("Eligible for saving three");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.iefp === "yes" &&
         formData.salary &&
@@ -363,11 +327,11 @@ const Dashboard = () => {
         formData.workHistory === "no"
       ) {
         saving = calculateSaving3(formData);
-        message.success("Eligible for saving 3");
+        message.success("Elegible HR for the benefit");
       } else {
         saving = null;
         setFormData({ ...formData, saving: null });
-        message.error("Not eligible for saving");
+        message.error("Not Elegible HR for the benefit");
       }
 
       const data = {
@@ -392,20 +356,18 @@ const Dashboard = () => {
             .then((res) => {
               setLoading(false);
               if (res) {
-                message.success("HR Updated successfully..");
+                message.success("HR data updated");
                 navigate("/list-hr");
               }
             })
             .catch(() => setLoading(false));
         } else if (validateForm()) {
-          console.log("log");
-
           setLoading(true);
           create_hr(data)
             .then((res) => {
               setLoading(false);
               if (res) {
-                message.success("HR Added successfully..");
+                message.success("HR data added");
                 navigate("/list-hr");
               }
             })
@@ -421,7 +383,7 @@ const Dashboard = () => {
               item.id === editData.id ? { ...item, ...data } : item
             );
             sessionStorage.setItem("hrData", JSON.stringify(updatedData));
-            message.success("HR Updated successfully.");
+            message.success("HR data Updated");
           } else {
             const newData = {
               ...data,
@@ -429,13 +391,12 @@ const Dashboard = () => {
             };
             existingData.push(newData);
             sessionStorage.setItem("hrData", JSON.stringify(existingData));
-            message.success("HR Added successfully.");
+            message.success("HR data Added");
           }
           navigate("/list-hr");
         }
       }
     }
-
     else if (employeeType === "companystaff") {
       if (
         !formData.dob ||
@@ -446,12 +407,12 @@ const Dashboard = () => {
         !formData.employmentContractType ||
         (formData.employmentContractType === "open-ended contract" &&
           (!formData.salary ||
-            !formData.workHistory ||
-            !formData.startDate ||
-            !formData.currentSSCRate))
+            (formData.currentSSCRate === "23.75%" && !formData.workHistory)
+            // !formData.startDate
+          ))
       ) {
         setLoading(false)
-        message.error("Form data must be filled");
+        message.error("Please fill all data in the form");
         return
       } else if (
         formData.employmentContractType === "open-ended contract" &&
@@ -462,7 +423,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving4(formData, daysDifferenceInTodayAndHiringDate);
-        message.success("Eligible for saving 4");
+        message.success("Elegible HR for the benefit");
       } else if (
         formData.employmentContractType === "open-ended contract" &&
         formData.currentSSCRate === "23.75%" &&
@@ -473,7 +434,7 @@ const Dashboard = () => {
       ) {
         saving = null
         setFormData({ ...formData, saving: null })
-        message.success("Not saving found");
+        message.success("Not Elegible HR for the benefit");
       } else if (
         formData.iefp === "yes" &&
         formData.employmentContractType === "open-ended contract" &&
@@ -486,7 +447,7 @@ const Dashboard = () => {
         formData.workHistory === "no"
       ) {
         saving = calculateSaving5(formData, daysDifferenceInTodayAndHiringDate);
-        message.success("Eligible for saving 5");
+        message.success("Elegible HR for the benefit");
         console.log(formData);
       } else if (
         formData.iefp === "yes" &&
@@ -500,7 +461,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving5(formData, daysDifferenceInTodayAndHiringDate);
-        message.success("Eligible for saving five");
+        message.success("Elegible HR for the benefit");
         console.log(formData);
       } else if (
         formData.iefp === "yes" &&
@@ -514,7 +475,7 @@ const Dashboard = () => {
         formData.workHistory === "yes"
       ) {
         saving = calculateSaving6(formData, daysDifferenceInTodayAndHiringDate);
-        message.success("Eligible for saving six");
+        message.success("Elegible HR for the benefit");
         console.log(formData);
       } else if (
         formData.iefp === "yes" &&
@@ -528,12 +489,12 @@ const Dashboard = () => {
         formData.workHistory === "no"
       ) {
         saving = calculateSaving6(formData, daysDifferenceInTodayAndHiringDate);
-        message.success("Eligible for saving 6");
+        message.success("Elegible HR for the benefit");
         console.log(formData);
       } else {
         saving = null
         setFormData({ ...formData, saving: null })
-        message.error("Not eligible for saving 2");
+        message.error("Not Elegible HR for the benefit");
         console.log(formData);
       }
       const data = {
@@ -557,7 +518,7 @@ const Dashboard = () => {
             .then((res) => {
               setLoading(false);
               if (res) {
-                message.success("Hr Updated successfully..");
+                message.success("Company data updated");
                 navigate("/list-hr");
               }
             }).catch((err) => {
@@ -571,7 +532,7 @@ const Dashboard = () => {
               .then((res) => {
                 setLoading(false);
                 if (res) {
-                  message.success("Hr Added successfully..");
+                  message.success("Company data added");
                   navigate("/list-hr");
                 }
               })
@@ -590,7 +551,7 @@ const Dashboard = () => {
               item.id === editData.id ? { ...item, ...data } : item
             );
             sessionStorage.setItem("hrData_company", JSON.stringify(updatedData));
-            message.success("Company Updated successfully.");
+            message.success("Company data Updated.");
             navigate("/list-hr");
           } else {
             const newData = {
@@ -685,53 +646,55 @@ const Dashboard = () => {
                     </Tooltip>
 
                   </div>
-                  <div className="my-2 d-flex flex-column  align-items-baseline flex-wrap">
-                    <label className="form-label cursor-pointer manrope_semibold">
-                      {t('table_head_1')}
-                    </label>
-                    <Tooltip title={t('indicate_birth')}>
+                  <div className=" col-lg-4 col-md-6 mt-4 col-12">
+                    <Tooltip
+                      title={t('unique_identifier_desc')}
+                    >
                       <div className="">
-                        <DatePicker
-                          yearDropdownItemNumber={200}
-                          selected={formData.dob}
-                          onChange={(date) => handleDateChange(date, "dob")}
-                          className="form-control cursor-pointer input_1 custom_radius text-center"
-                          placeholderText={t('table_head_8')}
-                          dateFormat="dd/MM/yyyy"
-                          maxDate={new Date()}
-                          required
-                          showYearDropdown
-                          isClearable
-                          scrollableYearDropdown
+                        <input
+                          type="text"
+                          id="identifier"
+                          name="identifier"
+                          placeholder={t('unique_identifier')}
+                          value={formData.identifier}
+                          onChange={handleIdentifierChange}
+                          className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
+
+                        // className="form-control"
                         />
+                        {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
 
                       </div>
                     </Tooltip>
-                    {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
-
                   </div>
                 </div>
               </div>
               {/* </div> */}
-              <Tooltip
-                title={t('unique_identifier_desc')}
-              >
-                <div className="">
-                  <input
-                    type="text"
-                    id="identifier"
-                    name="identifier"
-                    placeholder={t('unique_identifier')}
-                    value={formData.identifier}
-                    onChange={handleIdentifierChange}
-                    className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
+              <div className="my-2 d-flex flex-column  align-items-baseline flex-wrap">
+                <label className="form-label cursor-pointer manrope_semibold">
+                  {t('table_head_1')}
+                </label>
+                <Tooltip title={t('indicate_birth')}>
+                  <div className="">
+                    <DatePicker
+                      yearDropdownItemNumber={200}
+                      selected={formData.dob}
+                      onChange={(date) => handleDateChange(date, "dob")}
+                      className="form-control cursor-pointer input_1 custom_radius text-center"
+                      placeholderText={t('table_head_8')}
+                      dateFormat="dd/MM/yyyy"
+                      maxDate={new Date()}
+                      required
+                      showYearDropdown
+                      isClearable
+                      scrollableYearDropdown
+                    />
 
-                  // className="form-control"
-                  />
-                  {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
+                  </div>
+                </Tooltip>
+                {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
 
-                </div>
-              </Tooltip>
+              </div>
               <div className=" ">
                 <label className="form-label cursor-pointer manrope_semibold">
                   {t('reg_unemployee')}
@@ -925,21 +888,45 @@ const Dashboard = () => {
                 <label className="form-label manrope_semibold">
                   {t('type_of_employee')}
                 </label>
-                <div className=" col-lg-4 col-md-6  col-12">
-                  <Tooltip title={t('new_hr_company')}>
-                    <div className="">
-                      <select
-                        className="form-select cursor-pointer py-3 custom_radius text-center"
-                        value={employeeType}
-                        onChange={handleChange}
-                      >
-                        <option value="">{t('select')}</option>
-                        <option value="newhire">{t('NewHire')}</option>
-                        <option value="companystaff">{t('tab_2')}</option>
-                      </select>
-                    </div>
-                  </Tooltip>
+                <div className="flex flex-wrap gap-3 w-full">
 
+                  <div className=" col-lg-4 col-md-6 col-12">
+                    <Tooltip title={t('new_hr_company')}>
+                      <div className="">
+                        <select
+                          className="form-select cursor-pointer py-3 custom_radius text-center"
+                          value={employeeType}
+                          onChange={handleChange}
+                        >
+                          <option value="">{t('select')}</option>
+                          <option value="newhire">{t('NewHire')}</option>
+                          <option value="companystaff">{t('tab_2')}</option>
+                        </select>
+                      </div>
+                    </Tooltip>
+
+                  </div>
+                  <div className=" col-lg-4 col-md-6 col-12">
+                    <Tooltip
+                      title={t('unique_identifier_desc')}
+                    >
+                      <div className="">
+                        <input
+                          type="text"
+                          id="identifier"
+                          name="identifier"
+                          placeholder={t('unique_identifier')}
+                          value={formData.identifier}
+                          onChange={handleIdentifierChange}
+                          className="form-control cursor-pointer input_1 custom_radius text-center mr-2 "
+
+                        // className="form-control"
+                        />
+                        {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
+
+                      </div>
+                    </Tooltip>
+                  </div>
                 </div>
               </div>
 
@@ -949,7 +936,7 @@ const Dashboard = () => {
                 </label>
 
                 <div className="flex  flex-wrap">
-                  <Tooltip
+                  {/* <Tooltip
                     title={t('unique_identifier_desc')}
                   >
                     <div className="">
@@ -967,9 +954,9 @@ const Dashboard = () => {
                       {errors.identifier && <div className="fs-small" style={{ color: "red" }}>{errors.identifier}</div>}
 
                     </div>
-                  </Tooltip>
+                  </Tooltip> */}
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  <Tooltip title={t('indicate_birth_com')}>
+                  {/* <Tooltip title={t('indicate_birth_com')}>
                     <div className="">
                       <DatePicker
                         yearDropdownItemNumber={200}
@@ -985,7 +972,7 @@ const Dashboard = () => {
                       />
                       {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
                     </div>
-                  </Tooltip>
+                  </Tooltip> */}
                   <Tooltip title={t('indicate_birth')}>
                     <div>
                       <DatePicker
@@ -1096,7 +1083,7 @@ const Dashboard = () => {
                   {formData.employmentContractType ===
                     "open-ended contract" && (
                       <>
-                        <Tooltip title={t('indicate_date_com')}>
+                        {/* <Tooltip title={t('indicate_date_com')}>
                           <div>
                             <DatePicker
                               yearDropdownItemNumber={200}
@@ -1113,6 +1100,23 @@ const Dashboard = () => {
                               isClearable
                             />
                             {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
+                          </div>
+                        </Tooltip> */}
+                        <Tooltip title={t('indicate_date_com')}>
+                          <div className="">
+                            <DatePicker
+                              yearDropdownItemNumber={200}
+                              selected={formData.newHiring}
+                              onChange={(date) => handleDateChange(date, "newHiring")}
+                              className="form-control input_1 cursor-pointer custom_radius me-md-2 text-center"
+                              placeholderText={t('contract_start_date')}
+                              dateFormat="dd/MM/yyyy"
+                              maxDate={new Date()}
+                              showYearDropdown
+                              scrollableYearDropdown
+                              isClearable // Allows users to clear the date if they need to reselect
+                            />
+                            {errors.newHiring && <div className="fs-small" style={{ color: "red" }}>{errors.newHiring}</div>}
                           </div>
                         </Tooltip>
                         <Tooltip title={t('indicate_salery_com')}>

@@ -101,7 +101,7 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
                 <th>{t('table_comp_4')}</th>
                 <th>{t('table_comp_11')}</th>
                 <th>{t('table_comp_5')}</th>
-                <th>{t('table_comp_6')}</th>
+                {/* <th>{t('table_comp_6')}</th> */}
                 <th>{t('table_comp_7')}</th>
                 <th>{t('table_comp_8')}</th>
                 <th>{t('table_comp_9')}</th>
@@ -145,7 +145,7 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
                   <td style={{ textAlign: "center" }}>
                     {employee.employmentContractType}
                   </td>
-                  <td>
+                  {/* <td>
                     {employee.startDate
                       ? new Date(employee.startDate).toLocaleDateString("en-GB", {
                         day: "2-digit",
@@ -153,7 +153,7 @@ const NewTable = ({ updating, currentPage, setCurrentPage, totalPages, setTotalP
                         year: "numeric",
                       })
                       : "N/A"}
-                  </td>
+                  </td> */}
                   <td style={{ textAlign: "center" }}>{employee.salary}</td>
                   <td style={{ textAlign: "center" }}>
                     {employee.currentSSCRate}
