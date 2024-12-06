@@ -2,7 +2,7 @@ import axios from "axios";
 
 export const axiosInstance = axios.create({
     // baseURL: "https://imperialbackend.onrender.com/",
-    baseURL: "http://62.72.19.226:8080/",
+    baseURL: "https://api.imperialage.pt/",
 });
 axiosInstance.interceptors.request.use(
     (config) => {

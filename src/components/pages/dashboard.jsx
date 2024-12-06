@@ -935,7 +935,7 @@ const Dashboard = () => {
                   {t('table_head_1')}
                 </label>
 
-                <div className="flex  flex-wrap">
+                <div className="flex gap-3 flex-wrap">
                   {/* <Tooltip
                     title={t('unique_identifier_desc')}
                   >
@@ -956,7 +956,7 @@ const Dashboard = () => {
                     </div>
                   </Tooltip> */}
                   {error && <p style={{ color: "red" }}>{error}</p>}
-                  {/* <Tooltip title={t('indicate_birth_com')}>
+                  {/* <Tooltip title={t('indicate_hiring_date')}>
                     <div className="">
                       <DatePicker
                         yearDropdownItemNumber={200}
@@ -990,6 +990,25 @@ const Dashboard = () => {
                     </div>
                     {errors.dob && <div className="fs-small" style={{ color: "red" }}>{errors.dob}</div>}
 
+                  </Tooltip>
+                  <Tooltip title={t('indicate_date_com')}>
+                    <div>
+                      <DatePicker
+                        yearDropdownItemNumber={200}
+                        selected={formData.startDate}
+                        onChange={(date) =>
+                          handleDateChange(date, "startDate")
+                        }
+                        className="form-control input_1 cursor-pointer custom_radius  text-center  "
+                        placeholderText={t('contract_start_date')}
+                        dateFormat="dd/MM/yyyy"
+                        maxDate={new Date()}
+                        showYearDropdown
+                        scrollableYearDropdown
+                        isClearable
+                      />
+                      {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
+                    </div>
                   </Tooltip>
                 </div>
               </div>
@@ -1083,33 +1102,14 @@ const Dashboard = () => {
                   {formData.employmentContractType ===
                     "open-ended contract" && (
                       <>
-                        {/* <Tooltip title={t('indicate_date_com')}>
-                          <div>
-                            <DatePicker
-                              yearDropdownItemNumber={200}
-                              selected={formData.startDate}
-                              onChange={(date) =>
-                                handleDateChange(date, "startDate")
-                              }
-                              className="form-control input_1 cursor-pointer custom_radius  text-center  "
-                              placeholderText={t('contract_start_date')}
-                              dateFormat="dd/MM/yyyy"
-                              maxDate={new Date()}
-                              showYearDropdown
-                              scrollableYearDropdown
-                              isClearable
-                            />
-                            {errors.startDate && <div className="fs-small" style={{ color: "red" }}>{errors.startDate}</div>}
-                          </div>
-                        </Tooltip> */}
-                        <Tooltip title={t('indicate_date_com')}>
+                        <Tooltip title={t('indicate_hiring_date')}>
                           <div className="">
                             <DatePicker
                               yearDropdownItemNumber={200}
                               selected={formData.newHiring}
                               onChange={(date) => handleDateChange(date, "newHiring")}
                               className="form-control input_1 cursor-pointer custom_radius me-md-2 text-center"
-                              placeholderText={t('contract_start_date')}
+                              placeholderText={t('hiring_date')}
                               dateFormat="dd/MM/yyyy"
                               maxDate={new Date()}
                               showYearDropdown
